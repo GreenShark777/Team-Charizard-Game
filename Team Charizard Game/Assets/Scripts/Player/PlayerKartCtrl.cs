@@ -8,12 +8,11 @@ public class PlayerKartCtrl : MonoBehaviour
 {
     //RIFERIMENTI
     [Header("References")]
-    //riferimento al Rigidbody del giocatore
-    private Rigidbody kartRb;
     //riferimenti alle ruote del kart
     [SerializeField]
-    private Transform frontRightTire = default,
-        frontLeftTire = default,
+    private Transform frontRightTire = default;
+    [SerializeField]
+    private Transform frontLeftTire = default,
         backRightTire = default,
         backLeftTire = default;
 
@@ -21,10 +20,11 @@ public class PlayerKartCtrl : MonoBehaviour
     private Transform childFrontSxTire,
         childFrontDxTire;
 
+    //riferimento al Rigidbody del giocatore
+    private Rigidbody kartRb;
+
     //VARIABILI DI MOVIMENTO
     [Header("Movement")]
-    //indica la velocità attuale del giocatore
-    private float currentSpeed = 0;
     //indica quanto velocemente il kart arriva a velocità massima
     [SerializeField]
     private float acceleration = 1;
@@ -40,14 +40,35 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica quanto velocemente decelera il kart quando non si preme il tasto per andare avanti
     [SerializeField]
     private float deceleration = default;
+    //indica la velocità attuale del giocatore
+    private float currentSpeed = 0;
     //indica la velocità reale a cui il giocatore sta andando(nel caso che collide con un muro o è rallentato da qualcosa)
     private float realSpeed;
+
+    //VARIABILI DI STERZAMENTO DEL KART
+    [Header("Kart Steer")]
+    //indica quanto velocemente ruotano le ruote del kart
+    [SerializeField]
+    private float steerSpeed = 3;
+    //indica la direzione in cui si sta sterzando
+    private float steerDirection;
+    //variabili di stato del kart
+    private bool driftRight, //indica che sta driftando verso destra
+        driftLeft, //indica che sta driftando verso sinistra
+        isSliding, //indica che sta strisciando per il drift
+        touchingGround; //indica che sta toccando per terra
+
+    //VARIABILI DRIFT
+    [Header("Drift")]
+    //indica quanto il drift influenzi l'andamento del kart
+    [SerializeField]
+    private float outwardsDriftForce = 50000;
 
     //VARIABILI DI STERZAMENTO DELLE RUOTE
     [Header("Tire Steer")]
     //indica quanto velocemente le ruote ruotano verso la direzione in cui devono puntare
     [SerializeField]
-    private float steerSpeed = 5;
+    private float tireSteerSpeed = 5;
     //indica quanto velocemente le ruote ruotano mentre il kart va avanti o dietro
     [SerializeField]
     private float spinSpeed = 0.5f;
@@ -115,6 +136,41 @@ public class PlayerKartCtrl : MonoBehaviour
 
     private void Steer()
     {
+        //ottiene la direzione in cui il giocatore sta sterzando
+        steerDirection = Input.GetAxisRaw("Horizontal"); // -1, 0, 1
+        //Vector3 steerDirVect; //this is used for the final rotation of the kart for steering
+
+        float steerAmount;
+
+
+        if (driftLeft && !driftRight)
+        {
+            steerDirection = Input.GetAxis("Horizontal") < 0 ? -1.5f : -0.5f;
+            transform.GetChild(0).localRotation = Quaternion.Lerp(transform.GetChild(0).localRotation, Quaternion.Euler(0, -20f, 0), 8f * Time.deltaTime);
+
+
+            if (isSliding && touchingGround)
+                kartRb.AddForce(transform.right * outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
+        }
+        else if (driftRight && !driftLeft)
+        {
+            steerDirection = Input.GetAxis("Horizontal") > 0 ? 1.5f : 0.5f;
+            transform.GetChild(0).localRotation = Quaternion.Lerp(transform.GetChild(0).localRotation, Quaternion.Euler(0, 20f, 0), 8f * Time.deltaTime);
+
+            if (isSliding && touchingGround)
+                kartRb.AddForce(transform.right * -outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
+        }
+        else
+        {
+            transform.GetChild(0).localRotation = Quaternion.Lerp(transform.GetChild(0).localRotation, Quaternion.Euler(0, 0f, 0), 8f * Time.deltaTime);
+        }
+
+        //since handling is supposed to be stronger when car is moving slower, we adjust steerAmount depending on the real speed of the kart, and then rotate the kart on its y axis with steerAmount
+        steerAmount = realSpeed > 30 ? realSpeed / 4 * steerDirection : steerAmount = realSpeed / 1.5f * steerDirection;
+
+        //infine, calcola e ruota il kart nella direzione in cui si sta sterzando
+        Vector3 steerDirVect = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + steerAmount, transform.eulerAngles.z);
+        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, steerDirVect, 3 * Time.deltaTime);
 
     }
 
@@ -138,18 +194,18 @@ public class PlayerKartCtrl : MonoBehaviour
         //se si preme la freccia sinistra per andare a sinistra, le ruote frontali ruoteranno verso sinistra
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxLeftSteer, 0), steerSpeed * Time.deltaTime);
-            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxLeftSteer, 0), steerSpeed * Time.deltaTime);
+            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxLeftSteer, 0), tireSteerSpeed * Time.deltaTime);
+            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxLeftSteer, 0), tireSteerSpeed * Time.deltaTime);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxRightSteer, 0), steerSpeed * Time.deltaTime);
-            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxRightSteer, 0), steerSpeed * Time.deltaTime);
+            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxRightSteer, 0), tireSteerSpeed * Time.deltaTime);
+            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxRightSteer, 0), tireSteerSpeed * Time.deltaTime);
         }
         else
         {
-            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, startWheelsYRotation, 0), steerSpeed * Time.deltaTime);
-            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, startWheelsYRotation, 0), steerSpeed * Time.deltaTime);
+            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, startWheelsYRotation, 0), tireSteerSpeed * Time.deltaTime);
+            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, startWheelsYRotation, 0), tireSteerSpeed * Time.deltaTime);
         }
 
         //tire spinning
