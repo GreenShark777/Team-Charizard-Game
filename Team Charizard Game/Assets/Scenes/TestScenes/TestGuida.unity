@@ -11183,8 +11183,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1076f1fd1e70f4f4bb2036e96cb42b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: 5.25, z: -10}
   player: {fileID: 332253717}
+  camSpeed: 3
   camBoostOffsetY: -1
   camBoostOffsetZ: -2
 --- !u!4 &1424585788

@@ -35,6 +35,8 @@ public class PlayerKartCtrl : MonoBehaviour
     //riferimento al particellare di boost dopo un drift
     [SerializeField]
     private Transform boostPS = default;
+    //riferimento al kart
+    private Transform kart;
     //riferimento al Rigidbody del giocatore
     private Rigidbody kartRb;
     //riferimento all'Animator del kart
@@ -67,21 +69,50 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica quanto velocemente ruotano le ruote del kart
     [SerializeField]
     private float steerSpeed = 3;
+
+    [SerializeField]
+    private float maxSteerInDrift = 1.5f, //indica il valore massimo di sterzata in drift verso la direzione in cui si sta driftando
+        minSteerInDrift = 0.5f, //indica il valore massimo di sterzata in drift verso la direzione opposta in cui si sta driftando
+        maxDriftSteer = 20, //indica la rotazione massima di sterzamento in drift
+        driftSteerSpeed = 8, //indica la velocità di sterzamento in drift
+        steerResistSpeed = 30, //indica a quale velocità di movimento il kart deve iniziare a sterzare più lentamente
+        maxResist = 4, //indica quanta resistenza viene applicata allo sterzamento ad alta velocità
+        minResist = 1.5f; //indica quanta resistenza viene applicata allo sterzamento a bassa velocità
+
     //indica la direzione in cui si sta sterzando
     private float steerDirection;
     //variabili di stato del kart
     private bool driftRight, //indica che sta driftando verso destra
         driftLeft, //indica che sta driftando verso sinistra
-        isSliding, //indica che sta strisciando per il drift
-        touchingGround; //indica che sta toccando per terra
+        isSliding; //indica che sta strisciando per il drift
+
+    [Header("Ground Detection")]
+    //indica quanto distante deve essere il terreno per indicare che si sta toccando per terra
+    [SerializeField]
+    private float groundDistance = 0.75f;
+    //indica che si sta toccando per terra
+    private bool touchingGround;
 
     //VARIABILI DRIFT
     [Header("Drift")]
     //indica quanto il drift influenzi l'andamento del kart
     [SerializeField]
     private float outwardsDriftForce = 50000;
-
+    //indica per quanto tempo il giocatore sta rimanendo in drift
     private float driftTime;
+
+    [SerializeField]
+    private float minSpeedForDrift = 40, //indica a quale velocità si può driftare
+        driftFirstStageTimer = 1.5f, //indica dopo quanto tempo dall'inizio del drift inizia il primo stadio del boost
+        driftSecondStageTimer = 4, //indica dopo quanto tempo dall'inizio del drift inizia il secondo stadio del boost
+        driftFinalStageTimer = 7; //indica dopo quanto tempo dall'inizio del drift inizia l'ultimo stadio del boost
+
+    [Header("Boost")]
+    //indica per quanto tempo ancora il giocatore deve rimanere in boost
+    public float BoostTime;
+    //indica in quanto tempo il kart raggiunge la velocità massima di boost
+    [SerializeField]
+    private float boostAcceleration = 1;
 
     //VARIABILI DI STERZAMENTO DELLE RUOTE
     [Header("Tire Steer")]
@@ -102,13 +133,14 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica la rotazione Y iniziale delle ruote
     private float startWheelsYRotation;
 
-    public bool GLIDER_FLY;
-
-    public float BoostTime;
+    //indica se il giocatore sta volando in glide
+    //public bool GLIDER_FLY;
 
 
     private void Awake()
     {
+        //ottiene il riferimento al kart
+        kart = transform.GetChild(0);
         //ottiene il riferimento al Rigidbody del giocatore
         kartRb = GetComponent<Rigidbody>();
         //ottiene il riferimento all'Animator del kart
@@ -168,35 +200,45 @@ public class PlayerKartCtrl : MonoBehaviour
 
         //float steerAmount;
 
-
+        //se si sta driftando verso sinistra, e non destra...
         if (driftLeft && !driftRight)
         {
-            steerDirection = Input.GetAxis("Horizontal") < 0 ? -1.5f : -0.5f;
-            transform.GetChild(0).localRotation = Quaternion.Lerp(transform.GetChild(0).localRotation, Quaternion.Euler(0, -20f, 0), 8f * Time.deltaTime);
+            //...ricalcola la direzione verso cui si sta sterzando, dando più rotazione se va sta sterzando a sinistra o meno se sta sterzando a destra...
+            steerDirection = Input.GetAxis("Horizontal") < 0 ? -maxSteerInDrift : -minSteerInDrift;
+            //...ruota il kart nell'asse Y fino ad arrivare al valore massimo impostato per il drift sinistro
+            kart.localRotation = Quaternion.Lerp(kart.localRotation, Quaternion.Euler(0, -maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
 
-
+            //...se si sta scivolando e si sta toccando terra, al kart viene aggiunta una forza acceleratrice verso la parte opposta(forza centrifuga)
             if (isSliding && touchingGround)
                 kartRb.AddForce(transform.right * outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
+
         }
+        //altrimenti, se si sta driftando verso destra, e non sinistra...
         else if (driftRight && !driftLeft)
         {
-            steerDirection = Input.GetAxis("Horizontal") > 0 ? 1.5f : 0.5f;
-            transform.GetChild(0).localRotation = Quaternion.Lerp(transform.GetChild(0).localRotation, Quaternion.Euler(0, 20f, 0), 8f * Time.deltaTime);
+            //...ricalcola la direzione verso cui si sta sterzando, dando più rotazione se va sta sterzando a destra o meno se sta sterzando a sinistra...
+            steerDirection = Input.GetAxis("Horizontal") > 0 ? maxSteerInDrift : minSteerInDrift;
+            //...ruota il kart nell'asse Y fino ad arrivare al valore massimo impostato per il drift destro
+            kart.localRotation = Quaternion.Lerp(kart.localRotation, Quaternion.Euler(0, maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
 
+            //...se si sta scivolando e si sta toccando terra, al kart viene aggiunta una forza acceleratrice verso la parte opposta(forza centrifuga)
             if (isSliding && touchingGround)
                 kartRb.AddForce(transform.right * -outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
-        }
+        } //altrimenti non si sta driftando verso nessun lato, quindi ripotra il kart alla rotazione iniziale
         else
         {
-            transform.GetChild(0).localRotation = Quaternion.Lerp(transform.GetChild(0).localRotation, Quaternion.Euler(0, 0f, 0), 8f * Time.deltaTime);
+            kart.localRotation = Quaternion.Lerp(kart.localRotation, Quaternion.Euler(0, 0f, 0), maxDriftSteer * Time.deltaTime);
         }
 
         //since handling is supposed to be stronger when car is moving slower, we adjust steerAmount depending on the real speed of the kart, and then rotate the kart on its y axis with steerAmount
-        float steerAmount = realSpeed > 30 ? realSpeed / 4 * steerDirection : steerAmount = realSpeed / 1.5f * steerDirection;
+
+        //calcola quanto si può sterzare in base alla velocità a cui il giocatore sta andando(maggiore la velocità, maggiore la resistenza allo sterzamento)
+        float steerAmount = (realSpeed > steerResistSpeed) ? realSpeed / maxResist * steerDirection 
+                                                           : realSpeed / minResist * steerDirection;
 
         //infine, calcola e ruota il kart nella direzione in cui si sta sterzando
         Vector3 steerDirVect = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + steerAmount, transform.eulerAngles.z);
-        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, steerDirVect, 3 * Time.deltaTime);
+        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, steerDirVect, steerSpeed * Time.deltaTime);
 
     }
 
@@ -205,7 +247,7 @@ public class PlayerKartCtrl : MonoBehaviour
         //crea un RayCast
         RaycastHit hit;
         //fa partire il raycast dal centro del kart e lo fa andare verso sotto, se entro la distanza impostata c'è qualcosa...
-        if (Physics.Raycast(transform.position, -transform.up, out hit, 0.75f)) //0.75 E' TROPPO POCO, AUMENTARE
+        if (Physics.Raycast(transform.position, -transform.up, out hit, groundDistance))
         {
             //...ruota il kart in base alla pendenza dell'oggetto su cui si è...
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * transform.rotation, 7.5f * Time.deltaTime);
@@ -239,7 +281,7 @@ public class PlayerKartCtrl : MonoBehaviour
             }
         }
         //se si sta continuando a tenere premuto il tasto, siamo per terra, la nostra velocità non è sotto il minimo e si sta ancora sterzando...
-        if (Input.GetKey(KeyCode.V) && touchingGround /*&& currentSpeed > 40*/ && Input.GetAxis("Horizontal") != 0)
+        if (Input.GetKey(KeyCode.V) && touchingGround && currentSpeed > minSpeedForDrift && Input.GetAxis("Horizontal") != 0)
         {
             //...aumenta il tempo in cui stiamo continuando il drift...
             driftTime += Time.deltaTime;
@@ -247,7 +289,7 @@ public class PlayerKartCtrl : MonoBehaviour
             //particle effects (sparks)
 
             //se siamo in drift da meno di tot secondi per il drift medio...
-            if (driftTime >= 1.5 && driftTime < 4)
+            if (driftTime >= driftFirstStageTimer && driftTime < driftSecondStageTimer)
             {
                 //...cambia il colore degli effetti particellari di drift al colore 1(quello di inizio)...
                 for (int i = 0; i < leftDrift.childCount; i++)
@@ -272,7 +314,7 @@ public class PlayerKartCtrl : MonoBehaviour
                 }
             }
             //altrimenti, se siamo in drift da più di tot secondi per il drift iniziale ma non abbastanza da essere al boost finale...
-            if (driftTime >= 4 && driftTime < 7)
+            if (driftTime >= driftSecondStageTimer && driftTime < driftFinalStageTimer)
             {
                 //drift color particles
 
@@ -291,7 +333,7 @@ public class PlayerKartCtrl : MonoBehaviour
 
             }
             //altrimenti siamo in drift da abbastanza per poter...
-            if (driftTime >= 7)
+            if (driftTime >= driftFinalStageTimer)
             {
                 //...cambiare il colore degli effetti particellari di drift al colore 3(quello finale)...
                 for (int i = 0; i < leftDrift.childCount; i++)
@@ -308,7 +350,7 @@ public class PlayerKartCtrl : MonoBehaviour
             }
         }
         //se non si sta più premendo il tasto di drift o siamo sotto la soglia minima di velocità per continuare il boost...
-        if (!Input.GetKey(KeyCode.V) || realSpeed < 40)
+        if (!Input.GetKey(KeyCode.V) || realSpeed < minSpeedForDrift)
         {
             //comunica che non si sta più driftando...
             driftLeft = false;
@@ -317,16 +359,16 @@ public class PlayerKartCtrl : MonoBehaviour
 
 
             //...da il boost in base a quanto tempo siamo stati in drift...
-            if (driftTime > 1.5 && driftTime < 4)
+            if (driftTime > driftFirstStageTimer && driftTime < driftSecondStageTimer)
             {
                 BoostTime = 0.75f; //boost debole
             }
-            if (driftTime >= 4 && driftTime < 7)
+            if (driftTime >= driftSecondStageTimer && driftTime < driftFinalStageTimer)
             {
                 BoostTime = 1.5f; //boost medio
 
             }
-            if (driftTime >= 7)
+            if (driftTime >= driftFinalStageTimer)
             {
                 BoostTime = 2.5f; //boost finale
 
@@ -372,7 +414,7 @@ public class PlayerKartCtrl : MonoBehaviour
             //maxSpeed = boostSpeed;
 
             //...e cambia la velocità attuale dandogli come velocità massima quella di boost
-            currentSpeed = Mathf.Lerp(currentSpeed, boostSpeed, 1 * Time.deltaTime);
+            currentSpeed = Mathf.Lerp(currentSpeed, boostSpeed, boostAcceleration * Time.deltaTime);
             Debug.Log(currentSpeed);
         } //altrimenti, essendo finito il boost...
         else
