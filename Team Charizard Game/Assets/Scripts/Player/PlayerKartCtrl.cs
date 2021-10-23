@@ -35,9 +35,10 @@ public class PlayerKartCtrl : MonoBehaviour
     //riferimento al particellare di boost dopo un drift
     [SerializeField]
     private Transform boostPS = default;
-
     //riferimento al Rigidbody del giocatore
     private Rigidbody kartRb;
+    //riferimento all'Animator del kart
+    private Animator kartAnim;
 
     //VARIABILI DI MOVIMENTO
     [Header("Movement")]
@@ -110,6 +111,8 @@ public class PlayerKartCtrl : MonoBehaviour
     {
         //ottiene il riferimento al Rigidbody del giocatore
         kartRb = GetComponent<Rigidbody>();
+        //ottiene il riferimento all'Animator del kart
+        kartAnim = GetComponent<Animator>();
         //ottiene il riferimento ai figli delle ruote frontali
         childFrontDxTire = frontRightTire.GetChild(0);
         childFrontSxTire = frontLeftTire.GetChild(0);
@@ -221,7 +224,7 @@ public class PlayerKartCtrl : MonoBehaviour
         {
 
             //...fa partire l'animazione di inizio drift...
-            //transform.GetChild(0).GetComponent<Animator>().SetTrigger("Hop");
+            kartAnim.SetTrigger("Hop");
 
             //controlla se si sta sterzando verso destra...
             if (steerDirection > 0)
@@ -241,7 +244,6 @@ public class PlayerKartCtrl : MonoBehaviour
             //...aumenta il tempo in cui stiamo continuando il drift...
             driftTime += Time.deltaTime;
 
-            Debug.Log("DriftTime = " + driftTime);
             //particle effects (sparks)
 
             //se siamo in drift da meno di tot secondi per il drift medio...
@@ -264,7 +266,7 @@ public class PlayerKartCtrl : MonoBehaviour
                     {
                         DriftPS.Play();
                         DriftPS2.Play();
-                        Debug.Log("Fatti partire PS di drift");
+
                     }
 
                 }
@@ -371,7 +373,7 @@ public class PlayerKartCtrl : MonoBehaviour
 
             //...e cambia la velocità attuale dandogli come velocità massima quella di boost
             currentSpeed = Mathf.Lerp(currentSpeed, boostSpeed, 1 * Time.deltaTime);
-
+            Debug.Log(currentSpeed);
         } //altrimenti, essendo finito il boost...
         else
         {
@@ -422,5 +424,9 @@ public class PlayerKartCtrl : MonoBehaviour
         }
 
     }
+    /// <summary>
+    /// Comunica all'intero script che si sta scivolando(si sta driftando). Questo metodo viene richiamato dall'Animator
+    /// </summary>
+    public void SetSliding() { isSliding = true; }
 
 }

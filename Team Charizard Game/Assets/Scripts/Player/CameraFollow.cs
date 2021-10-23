@@ -7,27 +7,36 @@ public class CameraFollow : MonoBehaviour
     public Vector3 offset;
     public Transform player;
 
+    [SerializeField]
+    private float camBoostOffsetY = 0,
+        camBoostOffsetZ = 0;
+
     private PlayerKartCtrl playerScript;
 
-    public Vector3 origCamPos;
-    public Vector3 boostCamPos;
+    private Vector3 originalCamPos;
+    private Vector3 boostCamPos;
 
     // Start is called before the first frame update
     void Start()
     {
         playerScript = player.GetComponent<PlayerKartCtrl>();
+
+        originalCamPos = transform.GetChild(0).localPosition;
+
+        boostCamPos = new Vector3(originalCamPos.x, originalCamPos.y + camBoostOffsetY, originalCamPos.z + camBoostOffsetZ);
+
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        transform.position = player.position + offset;
-        /*
+        //transform.position = player.position + offset;
+        
         if (!playerScript.GLIDER_FLY)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, new Quaternion(player.rotation.x, Mathf.Clamp(player.rotation.y, -2, 2),
                 player.rotation.z, player.rotation.w), 3 * Time.deltaTime); //normal
-            Debug.Log("SAS");
+
         }
         else
         {
@@ -40,8 +49,8 @@ public class CameraFollow : MonoBehaviour
         }
         else
         {
-            transform.GetChild(0).localPosition = Vector3.Lerp(transform.GetChild(0).localPosition, origCamPos, 3 * Time.deltaTime);
+            transform.GetChild(0).localPosition = Vector3.Lerp(transform.GetChild(0).localPosition, originalCamPos, 3 * Time.deltaTime);
         }
-        */
+        
     }
 }
