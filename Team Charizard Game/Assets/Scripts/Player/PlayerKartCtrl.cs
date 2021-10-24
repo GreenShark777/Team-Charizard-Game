@@ -23,9 +23,9 @@ public class PlayerKartCtrl : MonoBehaviour
     private Transform driftsPSContainer = default;
     //colori che i particellari di drift devono avere in base allo stadio del drift
     [SerializeField]
-    private Color weakDriftColor, //inizio drift
-        mediumDriftColor, //drift medio
-        finalDriftColor; //drift lungo
+    private Color weakDriftColor = default, //inizio drift
+        mediumDriftColor = default, //drift medio
+        finalDriftColor = default; //drift lungo
 
     //riferimento al particellare di boost dopo un drift
     [SerializeField]
