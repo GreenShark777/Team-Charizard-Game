@@ -1,7 +1,5 @@
 ﻿//Si occupa del movimento e controlli del giocatore e il suo kart
 //Ispirato dal video di Ishaan35:https://www.youtube.com/watch?v=q0cUClufuKE&t=16s
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerKartCtrl : MonoBehaviour
@@ -20,17 +18,14 @@ public class PlayerKartCtrl : MonoBehaviour
     private Transform childFrontSxTire,
         childFrontDxTire;
 
-    //riferimenti ai contenitori dei particellari di drift...
+    //riferimenti al contenitore dei particellari di drift
     [SerializeField]
-    private Transform leftDrift, //...sinistro...
-        rightDrift; //...e destro
-    //PROVARE A FARE CON UN SOLO RIFERIMENTO
-
+    private Transform driftsPSContainer = default;
     //colori che i particellari di drift devono avere in base allo stadio del drift
-     [SerializeField]
-    private Color drift1, //inizio drift
-        drift2, //drift medio
-        drift3; //drift lungo
+    [SerializeField]
+    private Color weakDriftColor, //inizio drift
+        mediumDriftColor, //drift medio
+        finalDriftColor; //drift lungo
 
     //riferimento al particellare di boost dopo un drift
     [SerializeField]
@@ -108,11 +103,17 @@ public class PlayerKartCtrl : MonoBehaviour
         driftFinalStageTimer = 7; //indica dopo quanto tempo dall'inizio del drift inizia l'ultimo stadio del boost
 
     [Header("Boost")]
-    //indica per quanto tempo ancora il giocatore deve rimanere in boost
-    public float BoostTime;
     //indica in quanto tempo il kart raggiunge la velocità massima di boost
     [SerializeField]
     private float boostAcceleration = 1;
+    //indicano le durate di boost...
+    [SerializeField]
+    private float weakBoostTime = 0.75f, //...quando si sta poco tempo in drift...
+        mediumBoostTime = 1.5f, //...quando si sta abbastanza in drift...
+        finalBoostTime = 2.5f; //...e quando si sta molto in drift
+
+    //indica per quanto tempo ancora il giocatore deve rimanere in boost
+    private float boostTime;
 
     //VARIABILI DI STERZAMENTO DELLE RUOTE
     [Header("Tire Steer")]
@@ -133,9 +134,6 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica la rotazione Y iniziale delle ruote
     private float startWheelsYRotation;
 
-    //indica se il giocatore sta volando in glide
-    //public bool GLIDER_FLY;
-
 
     private void Awake()
     {
@@ -153,7 +151,7 @@ public class PlayerKartCtrl : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         //controlla se il giocatore preme un bottone per muovere il kart
         KartMovement();
@@ -190,23 +188,24 @@ public class PlayerKartCtrl : MonoBehaviour
         kartRb.velocity = newVel;
 
     }
-
+    /// <summary>
+    /// Controlla se si sta sterzando e, se si sta sterzando, ruota il kart e cambia la direzione in cui il giocatore deve andare
+    /// </summary>
     private void Steer()
     {
         //ottiene la direzione in cui il giocatore sta sterzando, che potrà solo essere uno di questi 3 numeri: -1, 0, 1
         steerDirection = Input.GetAxisRaw("Horizontal");
-
-        //Vector3 steerDirVect; //this is used for the final rotation of the kart for steering
-
-        //float steerAmount;
-
+        //indica la nuova rotazione da dare al kart
+        Quaternion newKartRotation;
+        //indica la rotazione attuale del kart prima dell'aggiornamento di rotazione
+        Quaternion actualKartRotation = kart.localRotation;
         //se si sta driftando verso sinistra, e non destra...
         if (driftLeft && !driftRight)
         {
             //...ricalcola la direzione verso cui si sta sterzando, dando più rotazione se va sta sterzando a sinistra o meno se sta sterzando a destra...
             steerDirection = Input.GetAxis("Horizontal") < 0 ? -maxSteerInDrift : -minSteerInDrift;
             //...ruota il kart nell'asse Y fino ad arrivare al valore massimo impostato per il drift sinistro
-            kart.localRotation = Quaternion.Lerp(kart.localRotation, Quaternion.Euler(0, -maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
+            newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, -maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
 
             //...se si sta scivolando e si sta toccando terra, al kart viene aggiunta una forza acceleratrice verso la parte opposta(forza centrifuga)
             if (isSliding && touchingGround)
@@ -219,19 +218,15 @@ public class PlayerKartCtrl : MonoBehaviour
             //...ricalcola la direzione verso cui si sta sterzando, dando più rotazione se va sta sterzando a destra o meno se sta sterzando a sinistra...
             steerDirection = Input.GetAxis("Horizontal") > 0 ? maxSteerInDrift : minSteerInDrift;
             //...ruota il kart nell'asse Y fino ad arrivare al valore massimo impostato per il drift destro
-            kart.localRotation = Quaternion.Lerp(kart.localRotation, Quaternion.Euler(0, maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
-
+            newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
             //...se si sta scivolando e si sta toccando terra, al kart viene aggiunta una forza acceleratrice verso la parte opposta(forza centrifuga)
             if (isSliding && touchingGround)
                 kartRb.AddForce(transform.right * -outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
+
         } //altrimenti non si sta driftando verso nessun lato, quindi ripotra il kart alla rotazione iniziale
-        else
-        {
-            kart.localRotation = Quaternion.Lerp(kart.localRotation, Quaternion.Euler(0, 0f, 0), maxDriftSteer * Time.deltaTime);
-        }
-
-        //since handling is supposed to be stronger when car is moving slower, we adjust steerAmount depending on the real speed of the kart, and then rotate the kart on its y axis with steerAmount
-
+        else { newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, 0f, 0), maxDriftSteer * Time.deltaTime); }
+        //dopo tutti i controlli e calcoli, aggiorna la rotazione del kart
+        kart.localRotation = newKartRotation;
         //calcola quanto si può sterzare in base alla velocità a cui il giocatore sta andando(maggiore la velocità, maggiore la resistenza allo sterzamento)
         float steerAmount = (realSpeed > steerResistSpeed) ? realSpeed / maxResist * steerDirection 
                                                            : realSpeed / minResist * steerDirection;
@@ -241,7 +236,9 @@ public class PlayerKartCtrl : MonoBehaviour
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, steerDirVect, steerSpeed * Time.deltaTime);
 
     }
-
+    /// <summary>
+    /// Controlla se il giocatore sta toccando per terra e, se lo è, ruota il suo kart in base alla pendenza del terreno
+    /// </summary>
     private void GroundNormalRotation()
     {
         //crea un RayCast
@@ -258,16 +255,16 @@ public class PlayerKartCtrl : MonoBehaviour
         else { touchingGround = false; }
 
     }
-
+    /// <summary>
+    /// Controlla se il giocatore sta driftando e, se lo è, si occupa della sua fisica in questo stato
+    /// </summary>
     private void Drift()
     {
         //se si preme il tasto di drift mentre si è per terra...
         if (Input.GetKeyDown(KeyCode.V) && touchingGround)
         {
-
             //...fa partire l'animazione di inizio drift...
             kartAnim.SetTrigger("Hop");
-
             //controlla se si sta sterzando verso destra...
             if (steerDirection > 0)
             {
@@ -279,75 +276,34 @@ public class PlayerKartCtrl : MonoBehaviour
                 driftRight = false;
                 driftLeft = true;
             }
+
         }
         //se si sta continuando a tenere premuto il tasto, siamo per terra, la nostra velocità non è sotto il minimo e si sta ancora sterzando...
         if (Input.GetKey(KeyCode.V) && touchingGround && currentSpeed > minSpeedForDrift && Input.GetAxis("Horizontal") != 0)
         {
             //...aumenta il tempo in cui stiamo continuando il drift...
             driftTime += Time.deltaTime;
-
-            //particle effects (sparks)
-
-            //se siamo in drift da meno di tot secondi per il drift medio...
-            if (driftTime >= driftFirstStageTimer && driftTime < driftSecondStageTimer)
+            //...crea una variabile che indica il colore che il particellare di drift deve avere...
+            Color newPSColor = Color.gray;
+            //se siamo in drift da meno di tot secondi per il drift medio, il colore di drift cambia al colore di drift debole
+            if (driftTime >= driftFirstStageTimer && driftTime < driftSecondStageTimer) { newPSColor = weakDriftColor; }
+            //se siamo in drift da più di tot secondi per il drift iniziale ma non abbastanza da essere al boost finale, il colore di drift cambia al colore di drift medio
+            if (driftTime >= driftSecondStageTimer && driftTime < driftFinalStageTimer) { newPSColor = mediumDriftColor; }
+            //se siamo in drift da abbastanza tempo, il colore di drift cambia al colore di drift finale
+            if (driftTime >= driftFinalStageTimer) { newPSColor = finalDriftColor; }
+            //...dopo tutti i controlli...
+            for (int i = 0; i < driftsPSContainer.childCount; i++)
             {
-                //...cambia il colore degli effetti particellari di drift al colore 1(quello di inizio)...
-                for (int i = 0; i < leftDrift.childCount; i++)
-                {
-                    ParticleSystem DriftPS = rightDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>(); //right wheel particles
-                    ParticleSystem.MainModule PSMAIN = DriftPS.main;
-
-                    ParticleSystem DriftPS2 = leftDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>(); //left wheel particles
-                    ParticleSystem.MainModule PSMAIN2 = DriftPS2.main;
-
-                    PSMAIN.startColor = drift1;
-                    PSMAIN2.startColor = drift1;
-
-                    //...e, se non sono partiti, fa partire gli effetti particellari di drift
-                    if (!DriftPS.isPlaying && !DriftPS2.isPlaying)
-                    {
-                        DriftPS.Play();
-                        DriftPS2.Play();
-
-                    }
-
-                }
-            }
-            //altrimenti, se siamo in drift da più di tot secondi per il drift iniziale ma non abbastanza da essere al boost finale...
-            if (driftTime >= driftSecondStageTimer && driftTime < driftFinalStageTimer)
-            {
-                //drift color particles
-
-                //...cambia il colore degli effetti particellari di drift al colore 2(quello di mezzo)...
-                for (int i = 0; i < leftDrift.childCount; i++)
-                {
-                    ParticleSystem DriftPS = rightDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>();
-                    ParticleSystem.MainModule PSMAIN = DriftPS.main;
-                    ParticleSystem DriftPS2 = leftDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>();
-                    ParticleSystem.MainModule PSMAIN2 = DriftPS2.main;
-                    PSMAIN.startColor = drift2;
-                    PSMAIN2.startColor = drift2;
-
-
-                }
+                //...ottiene il riferimento al particellare di drift del figlio ciclato nel contenitore di particellari...
+                ParticleSystem driftPS = driftsPSContainer.GetChild(i).GetComponent<ParticleSystem>();
+                ParticleSystem.MainModule PSMAIN = driftPS.main;
+                //...cambia il colore degli effetti particellari di drift al colore ottenuto...
+                PSMAIN.startColor = newPSColor;
+                //...e, se non è partito, fa partire gli effetti particellari di drift
+                if (!driftPS.isPlaying) { driftPS.Play(); }
 
             }
-            //altrimenti siamo in drift da abbastanza per poter...
-            if (driftTime >= driftFinalStageTimer)
-            {
-                //...cambiare il colore degli effetti particellari di drift al colore 3(quello finale)...
-                for (int i = 0; i < leftDrift.childCount; i++)
-                {
 
-                    ParticleSystem DriftPS = rightDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>();
-                    ParticleSystem.MainModule PSMAIN = DriftPS.main;
-                    ParticleSystem DriftPS2 = leftDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>();
-                    ParticleSystem.MainModule PSMAIN2 = DriftPS2.main;
-                    PSMAIN.startColor = drift3;
-                    PSMAIN2.startColor = drift3;
-
-                }
-            }
         }
         //se non si sta più premendo il tasto di drift o siamo sotto la soglia minima di velocità per continuare il boost...
         if (!Input.GetKey(KeyCode.V) || realSpeed < minSpeedForDrift)
@@ -357,65 +313,48 @@ public class PlayerKartCtrl : MonoBehaviour
             driftRight = false;
             isSliding = false;
 
-
             //...da il boost in base a quanto tempo siamo stati in drift...
             if (driftTime > driftFirstStageTimer && driftTime < driftSecondStageTimer)
-            {
-                BoostTime = 0.75f; //boost debole
-            }
+            {  boostTime = weakBoostTime; } //boost debole
             if (driftTime >= driftSecondStageTimer && driftTime < driftFinalStageTimer)
-            {
-                BoostTime = 1.5f; //boost medio
-
-            }
+            { boostTime = mediumBoostTime; } //boost medio
             if (driftTime >= driftFinalStageTimer)
-            {
-                BoostTime = 2.5f; //boost finale
-
-            }
+            { boostTime = finalBoostTime; } //boost forte
 
             //...riporta a 0 il tempo in cui siamo stati in drift...
             driftTime = 0;
             //...e spegne tutti i particellari di drift
-            for (int i = 0; i < rightDrift.transform.childCount; i++)
+            for (int i = 0; i < driftsPSContainer.transform.childCount; i++)
             {
-                ParticleSystem DriftPS = rightDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>(); //right wheel particles
-                ParticleSystem.MainModule PSMAIN = DriftPS.main;
 
-                ParticleSystem DriftPS2 = leftDrift.transform.GetChild(i).gameObject.GetComponent<ParticleSystem>(); //left wheel particles
-                ParticleSystem.MainModule PSMAIN2 = DriftPS2.main;
-
-                
+                ParticleSystem DriftPS = driftsPSContainer.GetChild(i).GetComponent<ParticleSystem>();
                 DriftPS.Stop();
-                DriftPS2.Stop();
-                
+
             }
+
         }
 
     }
-
+    /// <summary>
+    /// Controlla se il giocatore deve essere in boost e, se lo è, cambia la velocità massima a cui può andare a quella di boost
+    /// </summary>
     private void Boost()
     {
         //continua a diminuire il tempo di boost
-        BoostTime -= Time.deltaTime;
+        boostTime -= Time.deltaTime;
         //se il tempo di boost non è ancora a 0 o meno...
-        if (BoostTime > 0)
+        if (boostTime > 0)
         {
             //...attiva i particellari di boost, nel caso non lo siano già
             for (int i = 0; i < boostPS.childCount; i++)
             {
-                if (!boostPS.GetChild(i).GetComponent<ParticleSystem>().isPlaying)
-                {
-                    boostPS.GetChild(i).GetComponent<ParticleSystem>().Play();
-                }
+
+                if (!boostPS.GetChild(i).GetComponent<ParticleSystem>().isPlaying) { boostPS.GetChild(i).GetComponent<ParticleSystem>().Play(); }
 
             }
-            
-            //maxSpeed = boostSpeed;
-
             //...e cambia la velocità attuale dandogli come velocità massima quella di boost
             currentSpeed = Mathf.Lerp(currentSpeed, boostSpeed, boostAcceleration * Time.deltaTime);
-            Debug.Log(currentSpeed);
+            //Debug.Log(currentSpeed);
         } //altrimenti, essendo finito il boost...
         else
         {
@@ -424,45 +363,49 @@ public class PlayerKartCtrl : MonoBehaviour
             {
                 if(boostPS.GetChild(i).GetComponent<ParticleSystem>().isPlaying) boostPS.GetChild(i).GetComponent<ParticleSystem>().Stop();
             }
-            //maxSpeed = boostSpeed - 20;
+
         }
 
     }
-
+    /// <summary>
+    /// Si occupa di ruotare le ruote del kart del giocatore
+    /// </summary>
     private void TireSteer()
     {
+        //crea un vettore che indicherà la rotazione che le ruote frontali dovranno avere
+        Vector3 newTireRotation = frontLeftTire.localEulerAngles;
         //se si preme la freccia sinistra per andare a sinistra, le ruote frontali ruoteranno verso sinistra
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxLeftSteer, 0), tireSteerSpeed * Time.deltaTime);
-            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxLeftSteer, 0), tireSteerSpeed * Time.deltaTime);
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxRightSteer, 0), tireSteerSpeed * Time.deltaTime);
-            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, maxRightSteer, 0), tireSteerSpeed * Time.deltaTime);
-        }
-        else
-        {
-            frontLeftTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, startWheelsYRotation, 0), tireSteerSpeed * Time.deltaTime);
-            frontRightTire.localEulerAngles = Vector3.Lerp(frontLeftTire.localEulerAngles, new Vector3(0, startWheelsYRotation, 0), tireSteerSpeed * Time.deltaTime);
-        }
+        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        { newTireRotation = Vector3.Lerp(newTireRotation, new Vector3(0, maxLeftSteer, 0), tireSteerSpeed * Time.deltaTime); }
+        //se si preme la freccia destra per andare a destra, le ruote frontali ruoteranno verso destra
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        { newTireRotation = Vector3.Lerp(newTireRotation, new Vector3(0, maxRightSteer, 0), tireSteerSpeed * Time.deltaTime); }
+        //se non si sta premendo nessun tasto direzionale, quindi riporta le ruote alla rotazione originale
+        if(newTireRotation == frontLeftTire.localEulerAngles)
+        { newTireRotation = Vector3.Lerp(newTireRotation, new Vector3(0, startWheelsYRotation, 0), tireSteerSpeed * Time.deltaTime); }
+        //dopo tutti i calcoli e controlli, assegna la nuova rotazione alle ruote frontali
+        frontLeftTire.localEulerAngles = newTireRotation;
+        frontRightTire.localEulerAngles = newTireRotation;
+        //Debug.Log(frontLeftTire.localEulerAngles + " : " + newTireRotation);
 
         //tire spinning
 
+        //se si supera la velocità minima per far ruotare le ruote, le fa ruotare in base alla velocità corrente
         if (currentSpeed > minSpeedForSpinning)
         {
             childFrontSxTire.Rotate(0, 90 * Time.deltaTime * currentSpeed * spinSpeed, 0);
             childFrontDxTire.Rotate(0, 90 * Time.deltaTime * currentSpeed * spinSpeed, 0);
             backLeftTire.Rotate(-90 * Time.deltaTime * currentSpeed * spinSpeed, 0, 0);
             backRightTire.Rotate(-90 * Time.deltaTime * currentSpeed * spinSpeed, 0, 0);
-        }
+
+        } //altrimenti, ruoteranno a velocità reale
         else
         {
             childFrontSxTire.Rotate(0, 90 * Time.deltaTime * realSpeed * spinSpeed, 0);
             childFrontDxTire.Rotate(0, 90 * Time.deltaTime * realSpeed * spinSpeed, 0);
             backLeftTire.Rotate(-90 * Time.deltaTime * realSpeed * spinSpeed, 0 , 0);
             backRightTire.Rotate(-90 * Time.deltaTime * realSpeed * spinSpeed, 0, 0);
+
         }
 
     }
@@ -470,5 +413,18 @@ public class PlayerKartCtrl : MonoBehaviour
     /// Comunica all'intero script che si sta scivolando(si sta driftando). Questo metodo viene richiamato dall'Animator
     /// </summary>
     public void SetSliding() { isSliding = true; }
+    /// <summary>
+    /// Permette di impostare il tempo di boost
+    /// </summary>
+    /// <returns></returns>
+    public float GetBoostTime() { return boostTime; }
+
+    private void OnDrawGizmos()
+    {
+        //mostra fin dove arriva il RayCast per il controllo che si sta toccando a terra
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundDistance, transform.position.z));
+
+    }
 
 }

@@ -390,6 +390,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1055867612}
+  - {fileID: 770606623}
   - {fileID: 2133235763}
   - {fileID: 1715180566}
   - {fileID: 952650358}
@@ -430,11 +431,10 @@ MonoBehaviour:
   frontLeftTire: {fileID: 1459228570}
   backRightTire: {fileID: 674168772}
   backLeftTire: {fileID: 1937573049}
-  leftDrift: {fileID: 2133235763}
-  rightDrift: {fileID: 1715180566}
-  drift1: {r: 0, g: 0.6226415, b: 0.450747, a: 1}
-  drift2: {r: 0, g: 0.77201605, b: 1, a: 1}
-  drift3: {r: 0.51418114, g: 0, b: 1, a: 1}
+  driftsPSContainer: {fileID: 770606623}
+  weakDriftColor: {r: 0, g: 1, b: 0.48915553, a: 1}
+  mediumDriftColor: {r: 0, g: 0.5021448, b: 1, a: 1}
+  finalDriftColor: {r: 1, g: 0, b: 1, a: 1}
   boostPS: {fileID: 952650358}
   acceleration: 0.5
   maxSpeed: 50
@@ -442,14 +442,28 @@ MonoBehaviour:
   boostSpeed: 80
   deceleration: 1
   steerSpeed: 3
+  maxSteerInDrift: 1.5
+  minSteerInDrift: 0.5
+  maxDriftSteer: 20
+  driftSteerSpeed: 8
+  steerResistSpeed: 30
+  maxResist: 4
+  minResist: 1.5
+  groundDistance: 3
   outwardsDriftForce: 0
+  minSpeedForDrift: 10
+  driftFirstStageTimer: 1.5
+  driftSecondStageTimer: 4
+  driftFinalStageTimer: 7
+  boostAcceleration: 1
+  weakBoostTime: 0.75
+  mediumBoostTime: 1.5
+  finalBoostTime: 2.5
   tireSteerSpeed: 5
   spinSpeed: 0.5
   minSpeedForSpinning: 30
   maxRightSteer: 205
   maxLeftSteer: 155
-  GLIDER_FLY: 0
-  BoostTime: 0
 --- !u!95 &332253720
 Animator:
   serializedVersion: 3
@@ -494,12 +508,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 342582948}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -0.80999756, y: -0.56, z: -2.4299316}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1715180566}
-  m_RootOrder: 0
+  m_Father: {fileID: 770606623}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!199 &342582950
 ParticleSystemRenderer:
@@ -10338,6 +10352,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 80.731, y: -89.491005, z: -65.611}
+--- !u!1 &770606622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 770606623}
+  m_Layer: 0
+  m_Name: DriftPSContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &770606623
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 770606622}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1552009776}
+  - {fileID: 342582949}
+  m_Father: {fileID: 332253717}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &861503148
 GameObject:
   m_ObjectHideFlags: 0
@@ -10713,7 +10759,7 @@ Transform:
   - {fileID: 1596542468}
   - {fileID: 502681839}
   m_Father: {fileID: 332253717}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -11200,7 +11246,7 @@ Transform:
   m_Children:
   - {fileID: 963194228}
   m_Father: {fileID: 332253717}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1459228569
 GameObject:
@@ -11338,10 +11384,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1552009775}
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.5299988, y: -0.56, z: -2.4299316}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2133235763}
+  m_Father: {fileID: 770606623}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!199 &1552009777
@@ -21027,7 +21073,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 332253717}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &1678622076
 SphereCollider:
@@ -21068,10 +21114,9 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.80999756, y: -0.56, z: -2.4299316}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 342582949}
+  m_Children: []
   m_Father: {fileID: 332253717}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1772903353
 GameObject:
@@ -21142,7 +21187,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "RICORDARE: \xE8 stata cambiata la gravit\xE0 a -25. Nel caso si cada sotto
+  m_Text: "RICORDARE: \xE8 stata cambiata la gravit\xE0 a -30. Nel caso si cada sotto
     terra, diminuirla"
 --- !u!222 &1772903356
 CanvasRenderer:
@@ -21319,8 +21364,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.5299988, y: -0.56, z: -2.4299316}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1552009776}
+  m_Children: []
   m_Father: {fileID: 332253717}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

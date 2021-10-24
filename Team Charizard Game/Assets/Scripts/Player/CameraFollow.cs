@@ -61,11 +61,12 @@ public class CameraFollow : MonoBehaviour
         */
 
         //se il giocatore è in boost, la posizione della telecamera cambia in base alla posizione in boost calcolata
-        if (playerScript.BoostTime > 0)
+        if (playerScript.GetBoostTime() > 0)
         { cam.localPosition = Vector3.Lerp(cam.localPosition, boostCamPos, camSpeed * Time.deltaTime); }
         //altrimenti, la telecamera resterà nella posizione originale
         else
         { cam.localPosition = Vector3.Lerp(cam.localPosition, originalCamPos, camSpeed * Time.deltaTime); }
         
     }
+
 }
