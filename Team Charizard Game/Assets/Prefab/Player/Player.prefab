@@ -32,6 +32,7 @@ Transform:
   - {fileID: 6567946006128705177}
   - {fileID: 6567946007020881380}
   - {fileID: 6567946007723071045}
+  - {fileID: 6567946006057404226}
   m_Father: {fileID: 6567946006491302728}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -148,7 +149,7 @@ Transform:
   - {fileID: 6567946007353003865}
   - {fileID: 6567946006324285874}
   m_Father: {fileID: 6567946006491302728}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6567946005910218550
 GameObject:
@@ -332,14 +333,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6567946006057404227}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6567946007409068909}
   - {fileID: 6567946006468143096}
-  m_Father: {fileID: 6567946006491302728}
-  m_RootOrder: 1
+  m_Father: {fileID: 6567946005772141441}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6567946006128705182
 GameObject:
@@ -10149,7 +10150,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6567946005772141441}
-  - {fileID: 6567946006057404226}
   - {fileID: 6567946005870381867}
   - {fileID: 6567946007267277862}
   - {fileID: 6567946007550145889}
@@ -10206,7 +10206,7 @@ MonoBehaviour:
   steerResistSpeed: 30
   maxResist: 4
   minResist: 1.5
-  groundDistance: 3
+  groundDistance: 1.7
   onAirTimerForBoost: 1.5
   highLandBoostTime: 1.25
   outwardsDriftForce: 0
@@ -10223,6 +10223,7 @@ MonoBehaviour:
   minSpeedForSpinning: 30
   maxRightSteer: 205
   maxLeftSteer: 155
+  jumpForce: 20
 --- !u!95 &6567946006491302725
 Animator:
   serializedVersion: 3
@@ -10491,7 +10492,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6567946006491302728}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &6567946007267277857
 SphereCollider:
@@ -20154,7 +20155,7 @@ Transform:
   m_Children:
   - {fileID: 6567946005847272489}
   m_Father: {fileID: 6567946006491302728}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6567946007550145894
 MonoBehaviour:
