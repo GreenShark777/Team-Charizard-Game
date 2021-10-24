@@ -85,6 +85,14 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica quanto distante deve essere il terreno per indicare che si sta toccando per terra
     [SerializeField]
     private float groundDistance = 0.75f;
+    //indica per quanto tempo deve rimanere in aria il giocatore per ricevere un boost
+    [SerializeField]
+    private float onAirTimerForBoost = 2;
+    //timer che indica per quanto tempo il giocatore è rimasto in aria
+    private float notOnGroundTimer;
+    //indica per quanto tempo il kart deve rimanere in boost dopo essere atterrato da un luogo alto
+    [SerializeField]
+    private float highLandBoostTime = 1.25f;
     //indica che si sta toccando per terra
     private bool touchingGround;
 
@@ -134,6 +142,14 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica la rotazione Y iniziale delle ruote
     private float startWheelsYRotation;
 
+    //VARIABILI PER IL SALTO
+    [Header("Jump")]
+    //indica quanto in alto salterà il giocatore
+    [SerializeField]
+    private float jumpForce = 20;
+    //indica se il giocatore ha già effettuato un salto o meno
+    private bool jumped = false;
+
 
     private void Awake()
     {
@@ -158,13 +174,15 @@ public class PlayerKartCtrl : MonoBehaviour
         //controlla la direzione verso cui deve andare il kart in base agli Input del giocatore
         Steer();
         //controlla la rotazione che il kart deve avere in base all'inclinazione del terreno(controlla anche se si sta toccando terra o meno)
-        GroundNormalRotation();
+        GroundCheck();
         //controlla se il giocatore sta tenendo premuto il tasto di drift e cambia il suo movimento di conseguenza
         Drift();
         //controlla se 
         Boost();
         //controlla la direzione verso cui devono ruotare le ruote del kart
         TireSteer();
+        //controlla se il giocatore vuole saltare e, se preme il tasto, si occupa del salto
+        Jump();
 
     }
     /// <summary>
@@ -174,10 +192,12 @@ public class PlayerKartCtrl : MonoBehaviour
     {
         //ottiene la velocità reale in cui il kart si sta muovendo
         realSpeed = transform.InverseTransformDirection(kartRb.velocity).z;
+        //ottiene il movimento che il giocatore intende fare(1 : destra, 0 : niente, -1 : sinistra)
+        float movementDir = Input.GetAxisRaw("Vertical");
         //se il giocatore preme il tasto d'accelerazione, la sua velocità aumenterà per tutto il tempo fino ad arrivare alla velocità massima
-        if (Input.GetKey(KeyCode.W)) { currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed, Time.deltaTime * acceleration); }
+        if (movementDir > 0) { currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed, Time.deltaTime * acceleration); }
         //se il giocatore preme il tasto di decelerazione, la sua velocità diminuirà fino ad arrivare alla velocità massima in retromarcia
-        else if (Input.GetKey(KeyCode.S)) { currentSpeed = Mathf.Lerp(currentSpeed, maxBackwardsSpeed, Time.deltaTime); }
+        else if (movementDir < 0) { currentSpeed = Mathf.Lerp(currentSpeed, maxBackwardsSpeed, Time.deltaTime); }
         //altrimenti, se non sta premendo nessuno dei 2 tasti, continua a decelerare fino a fermarsi
         else { currentSpeed = Mathf.Lerp(currentSpeed, 0, Time.deltaTime * deceleration); }
         //crea un vettore per calcolare la velocità che il kart dovrà avere
@@ -206,7 +226,6 @@ public class PlayerKartCtrl : MonoBehaviour
             steerDirection = Input.GetAxis("Horizontal") < 0 ? -maxSteerInDrift : -minSteerInDrift;
             //...ruota il kart nell'asse Y fino ad arrivare al valore massimo impostato per il drift sinistro
             newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, -maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
-
             //...se si sta scivolando e si sta toccando terra, al kart viene aggiunta una forza acceleratrice verso la parte opposta(forza centrifuga)
             if (isSliding && touchingGround)
                 kartRb.AddForce(transform.right * outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
@@ -239,7 +258,7 @@ public class PlayerKartCtrl : MonoBehaviour
     /// <summary>
     /// Controlla se il giocatore sta toccando per terra e, se lo è, ruota il suo kart in base alla pendenza del terreno
     /// </summary>
-    private void GroundNormalRotation()
+    private void GroundCheck()
     {
         //crea un RayCast
         RaycastHit hit;
@@ -248,11 +267,25 @@ public class PlayerKartCtrl : MonoBehaviour
         {
             //...ruota il kart in base alla pendenza dell'oggetto su cui si è...
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * transform.rotation, 7.5f * Time.deltaTime);
-            //...e comunica che si sta toccando terra
+            //se si è rimasti in aria per abbastanza tempo, il giocatore riceve un boost...
+            if (notOnGroundTimer >= onAirTimerForBoost) { boostTime = highLandBoostTime; }
+            //Debug.Log(notOnGroundTimer);
+            //...viene resettato il timer di caduta...
+            notOnGroundTimer = 0;
+            //...se non si stava toccando terra, comunica che si può nuovamente saltare...
+            if (!touchingGround) { jumped = false; }
+            //...e, comunica che si sta toccando terra
             touchingGround = true;
 
-        } //altrimenti, comunica che non si sta toccando terra
-        else { touchingGround = false; }
+        } //altrimenti...
+        else
+        {
+            //...comunica che non si sta toccando terra...
+            touchingGround = false;
+            //...e aumenta il tempo in cui si sta rimanendo in aria
+            notOnGroundTimer += Time.deltaTime;
+        
+        }
 
     }
     /// <summary>
@@ -261,7 +294,7 @@ public class PlayerKartCtrl : MonoBehaviour
     private void Drift()
     {
         //se si preme il tasto di drift mentre si è per terra...
-        if (Input.GetKeyDown(KeyCode.V) && touchingGround)
+        if (Input.GetButtonDown("Drift") && touchingGround)
         {
             //...fa partire l'animazione di inizio drift...
             kartAnim.SetTrigger("Hop");
@@ -277,9 +310,21 @@ public class PlayerKartCtrl : MonoBehaviour
                 driftLeft = true;
             }
 
+        } //altrimenti, se non si è a terra...
+        else if (!touchingGround)
+        {
+            //...vengono fermati tutti i particellari di drift
+            for (int i = 0; i < driftsPSContainer.transform.childCount; i++)
+            {
+
+                ParticleSystem DriftPS = driftsPSContainer.GetChild(i).GetComponent<ParticleSystem>();
+                DriftPS.Stop();
+
+            }
+
         }
         //se si sta continuando a tenere premuto il tasto, siamo per terra, la nostra velocità non è sotto il minimo e si sta ancora sterzando...
-        if (Input.GetKey(KeyCode.V) && touchingGround && currentSpeed > minSpeedForDrift && Input.GetAxis("Horizontal") != 0)
+        if (Input.GetButton("Drift") && touchingGround && currentSpeed > minSpeedForDrift && Input.GetAxis("Horizontal") != 0)
         {
             //...aumenta il tempo in cui stiamo continuando il drift...
             driftTime += Time.deltaTime;
@@ -306,7 +351,7 @@ public class PlayerKartCtrl : MonoBehaviour
 
         }
         //se non si sta più premendo il tasto di drift o siamo sotto la soglia minima di velocità per continuare il boost...
-        if (!Input.GetKey(KeyCode.V) || realSpeed < minSpeedForDrift)
+        if (!Input.GetButton("Drift") || realSpeed < minSpeedForDrift)
         {
             //comunica che non si sta più driftando...
             driftLeft = false;
@@ -375,13 +420,13 @@ public class PlayerKartCtrl : MonoBehaviour
         //crea un vettore che indicherà la rotazione che le ruote frontali dovranno avere
         Vector3 newTireRotation = frontLeftTire.localEulerAngles;
         //se si preme la freccia sinistra per andare a sinistra, le ruote frontali ruoteranno verso sinistra
-        if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        if (steerDirection < 0)
         { newTireRotation = Vector3.Lerp(newTireRotation, new Vector3(0, maxLeftSteer, 0), tireSteerSpeed * Time.deltaTime); }
         //se si preme la freccia destra per andare a destra, le ruote frontali ruoteranno verso destra
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        else if (steerDirection > 0)
         { newTireRotation = Vector3.Lerp(newTireRotation, new Vector3(0, maxRightSteer, 0), tireSteerSpeed * Time.deltaTime); }
         //se non si sta premendo nessun tasto direzionale, quindi riporta le ruote alla rotazione originale
-        if(newTireRotation == frontLeftTire.localEulerAngles)
+        else
         { newTireRotation = Vector3.Lerp(newTireRotation, new Vector3(0, startWheelsYRotation, 0), tireSteerSpeed * Time.deltaTime); }
         //dopo tutti i calcoli e controlli, assegna la nuova rotazione alle ruote frontali
         frontLeftTire.localEulerAngles = newTireRotation;
@@ -405,6 +450,24 @@ public class PlayerKartCtrl : MonoBehaviour
             childFrontDxTire.Rotate(0, 90 * Time.deltaTime * realSpeed * spinSpeed, 0);
             backLeftTire.Rotate(-90 * Time.deltaTime * realSpeed * spinSpeed, 0 , 0);
             backRightTire.Rotate(-90 * Time.deltaTime * realSpeed * spinSpeed, 0, 0);
+
+        }
+
+    }
+    /// <summary>
+    /// Fa saltare il giocatore, se preme il tasto di salto
+    /// </summary>
+    public void Jump()
+    {
+        //se viene premuto il tasto di salto...
+        if (Input.GetButtonDown("Jump") && touchingGround && !jumped)
+        {
+            //...rimuove ogni forza che agisce sul kart...
+            kartRb.velocity = Vector3.zero;
+            //...il giocatore salterà un po' in aria...
+            kartRb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            //...e verrà comunicato che è stato effettuato un salto
+            jumped = true;
 
         }
 
