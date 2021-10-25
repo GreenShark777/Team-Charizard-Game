@@ -292,6 +292,11 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9113049771373371397, guid: 32af6c707f078d54c9474ba65654c675,
+        type: 3}
+      propertyPath: InitialModule.startColor.minMaxState
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 32af6c707f078d54c9474ba65654c675, type: 3}
 --- !u!1 &50896032
@@ -5082,6 +5087,11 @@ PrefabInstance:
     - target: {fileID: 9113049771373371397, guid: 32af6c707f078d54c9474ba65654c675,
         type: 3}
       propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9113049771373371397, guid: 32af6c707f078d54c9474ba65654c675,
+        type: 3}
+      propertyPath: InitialModule.startColor.minMaxState
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

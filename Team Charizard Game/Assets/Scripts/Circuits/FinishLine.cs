@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Si occupa di ciò che succede quando il giocatore attraversa la linea di fine
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,10 +12,12 @@ public class FinishLine : MonoBehaviour
     [SerializeField]
     private Text lapText = default;
     //indica a che giro è arrivato il giocatore
-    private int currentLap = 0;
+    private int currentLap = 1;
     //indica qual'è il massimo numero di giri da fare per vincere
     [SerializeField]
     private int maxLapCount = 3;
+    //indica se il giocatore ha provato ad andare nella linea di fine senza aver prima l'intero giro del circuito
+    private bool triedToCheat = false;
 
 
     private void Awake()
@@ -43,7 +44,7 @@ public class FinishLine : MonoBehaviour
             //...aumenta il numero di giri finiti dal giocatore...
             currentLap++;
             //...se non era l'ultimo giro...
-            if (currentLap != maxLapCount)
+            if (currentLap - 1 != maxLapCount)
             {
                 //...riporta il checkpoint corrente al valore iniziale...
                 currentCheckpoint = -1;
@@ -58,7 +59,12 @@ public class FinishLine : MonoBehaviour
             }
             
         }
-        else { Debug.Log("Non hai finito il giro -> " + currentCheckpoint + " : " + lastCheckpointID); }
+        else //altrimenti vorrà dire che il giocatore ha provato a finire il percorso senza finire l'intero circuito
+        {
+
+            triedToCheat = true;
+            Debug.Log("Non hai finito il giro -> " + currentCheckpoint + " : " + lastCheckpointID);
+        }
 
     }
 
@@ -71,16 +77,22 @@ public class FinishLine : MonoBehaviour
 
     public void UpdateCurrentPlayerCheckpoint(int newID)
     {
-        //se il nuovo ID è maggiore di quello corrente, o il checkpoint preso è una scorciatoia...
-        if (newID > currentCheckpoint)
+        //se il nuovo ID è maggiore di quello corrente, o è il primo checkpoint...
+        if (newID > currentCheckpoint || newID == 0)
         {
-            //...se l'ID del checkpoint passato è quello immediatamente successivo all'ultimo che era stato passato, aggiorna il valore del checkpoint corrente
-            bool canChangeID = newID != lastCheckpointID || newID == currentCheckpoint + 1;
-            if (canChangeID) { currentCheckpoint = newID; }
-            Debug.Log("Can Change ID: " + canChangeID);
+            //...se l'ID del checkpoint passato è quello immediatamente successivo all'ultimo che era stato passato...
+            bool canChangeID = (newID != lastCheckpointID || newID == currentCheckpoint + 1);
+            if (canChangeID)
+            {
+                //...aggiorna il valore del checkpoint corrente, se non aveva provato il giocatore a barare o se questo è il primo checkpoint
+                if (!triedToCheat || newID == 0) { currentCheckpoint = newID; triedToCheat = false; }
+                Debug.Log("CAMBIATO CURRENT CHECKPOINT: " + currentCheckpoint);
+            }
+            Debug.LogError("Can Change ID: " + canChangeID);
         } //altrimenti, il giocatore sta andando al contrario, quindi...
         else
         {
+            //...fa spuntare il giudice rosso che gli comunica l'errore che sta facendo
 
             Debug.LogError("Stai andando al contrario!");
         }
