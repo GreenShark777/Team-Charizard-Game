@@ -98,5 +98,10 @@ public class FinishLine : MonoBehaviour
         }
     
     }
+    /// <summary>
+    /// Ritorna l'ID dell'ultimo checkpoint da cui il giocatore è passato
+    /// </summary>
+    /// <returns></returns>
+    public int GetCurrentCheckpoint() { return currentCheckpoint; }
 
 }

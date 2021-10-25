@@ -7,6 +7,10 @@ public class Checkpoints : MonoBehaviour
     //riferimento alla linea di fine del circuito
     [SerializeField]
     private FinishLine finishLine = default;
+
+    [SerializeField]
+    private RespawnPlayer respawner = default;
+
     //indica a che punto del circuito si trova questo checkpoint(più alto l'ID, più vicino è il checkpoint alla linea di fine)
     [SerializeField]
     private int checkpointID = 0;
@@ -16,6 +20,8 @@ public class Checkpoints : MonoBehaviour
     {
         //aggiorna l'ID del checkpoint finale con il proprio ID
         finishLine.UpdateLastCheckpoint(checkpointID);
+        //aggiunge la propria posizione all'array di posizioni di respawn del giocatore
+        respawner.AddRespawnPosition(transform.position, checkpointID);
 
     }
 
