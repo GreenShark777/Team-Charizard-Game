@@ -114,6 +114,13 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica in quanto tempo il kart raggiunge la velocità massima di boost
     [SerializeField]
     private float boostAcceleration = 1;
+
+    /*
+    //indica quanto velocemente il giocatore deve ruotare nella direzione in cui il katr è rivolto durante un boost
+    [SerializeField]
+    private float onBoostRotationSpeed = 10;
+    */
+
     //indicano le durate di boost...
     [SerializeField]
     private float weakBoostTime = 0.75f, //...quando si sta poco tempo in drift...
@@ -149,6 +156,16 @@ public class PlayerKartCtrl : MonoBehaviour
     private float jumpForce = 20;
     //indica se il giocatore ha già effettuato un salto o meno
     private bool jumped = false;
+    //indica se il giocatore deve aspettare l'inizio della corsa(e deve caricare il boost iniziale)
+    private bool prepareToBegin = true;
+
+    [Header("Start Boost Charge")]
+    //indica quanto ha caricato il boost il giocatore
+    private float chargedBoost = 0;
+    
+    [SerializeField]
+    private float maxBoostCharge = 2.5f, //indica il valore massimo che la carica di boost può avere
+        chargeBoostIncreaseRate = 0.1f; //indica quanto velocemente si ricarica il boost iniziale
 
 
     private void Awake()
@@ -169,20 +186,26 @@ public class PlayerKartCtrl : MonoBehaviour
 
     private void Update()
     {
-        //controlla se il giocatore preme un bottone per muovere il kart
-        KartMovement();
-        //controlla la direzione verso cui deve andare il kart in base agli Input del giocatore
-        Steer();
-        //controlla la rotazione che il kart deve avere in base all'inclinazione del terreno(controlla anche se si sta toccando terra o meno)
-        GroundCheck();
-        //controlla se il giocatore sta tenendo premuto il tasto di drift e cambia il suo movimento di conseguenza
-        Drift();
-        //controlla se 
-        Boost();
-        //controlla la direzione verso cui devono ruotare le ruote del kart
-        TireSteer();
-        //controlla se il giocatore vuole saltare e, se preme il tasto, si occupa del salto
-        Jump();
+        //se non è in atto il countdown dela corsa, effettua i vari controlli
+        if (!prepareToBegin)
+        {
+            //controlla se il giocatore preme un bottone per muovere il kart
+            KartMovement();
+            //controlla la direzione verso cui deve andare il kart in base agli Input del giocatore
+            Steer();
+            //controlla la rotazione che il kart deve avere in base all'inclinazione del terreno(controlla anche se si sta toccando terra o meno)
+            GroundCheck();
+            //controlla se il giocatore sta tenendo premuto il tasto di drift e cambia il suo movimento di conseguenza
+            Drift();
+            //controlla se 
+            Boost();
+            //controlla la direzione verso cui devono ruotare le ruote del kart
+            TireSteer();
+            //controlla se il giocatore vuole saltare e, se preme il tasto, si occupa del salto
+            Jump();
+
+        } //altrimenti, controlla se il giocatore sta premendo il tasto per caricare il boost iniziale
+        else { StartBoostCharge(); }
 
     }
     /// <summary>
@@ -268,7 +291,7 @@ public class PlayerKartCtrl : MonoBehaviour
             //...ruota il kart in base alla pendenza dell'oggetto su cui si è...
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * transform.rotation, 7.5f * Time.deltaTime);
             //se si è rimasti in aria per abbastanza tempo, il giocatore riceve un boost...
-            if (notOnGroundTimer >= onAirTimerForBoost) { boostTime = highLandBoostTime; }
+            if (notOnGroundTimer >= onAirTimerForBoost) { /*boostTime = highLandBoostTime;*/ SetBoostTime(highLandBoostTime); }
             //Debug.Log(notOnGroundTimer);
             //...viene resettato il timer di caduta...
             notOnGroundTimer = 0;
@@ -360,11 +383,11 @@ public class PlayerKartCtrl : MonoBehaviour
 
             //...da il boost in base a quanto tempo siamo stati in drift...
             if (driftTime > driftFirstStageTimer && driftTime < driftSecondStageTimer)
-            {  boostTime = weakBoostTime; } //boost debole
+            {  /*boostTime = weakBoostTime;*/ SetBoostTime(weakBoostTime); } //boost debole
             if (driftTime >= driftSecondStageTimer && driftTime < driftFinalStageTimer)
-            { boostTime = mediumBoostTime; } //boost medio
+            { /*boostTime = mediumBoostTime;*/ SetBoostTime(mediumBoostTime); } //boost medio
             if (driftTime >= driftFinalStageTimer)
-            { boostTime = finalBoostTime; } //boost forte
+            { /*boostTime = finalBoostTime;*/ SetBoostTime(finalBoostTime); } //boost forte
 
             //...riporta a 0 il tempo in cui siamo stati in drift...
             driftTime = 0;
@@ -394,11 +417,17 @@ public class PlayerKartCtrl : MonoBehaviour
             for (int i = 0; i < boostPS.childCount; i++)
             {
 
-                if (!boostPS.GetChild(i).GetComponent<ParticleSystem>().isPlaying) { boostPS.GetChild(i).GetComponent<ParticleSystem>().Play(); }
+                ParticleSystem cycledBoostPS = boostPS.GetChild(i).GetComponent<ParticleSystem>();
+
+                if (!cycledBoostPS.isPlaying) { cycledBoostPS.Play(); }
 
             }
             //...e cambia la velocità attuale dandogli come velocità massima quella di boost
             currentSpeed = Mathf.Lerp(currentSpeed, boostSpeed, boostAcceleration * Time.deltaTime);
+
+            //...infine, ruota lentamente la direzione in cui il giocatore deve andare in base alla direzione in cui il kart è rivolto
+            //transform.rotation = Quaternion.Lerp(transform.rotation, kart.rotation, onBoostRotationSpeed * Time.deltaTime);
+
             //Debug.Log(currentSpeed);
         } //altrimenti, essendo finito il boost...
         else
@@ -406,7 +435,11 @@ public class PlayerKartCtrl : MonoBehaviour
             //...ferma tutti i particellari di boost, se non lo sono già
             for (int i = 0; i < boostPS.childCount; i++)
             {
-                if(boostPS.GetChild(i).GetComponent<ParticleSystem>().isPlaying) boostPS.GetChild(i).GetComponent<ParticleSystem>().Stop();
+
+                ParticleSystem cycledBoostPS = boostPS.GetChild(i).GetComponent<ParticleSystem>();
+
+                if (cycledBoostPS.isPlaying) { cycledBoostPS.Stop(); }
+
             }
 
         }
@@ -477,10 +510,60 @@ public class PlayerKartCtrl : MonoBehaviour
     /// </summary>
     public void SetSliding() { isSliding = true; }
     /// <summary>
-    /// Permette di impostare il tempo di boost
+    /// Ritorna il tempo di boost
     /// </summary>
     /// <returns></returns>
     public float GetBoostTime() { return boostTime; }
+    /// <summary>
+    /// Permette di impostare il tempo di boost
+    /// </summary>
+    /// <param name="newBoostTime"></param>
+    private void SetBoostTime(float newBoostTime) { boostTime = newBoostTime; }
+    /// <summary>
+    /// Carica il boost iniziale quando il giocatore preme il tasto per andare avanti
+    /// </summary>
+    private void StartBoostCharge()
+    {
+        //se il giocatore preme(non tiene premuto) il tasto per andare avanti...
+        if (Input.GetButtonDown("Vertical"))
+        {
+            //...ricarica il boost iniziale fino al massimo consentito...
+            chargedBoost = Mathf.Clamp(chargedBoost + chargeBoostIncreaseRate, 0, maxBoostCharge);
+            //...e cicla ogni particellare di drift nel contenitore in modo da...
+            for (int i = 0; i < driftsPSContainer.childCount; i++)
+            {
+                //... ottenerne riferimento temporaneo...
+                ParticleSystem driftPS = driftsPSContainer.GetChild(i).GetComponent<ParticleSystem>();
+                //...attivarlo se non lo è già...
+                if (!driftPS.isPlaying) { driftPS.Play(); }
+                //...ottenere riferimento al suo MainModule...
+                ParticleSystem.MainModule driftPSMain = driftPS.main;
+                //...e cambiarne il colore in base a quanto è stato caricato fino ad ora il boost iniziale
+                if (chargedBoost >= finalBoostTime) { driftPSMain.startColor = finalDriftColor; }
+                else if (chargedBoost >= mediumBoostTime) { driftPSMain.startColor = mediumDriftColor; }
+                else if (chargedBoost >= weakBoostTime) { driftPSMain.startColor = weakDriftColor; }
+
+            }
+            Debug.Log("Charged Boost: " + chargedBoost);
+        }
+
+    }
+    /// <summary>
+    /// Si occupa di ciò che deve accadere quando la gara inizia
+    /// </summary>
+    public void RaceBegun()
+    {
+        //se il boost iniziale caricato è maggiore di almeno il minore dei boost...
+        if (chargedBoost >= weakBoostTime)
+        {
+            //...fa partire un boost che dura quanto il boost caricato
+            boostTime = chargedBoost;
+
+        }
+        //infine, comunica allo script che la gara è cominciata
+        prepareToBegin = false;
+
+    }
 
     private void OnDrawGizmos()
     {
