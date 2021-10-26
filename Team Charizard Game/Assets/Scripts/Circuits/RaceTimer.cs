@@ -43,6 +43,10 @@ public class RaceTimer : MonoBehaviour
 
         }
 
+
+
+
+        //DEBUG---------------------------------------------------------------------------------------------------------------------------------
         if (Input.GetKeyDown(KeyCode.K)) { minutes++; }
         if (Input.GetKeyDown(KeyCode.L)) { seconds++; }
 

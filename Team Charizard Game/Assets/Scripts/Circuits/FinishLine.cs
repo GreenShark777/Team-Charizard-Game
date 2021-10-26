@@ -21,12 +21,21 @@ public class FinishLine : MonoBehaviour
     //riferimento allo script che tiene conto del tempo dall'inizio della gara corsa
     [SerializeField]
     private RaceTimer raceTimer = default;
+    
+    [SerializeField]
+    private GameObject endRaceScreenUI = default, //riferimento alla schermata di fine gara
+        duringRaceUI = default; //riferimento alla schermata di gara in corso
+
+    //riferimento al testo che indica il tempo che ha impiegato il giocatore a finire la gara
+    private Text finishedTimeText;
 
 
     private void Awake()
     {
         //cambia il testo che tiene conto dei giri che il giocatore ha finito
         lapText.text = "LAP: " + currentLap + " / " + maxLapCount;
+        //ottiene il riferimento al testo che indica il tempo che ha impiegato il giocatore a finire la gara
+        finishedTimeText = endRaceScreenUI.transform.GetChild(0).GetComponent<Text>();
 
     }
 
@@ -59,13 +68,12 @@ public class FinishLine : MonoBehaviour
             {
                 //...ferma il timer della corsa...
                 raceTimer.enabled = false;
-
-
-                //...e aggiorna il testo del tempo nella schermata di vittoria al tempo che ha impiegato il giocatore a finire il percorso
-                //victoryTimeText = raceTimer.GetRaceTimeText();
-
-
-                //...fa partire la vittoria
+                //disattiva tutta la UI di gara...
+                duringRaceUI.SetActive(false);
+                //...aggiorna il testo del tempo nella schermata di fine gara al tempo che ha impiegato il giocatore a finire il percorso...
+                finishedTimeText.text = raceTimer.GetRaceTimeText();
+                //...e attiva la schermata di fine gara
+                endRaceScreenUI.SetActive(true);
                 Debug.Log("Vittoria!");
             }
             
