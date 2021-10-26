@@ -12,6 +12,9 @@ public class RespawnPlayer : MonoBehaviour
     private Transform player = default, //riferimento al giocatore
         yellowTrafficLightBoy = default; //riferimento al giudice giallo
 
+    //riferimento all'Animator dell'immagine di transizione
+    [SerializeField]
+    private Animator fadeTransitionAnim = default;
     //riferimento alla piattaforma in cui il giudice giallo è posizionato
     private GameObject yellowBoyPlatform;
     //riferimento al punto in cui il giocatore deve voltarsi quando viene respawnato e non ha preso nessun checkpoint
@@ -83,9 +86,9 @@ public class RespawnPlayer : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RepositionPlayer(int waitBeforeTransition = 0)
     {
-
-        //FA PARTIRE L'ANIMAZIONE DI SCHERMO NERO
-
+        fadeTransitionAnim.SetBool("Faded", false);
+        //aspetta che finisca una transizione di qualche genere, se ne esiste
+        yield return new WaitForSeconds(waitBeforeTransition);
         //aspetta un po' di tempo
         yield return new WaitForSeconds(transitionTime);
         //ottiene l'indice della posizione in cui il giocatore dovrà respawnare
@@ -110,7 +113,7 @@ public class RespawnPlayer : MonoBehaviour
         //volta il giudice giallo verso il giocatore
         yellowTrafficLightBoy.LookAt(player);
 
-        //FA PARTIRE L'ANIMAZIONE DI SCHERMO NERO AL CONTRARIO
+        fadeTransitionAnim.SetBool("Faded", true);
 
         //aspetta un po' di tempo
         yield return new WaitForSeconds(allowMovingTime);
