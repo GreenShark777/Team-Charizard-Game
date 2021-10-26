@@ -1,6 +1,5 @@
 ﻿//Riporta il giocatore all'ultimo checkpoint in cui è passato
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RespawnPlayer : MonoBehaviour
@@ -15,6 +14,8 @@ public class RespawnPlayer : MonoBehaviour
 
     //riferimento alla piattaforma in cui il giudice giallo è posizionato
     private GameObject yellowBoyPlatform;
+    //riferimento al punto in cui il giocatore deve voltarsi quando viene respawnato e non ha preso nessun checkpoint
+    private Transform exceptionDirToFace;
     //riferimento allo script di movimento del giocatore
     private PlayerKartCtrl kartCtrl;
     //indica quanto distante deve essere rispetto al giocatore
@@ -34,6 +35,8 @@ public class RespawnPlayer : MonoBehaviour
     {
         //ottiene il riferimento alla piattaforma del giudice giallo
         yellowBoyPlatform = yellowTrafficLightBoy.GetChild(0).gameObject;
+        //ottiene il riferimento al punto in cui il giocatore deve voltarsi quando viene respawnato e non ha preso nessun checkpoint
+        exceptionDirToFace = yellowTrafficLightBoy.GetChild(1);
         //ottiene il riferimento allo script di movimento del giocatore
         kartCtrl = player.GetComponent<PlayerKartCtrl>();
 
@@ -41,15 +44,12 @@ public class RespawnPlayer : MonoBehaviour
 
     private void Start()
     {
-
-        GameObject exceptionDirToFace = Instantiate(yellowBoyPlatform, yellowTrafficLightBoy);
-
-        
-
+        //sposta il punto di direzione di respawn d'eccezione esattamente davanti al giocatore(senza però metterlo nella stessa posizione)
+        exceptionDirToFace.position = new Vector3(player.position.x, player.position.y, exceptionDirToFace.position.z);
+        //fa in modo che il punto d'eccezione non sia più figlio del giudice giallo
+        exceptionDirToFace.transform.parent = null;
         //aggiunge, come posizione in caso si cada prima di arrivare ad un qualsiasi checkpoint, la posizione iniziale del giocatore
         AddRespawnPosition(player.position, respawnPositions.Length, exceptionDirToFace.transform);
-
-        exceptionDirToFace.transform.parent = null;
 
 
         //for (int x = 0; x < respawnPositions.Length; x++) { Debug.Log("RespawnPosition " + x + ") " + respawnPositions[x]); }
@@ -105,7 +105,6 @@ public class RespawnPlayer : MonoBehaviour
         yellowTrafficLightBoy.gameObject.SetActive(true);
         //se la sua piattaforma è disattiva, la riattiva
         if (!yellowBoyPlatform.activeSelf) { yellowBoyPlatform.SetActive(true); }
-
         //volta il giocatore verso la posizione giusta
         player.LookAt(dirToFaceAfterRespawn[index]);
         //volta il giudice giallo verso il giocatore
@@ -138,7 +137,6 @@ public class RespawnPlayer : MonoBehaviour
             respawnPositions = new Vector3[checkpointID + 1];
             //...e copia i valori del recipiente nel nuovo array di posizioni di respawn
             for (int pos = 0; pos < positionsRecipient.Length; pos++) { respawnPositions[pos] = positionsRecipient[pos]; }
-
             //...crea un recipiente per le vecchie direzioni...
             var directionsRecipient = dirToFaceAfterRespawn;
             //...dato che l'array deve essere più grande, diventa un nuovo array che può contenere tot elementi quanto l'ID del checkpoint ricevuto...

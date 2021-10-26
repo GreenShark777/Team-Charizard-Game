@@ -18,6 +18,9 @@ public class FinishLine : MonoBehaviour
     private int maxLapCount = 3;
     //indica se il giocatore ha provato ad andare nella linea di fine senza aver prima l'intero giro del circuito
     private bool triedToCheat = false;
+    //riferimento allo script che tiene conto del tempo dall'inizio della gara corsa
+    [SerializeField]
+    private RaceTimer raceTimer = default;
 
 
     private void Awake()
@@ -54,6 +57,14 @@ public class FinishLine : MonoBehaviour
             } //altrimenti, il giocatore ha finito la gara prima di tutti i nemici, quindi...
             else
             {
+                //...ferma il timer della corsa...
+                raceTimer.enabled = false;
+
+
+                //...e aggiorna il testo del tempo nella schermata di vittoria al tempo che ha impiegato il giocatore a finire il percorso
+                //victoryTimeText = raceTimer.GetRaceTimeText();
+
+
                 //...fa partire la vittoria
                 Debug.Log("Vittoria!");
             }
@@ -86,9 +97,9 @@ public class FinishLine : MonoBehaviour
             {
                 //...aggiorna il valore del checkpoint corrente, se non aveva provato il giocatore a barare o se questo è il primo checkpoint
                 if (!triedToCheat || newID == 0) { currentCheckpoint = newID; triedToCheat = false; }
-                Debug.Log("CAMBIATO CURRENT CHECKPOINT: " + currentCheckpoint);
+                //Debug.Log("CAMBIATO CURRENT CHECKPOINT: " + currentCheckpoint);
             }
-            Debug.LogError("Can Change ID: " + canChangeID);
+            //Debug.LogError("Can Change ID: " + canChangeID);
         } //altrimenti, il giocatore sta andando al contrario, quindi...
         else
         {

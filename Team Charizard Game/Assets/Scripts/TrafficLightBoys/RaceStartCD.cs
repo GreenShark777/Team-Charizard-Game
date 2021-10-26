@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class RaceStartCD : MonoBehaviour
 {
+    //riferimento allo script che tiene conto del tempo dall'inizio della gara corsa
+    [SerializeField]
+    private RaceTimer raceTimer = default;
     //riferimento allo script di movimento del kart del giocatore
     [SerializeField]
     private PlayerKartCtrl kartCtrl = default;
@@ -57,6 +60,8 @@ public class RaceStartCD : MonoBehaviour
         yield return new WaitForSeconds(timeBetweenActivation);
         //attiva il giudice di gara verde
         ActivateTrafficLightBoy(2);
+        //attiva il timer di gara
+        raceTimer.enabled = true;
         //infine, comunica al giocatore che la gara è iniziata e potrà guidare
         kartCtrl.RaceBegun();
         Debug.LogError("Race Begun");
