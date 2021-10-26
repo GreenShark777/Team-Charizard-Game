@@ -10195,13 +10195,13 @@ MonoBehaviour:
   boostPS: {fileID: 6567946005870381867}
   acceleration: 0.5
   maxSpeed: 50
-  maxBackwardsSpeed: -30
+  maxBackwardsSpeed: -40
   boostSpeed: 80
   deceleration: 1
   steerSpeed: 3
   maxSteerInDrift: 1.5
   minSteerInDrift: 0.5
-  maxDriftSteer: 20
+  maxDriftSteer: 40
   driftSteerSpeed: 8
   steerResistSpeed: 30
   maxResist: 4
@@ -10209,6 +10209,7 @@ MonoBehaviour:
   groundDistance: 1.7
   onAirTimerForBoost: 1.5
   highLandBoostTime: 1.25
+  groundLayer: 8
   outwardsDriftForce: 0
   minSpeedForDrift: 10
   driftFirstStageTimer: 1.5
@@ -10224,6 +10225,8 @@ MonoBehaviour:
   maxRightSteer: 205
   maxLeftSteer: 155
   jumpForce: 20
+  maxBoostCharge: 2.5
+  chargeBoostIncreaseRate: 0.1
 --- !u!95 &6567946006491302725
 Animator:
   serializedVersion: 3
@@ -10475,7 +10478,7 @@ GameObject:
   - component: {fileID: 6567946007267277857}
   m_Layer: 0
   m_Name: PlayerCollisionManager
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

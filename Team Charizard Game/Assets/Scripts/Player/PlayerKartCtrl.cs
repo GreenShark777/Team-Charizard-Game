@@ -93,6 +93,13 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica per quanto tempo il kart deve rimanere in boost dopo essere atterrato da un luogo alto
     [SerializeField]
     private float highLandBoostTime = 1.25f;
+    //indica l'indice del layer del terreno da controllare
+    [SerializeField]
+    private LayerMask groundLayer = 8;
+    //indica quanto velocemente si deve ruotare il giocatore per mettere le ruote del kart sempre per terra anche quando il terreno è inclinato
+    [SerializeField]
+    private float rotationSpeed = 7.5f;
+
     //indica che si sta toccando per terra
     private bool touchingGround;
 
@@ -285,11 +292,12 @@ public class PlayerKartCtrl : MonoBehaviour
     {
         //crea un RayCast
         RaycastHit hit;
-        //fa partire il raycast dal centro del kart e lo fa andare verso sotto, se entro la distanza impostata c'è qualcosa...
-        if (Physics.Raycast(transform.position, -transform.up, out hit, groundDistance))
+        //fa partire il raycast dal centro del kart e lo fa andare verso sotto, se entro la distanza impostata c'è del terreno...
+        if (Physics.Raycast(transform.position, -transform.up, out hit, groundDistance, groundLayer))
         {
             //...ruota il kart in base alla pendenza dell'oggetto su cui si è...
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * transform.rotation, 7.5f * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * 
+                transform.rotation, rotationSpeed * Time.deltaTime);
             //se si è rimasti in aria per abbastanza tempo, il giocatore riceve un boost...
             if (notOnGroundTimer >= onAirTimerForBoost) { /*boostTime = highLandBoostTime;*/ SetBoostTime(highLandBoostTime); }
             //Debug.Log(notOnGroundTimer);

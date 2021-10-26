@@ -6,7 +6,7 @@ public class RaceStartCD : MonoBehaviour
 {
     //riferimento allo script di movimento del kart del giocatore
     [SerializeField]
-    private PlayerKartCtrl kartCtrl;
+    private PlayerKartCtrl kartCtrl = default;
 
     //riferimenti alle mesh dei giudici di gara(i ragazzi semaforo)
     [SerializeField]

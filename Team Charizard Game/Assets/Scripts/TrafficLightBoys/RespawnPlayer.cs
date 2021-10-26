@@ -10,7 +10,7 @@ public class RespawnPlayer : MonoBehaviour
     private FinishLine finishLine = default;
     //riferimento al giudice giallo
     [SerializeField]
-    private Transform player, //riferimento al giocatore
+    private Transform player = default, //riferimento al giocatore
         yellowTrafficLightBoy = default; //riferimento al giudice giallo
 
     //riferimento alla piattaforma in cui il giudice giallo è posizionato
@@ -20,8 +20,11 @@ public class RespawnPlayer : MonoBehaviour
     //indica quanto distante deve essere rispetto al giocatore
     [SerializeField]
     private Vector3 yellowBoyOffset = default;
-    //lista di tutte le posizioni di respawn nella scena
+    //array di tutte le posizioni di respawn nella scena
     private Vector3[] respawnPositions = new Vector3[1];
+    //array di direzioni, per ogni punto di respawn, in cui il giocatore deve essere girato
+    [SerializeField]
+    private Transform[] dirToFaceAfterRespawn = new Transform[1];
 
     [SerializeField]
     private float allowMovingTime = 2, //indica quanto tempo deve passare prima che il giocatore possa muoversi di nuovo dopo la transizione
@@ -40,7 +43,7 @@ public class RespawnPlayer : MonoBehaviour
     private void Start()
     {
         //aggiunge, come posizione in caso si cada prima di arrivare ad un qualsiasi checkpoint, la posizione iniziale del giocatore
-        AddRespawnPosition(player.position, respawnPositions.Length);
+        AddRespawnPosition(player.position, respawnPositions.Length, yellowTrafficLightBoy);
 
 
         //for (int x = 0; x < respawnPositions.Length; x++) { Debug.Log("RespawnPosition " + x + ") " + respawnPositions[x]); }
@@ -86,16 +89,24 @@ public class RespawnPlayer : MonoBehaviour
 
         Debug.Log("Respawn in: " + index);
 
-        //mette il giocatore nella posizione di respawn più vicina
-        player.position = respawnPositions[index];
         //fa in modo che il giocatore non sia affetto da gravità, in modo che non cada nel circuito immediatamente
         kartCtrl.IsAffectedByGravity(false);
+        //mette il giocatore nella posizione di respawn più vicina
+        player.position = respawnPositions[index];
         //cambia la posizione del giudice giallo, mettendolo davanti al giocatore
-        yellowTrafficLightBoy.position = player.position + yellowBoyOffset;
+        yellowTrafficLightBoy.position = dirToFaceAfterRespawn[index].position + yellowBoyOffset;
         //attiva il giudice giallo
         yellowTrafficLightBoy.gameObject.SetActive(true);
         //se la sua piattaforma è disattiva, la riattiva
         if (!yellowBoyPlatform.activeSelf) { yellowBoyPlatform.SetActive(true); }
+
+        //var playerStartRotation = player.rotation;
+
+        player.LookAt(dirToFaceAfterRespawn[index]);
+
+        yellowTrafficLightBoy.LookAt(player);
+
+        //player.rotation = new Quaternion(playerStartRotation.x, player.rotation.y, playerStartRotation.z, playerStartRotation.w);
 
         //FA PARTIRE L'ANIMAZIONE DI SCHERMO NERO AL CONTRARIO
 
@@ -111,22 +122,32 @@ public class RespawnPlayer : MonoBehaviour
     /// Aggiunge la posizione ricevuta all'array di posizioni in cui il giocatore può respawnare
     /// </summary>
     /// <param name="newRespawnPosition"></param>
+    /// <param name="dirToFace"></param>
     /// <param name="checkpointID"></param>
-    public void AddRespawnPosition(Vector3 newRespawnPosition, int checkpointID)
+    public void AddRespawnPosition(Vector3 newRespawnPosition, int checkpointID, Transform dirToFace)
     {
         //se l'ID del checkpoint che sta dando questa posizione è maggiore o uguale al numero di oggetti nell'array...
-        if (checkpointID >= respawnPositions.Length)
+        if (checkpointID >= respawnPositions.Length || checkpointID >= dirToFaceAfterRespawn.Length)
         {
             //...crea un recipiente per le vecchie posizioni...
             var positionsRecipient = respawnPositions;
             //...dato che l'array deve essere più grande, diventa un nuovo array che può contenere tot elementi quanto l'ID del checkpoint ricevuto...
             respawnPositions = new Vector3[checkpointID + 1];
             //...e copia i valori del recipiente nel nuovo array di posizioni di respawn
-            for (int i = 0; i < positionsRecipient.Length; i++) { respawnPositions[i] = positionsRecipient[i]; }
+            for (int pos = 0; pos < positionsRecipient.Length; pos++) { respawnPositions[pos] = positionsRecipient[pos]; }
+
+            //...crea un recipiente per le vecchie direzioni...
+            var directionsRecipient = dirToFaceAfterRespawn;
+            //...dato che l'array deve essere più grande, diventa un nuovo array che può contenere tot elementi quanto l'ID del checkpoint ricevuto...
+            dirToFaceAfterRespawn = new Transform[checkpointID + 1];
+            //...e copia i valori del recipiente nel nuovo array di direzioni di respawn
+            for (int dir = 0; dir < directionsRecipient.Length; dir++) { dirToFaceAfterRespawn[dir] = directionsRecipient[dir]; }
 
         }
-        //...infine, aggiunge la posizione ricevuta all'array
+        //...infine, aggiunge la posizione ricevuta all'array...
         respawnPositions[checkpointID] = newRespawnPosition;
+        //...e la direzione in cui deve guardare
+        dirToFaceAfterRespawn[checkpointID] = dirToFace;
 
     }
 
