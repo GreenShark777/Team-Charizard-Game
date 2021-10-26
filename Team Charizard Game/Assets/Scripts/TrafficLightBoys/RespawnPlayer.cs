@@ -23,7 +23,6 @@ public class RespawnPlayer : MonoBehaviour
     //array di tutte le posizioni di respawn nella scena
     private Vector3[] respawnPositions = new Vector3[1];
     //array di direzioni, per ogni punto di respawn, in cui il giocatore deve essere girato
-    [SerializeField]
     private Transform[] dirToFaceAfterRespawn = new Transform[1];
 
     [SerializeField]
@@ -42,8 +41,15 @@ public class RespawnPlayer : MonoBehaviour
 
     private void Start()
     {
+
+        GameObject exceptionDirToFace = Instantiate(yellowBoyPlatform, yellowTrafficLightBoy);
+
+        
+
         //aggiunge, come posizione in caso si cada prima di arrivare ad un qualsiasi checkpoint, la posizione iniziale del giocatore
-        AddRespawnPosition(player.position, respawnPositions.Length, yellowTrafficLightBoy);
+        AddRespawnPosition(player.position, respawnPositions.Length, exceptionDirToFace.transform);
+
+        exceptionDirToFace.transform.parent = null;
 
 
         //for (int x = 0; x < respawnPositions.Length; x++) { Debug.Log("RespawnPosition " + x + ") " + respawnPositions[x]); }
@@ -100,13 +106,10 @@ public class RespawnPlayer : MonoBehaviour
         //se la sua piattaforma è disattiva, la riattiva
         if (!yellowBoyPlatform.activeSelf) { yellowBoyPlatform.SetActive(true); }
 
-        //var playerStartRotation = player.rotation;
-
+        //volta il giocatore verso la posizione giusta
         player.LookAt(dirToFaceAfterRespawn[index]);
-
+        //volta il giudice giallo verso il giocatore
         yellowTrafficLightBoy.LookAt(player);
-
-        //player.rotation = new Quaternion(playerStartRotation.x, player.rotation.y, playerStartRotation.z, playerStartRotation.w);
 
         //FA PARTIRE L'ANIMAZIONE DI SCHERMO NERO AL CONTRARIO
 
