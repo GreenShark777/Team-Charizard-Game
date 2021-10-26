@@ -32,6 +32,13 @@ public class RaceStartCD : MonoBehaviour
     {
         //fa in modo che il giocatore non possa muoversi fino alla fine del countdown
         kartCtrl.enabled = false;
+        //si disabilita, per aspettare che la cinematica di inizio gara finisca
+        enabled = false;
+
+    }
+
+    private void Start()
+    {
         //fa partire la coroutine per il countdown all'inizio della gara
         StartCoroutine(StartRaceCountdown());
 
