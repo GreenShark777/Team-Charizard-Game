@@ -28,6 +28,9 @@ public class FinishLine : MonoBehaviour
 
     //riferimento al testo che indica il tempo che ha impiegato il giocatore a finire la gara
     private Text finishedTimeText;
+    //riferimento allo script d'avviso del giudice rosso
+    [SerializeField]
+    private BackwardsTracking redBoyWarning = default;
 
 
     private void Awake()
@@ -105,6 +108,8 @@ public class FinishLine : MonoBehaviour
             {
                 //...aggiorna il valore del checkpoint corrente, se non aveva provato il giocatore a barare o se questo è il primo checkpoint
                 if (!triedToCheat || newID == 0) { currentCheckpoint = newID; triedToCheat = false; }
+                //...fa sparire il giudice rosso, se era attivo
+                //redBoyWarning.AdvisePlayer(false);
                 //Debug.Log("CAMBIATO CURRENT CHECKPOINT: " + currentCheckpoint);
             }
             //Debug.LogError("Can Change ID: " + canChangeID);
@@ -112,7 +117,7 @@ public class FinishLine : MonoBehaviour
         else
         {
             //...fa spuntare il giudice rosso che gli comunica l'errore che sta facendo
-
+            //redBoyWarning.AdvisePlayer(true);
             Debug.LogError("Stai andando al contrario!");
         }
     

@@ -5,7 +5,7 @@ using UnityEngine;
 public class CircuitCinematics : MonoBehaviour
 {
     //riferimento al manager delle cinematiche
-    [SerializeField]
+    //[SerializeField]
     private CinematicsManager cm = default;
     
     private Transform moveCameraTo, //riferimento al punto in cui portare la telecamera durante la cinematica
@@ -18,6 +18,14 @@ public class CircuitCinematics : MonoBehaviour
     //indica se la telecamera deve essere spostata o meno
     private bool moveCamera = false;
 
+
+
+    private void Awake()
+    {
+        //ottiene il riferimento al Manager delle cinematiche
+        cm = GetComponentInParent<CinematicsManager>();
+
+    }
 
     private void FixedUpdate()
     {

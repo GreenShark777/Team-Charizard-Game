@@ -26,6 +26,8 @@ public class CameraFollow : MonoBehaviour
     //indica la posizione locale della telecamera mentre il giocatore è in boost
     private Vector3 boostCamPos;
 
+    private bool lookingBack = false;
+
 
     void Start()
     {
@@ -37,6 +39,34 @@ public class CameraFollow : MonoBehaviour
         originalCamPos = cam.localPosition;
         //ottiene il riferimento alla posizione locale della telecamera mentre il giocatore è in boost
         boostCamPos = new Vector3(originalCamPos.x, originalCamPos.y + camBoostOffsetY, originalCamPos.z + camBoostOffsetZ);
+
+    }
+
+    private void Update()
+    {
+        //se il giocatore tiene premuto il tasto per guardare indietro...
+        if (Input.GetKey(KeyCode.F))
+        {
+            //...se non lo sta già facendo...
+            if (!lookingBack)
+            {
+                //...ruota il gameObject al contrario, mettendo la telecamera(sua figlia) davanti al giocatore...
+                transform.localRotation = new Quaternion(transform.localRotation.x, 180, transform.localRotation.z, transform.localRotation.w);
+                //...e comunica che la telecamera è stata ruotata
+                lookingBack = true;
+
+            }
+
+        } //altrimenti, se non si sta più tenendo premuto il tasto per guardare indietro ma la telecamera è ancora ruotata...
+        else if (lookingBack)
+        {
+            //...la riporta alla rotazione originale...
+            //transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.z, transform.rotation.w);
+            transform.localRotation = new Quaternion(transform.localRotation.x, 0, transform.localRotation.z, transform.localRotation.w);
+            //...e comunica che la telecamera non è più ruotata
+            lookingBack = false;
+
+        }
 
     }
 
