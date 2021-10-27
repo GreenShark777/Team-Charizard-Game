@@ -89,6 +89,7 @@ public class ItemScript : MonoBehaviour
             // ItemUiScroll.SetBool("Scroll", false);
             //itemGameobjects[index].SetActive(false);
             itemGameobjects[index].transform.position = transform.position;
+         
         }
     }
 
