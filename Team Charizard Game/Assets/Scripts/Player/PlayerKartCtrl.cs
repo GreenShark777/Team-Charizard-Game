@@ -589,7 +589,7 @@ public class PlayerKartCtrl : MonoBehaviour
     private void OnDrawGizmos()
     {
         //mostra fin dove arriva il RayCast per il controllo che si sta toccando a terra
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundDistance, transform.position.z));
 
     }

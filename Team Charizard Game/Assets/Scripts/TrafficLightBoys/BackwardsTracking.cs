@@ -2,16 +2,21 @@
 using System.Collections;
 using UnityEngine;
 
+
 public class BackwardsTracking : MonoBehaviour
 {
-    
+    //riferimento alla linea di fine
     [SerializeField]
-    private Transform positionToStayToFollow = default, //riferimento al giocatore e alla posizione in cui il giudice rosso deve stare quando va al contrario
+    private FinishLine fl = default;
+
+    [SerializeField]
+    private Transform redJudgeFollowPos = default, //riferimento al giocatore e alla posizione in cui il giudice rosso deve stare quando va al contrario
         redBoy = default; //riferimento al giudice rosso
     
     //riferimento al giocatore
     private Transform player,
-        followPos;
+        pivot; //riferimento al pivot di questo oggetto
+
     //riferimento alla piattaforma del giudice rosso
     private GameObject redBoyPlatform;
 
@@ -23,20 +28,16 @@ public class BackwardsTracking : MonoBehaviour
     private float deactivateAfter = 2;
     //indica quanto velocemente il giudice rosso va in sù quando non deve più avvisare il giocatore
     [SerializeField]
-    private float flyUpSpeed = 30;
-
+    private float flyUpSpeed = 30,
+        //inverseRotationRate = 10, 
+        rayDistance = 20;
 
     private void Awake()
     {
+        //ottiene il riferimento al padre(che funge da pivot)
+        pivot = transform.parent;
         //ottiene il riferimento al giocatore
-        player = transform.parent.GetChild(0);
-        //smette di essere figlio del giocatore(in modo da non seguire la sua rotazione)
-        transform.parent = null;
-
-        followPos = transform.GetChild(0);
-
-        followPos.parent = player;
-
+        player = pivot.parent;
         //ottiene il riferimento alla piattaforma del giudice rosso
         redBoyPlatform = redBoy.GetChild(0).gameObject;
 
@@ -45,20 +46,48 @@ public class BackwardsTracking : MonoBehaviour
     private void Update()
     {
         //se deve avvisare il giocatore, gli sta costantemente davanti
-        if (isWarning) { redBoy.position = Vector3.Lerp(redBoy.position, positionToStayToFollow.position, flyUpSpeed * Time.deltaTime); }
+        if (isWarning) { redBoy.position = Vector3.Lerp(redBoy.position, redJudgeFollowPos.position, flyUpSpeed * Time.deltaTime); }
         //se non deve più avvisare il giocatore...
         if (stopWarning)
         {
             //...continua a salire in sù fino a quando non è più nella visuale del giocatore
-            redBoy.position = new Vector3(positionToStayToFollow.position.x, redBoy.position.y + (flyUpSpeed * Time.deltaTime),
-                positionToStayToFollow.position.z);
+            redBoy.position = new Vector3(redJudgeFollowPos.position.x, redBoy.position.y + (flyUpSpeed * Time.deltaTime),
+                redJudgeFollowPos.position.z);
         
         }
-        //fa rimanere questo oggetto nella posizione e con la rotazione giusta dietro il giocatore
-        transform.position = followPos.position;
-        transform.rotation = player.localRotation;
+        //crea un raycast
+        RaycastHit hit;
+        //se colpisce qualcosa...
+        if (Physics.Raycast(player.position, player.forward, out hit, rayDistance))
+        {
+            //...se è un checkpoint...
+            Checkpoints hitCheckpoint = hit.transform.GetComponent<Checkpoints>();
+            //...controlla se è uno più indietro e avvisa il giocatore, altrimenti non lo avvisa
+            if (hitCheckpoint) { AdvisePlayer(hitCheckpoint.GetThisCheckpointID() <= fl.GetCurrentCheckpoint()); }
+            //else { AdvisePlayer(false); }
+
+        }
+
+        //fa rimanere questo oggetto nella posizione giusta(dietro il giocatore), ruotando il pivot di questo oggetto al contrario da dove gira il giocatore
+        //pivot.rotation = new Quaternion(0, player.rotation.y / inverseRotationRate, 0, transform.localRotation.w);
+        //pivot.LookAt(checkpoint);
 
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //se si collide con il punto in cui il giudice rosso si mette per avvisare il giocatore, avvisa il giocatore
+        if (other.transform == redJudgeFollowPos && !isWarning) { AdvisePlayer(true); }
+
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        //se dal collider esce il collider del punto in cui il giudice rosso si mette per avvisare il giocatore, smette avvisare il giocatore
+        if (other.transform == redJudgeFollowPos && isWarning) { AdvisePlayer(false); }
+
+    }
+
 
     public void AdvisePlayer(bool warnPlayer)
     {
@@ -90,10 +119,23 @@ public class BackwardsTracking : MonoBehaviour
         isWarning = false;
         //aspetta un po' di tempo
         yield return new WaitForSeconds(deactivateAfter);
-        //il giudice rosso viene disattivato
-        redBoy.gameObject.SetActive(false);
-        //indica che non bisogna più smettere di seguire il giocatore
-        stopWarning = false;
+        //se non lo deve ancora avvisare...
+        if (!isWarning)
+        {
+            //...il giudice rosso viene disattivato...
+            redBoy.gameObject.SetActive(false);
+            //...indica che non bisogna più smettere di avvisare il giocatore
+            stopWarning = false;
+
+        }
+
+    }
+
+    private void OnDrawGizmos()
+    {
+
+        Gizmos.color = Color.red;
+        if(player) Gizmos.DrawRay(player.position, player.forward * rayDistance);
 
     }
 

@@ -29,6 +29,13 @@ public class CameraFollow : MonoBehaviour
     private bool lookingBack = false;
 
 
+    private void Awake()
+    {
+        //blocca il mouse al centro dello schermo e lo rende invisibile
+        Cursor.lockState = CursorLockMode.Locked;
+
+    }
+
     void Start()
     {
         //ottiene il riferimento allo script di movimento del kart del giocatore
