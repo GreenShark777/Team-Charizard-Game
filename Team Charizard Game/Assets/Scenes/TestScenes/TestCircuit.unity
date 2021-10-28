@@ -1554,13 +1554,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 306ffb605e38eb941a0e2cc63d29b30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fl: {fileID: 1579118041}
   redJudgeFollowPos: {fileID: 1193233239}
   redBoy: {fileID: 1224833762}
-  checkpoint: {fileID: 691893430}
-  pivot: {fileID: 0}
   deactivateAfter: 2
   flyUpSpeed: 30
-  inverseRotationRate: 10
+  rayDistance: 20
 --- !u!65 &410711366
 BoxCollider:
   m_ObjectHideFlags: 0
