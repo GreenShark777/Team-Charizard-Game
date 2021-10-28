@@ -29,8 +29,8 @@ public class FinishLine : MonoBehaviour
     //riferimento al testo che indica il tempo che ha impiegato il giocatore a finire la gara
     private Text finishedTimeText;
     //riferimento allo script d'avviso del giudice rosso
-    [SerializeField]
-    private BackwardsTracking redBoyWarning = default;
+    //[SerializeField]
+    //private BackwardsTracking redBoyWarning = default;
 
 
     private void Awake()
