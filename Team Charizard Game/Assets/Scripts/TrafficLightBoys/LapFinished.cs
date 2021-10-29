@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Si occupa della comparsa e comportamento del giudice verde
+using System.Collections;
 using UnityEngine;
 
 public class LapFinished : MonoBehaviour
@@ -11,14 +11,15 @@ public class LapFinished : MonoBehaviour
     private Transform closeToFinishPos = default, //riferimento alla posizione in cui il giudice verde deve essere prima che il giocatore arrivi alla linea di fine
         nextToPlayerPos = default; //riferimento alla posizione in cui il giudice verde deve essere dopo che il giocatore ha completato un giro
 
+    //indica l'ID da cui il giudice dovrà essere attivo
     [SerializeField]
     private int IDForActivation = 0;
-
+    //indica sei il giocatore ha finito un giro, nel qual caso il giudice verde deve stare davanti al giocatore
     private bool finishedLap = false;
 
     [SerializeField]
-    private float movementSpeed = 10, 
-        timeInAction = 2;
+    private float movementSpeed = 10, //indica quanto velocemente si deve spostare il giudice verde
+        timeInAction = 2; //indica quanto tempo il giudice resta davanti
 
 
     private void Awake()

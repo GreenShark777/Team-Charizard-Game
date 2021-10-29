@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Si occupa dei checkpoint del circuito e di ciò che deve accadere quando il giocatore ci passa attraverso
 using UnityEngine;
 
 public class Checkpoints : MonoBehaviour
