@@ -588,6 +588,11 @@ public class PlayerKartCtrl : MonoBehaviour
         notOnGroundTimer = 0;
         //fa in modo che il kart non abbia boost, ni caso di rimasugli
         boostTime = 0;
+        //resetta la velocità a cui il kart stava andando
+        realSpeed = 0;
+        currentSpeed = 0;
+        //evita che si attivi il boost, nel caso il gioactore stesse driftando quando stava cadendo
+        driftTime = 0;
 
     }
 
