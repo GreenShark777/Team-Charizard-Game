@@ -42,7 +42,7 @@ BoxCollider:
   m_GameObject: {fileID: 314257004922153591}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.9999999, y: 1, z: 8.794867}
   m_Center: {x: 0, y: 0, z: -3.8974333}
@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fl: {fileID: 0}
-  redJudgeFollowPos: {fileID: 0}
+  redBoyFollowPos: {fileID: 5633749903411377143}
   redBoy: {fileID: 0}
   deactivateAfter: 2
   flyUpSpeed: 30
@@ -80,6 +80,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!1 &2609232432997486886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6295761988731443472}
+  m_Layer: 0
+  m_Name: NextToPlayerPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6295761988731443472
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2609232432997486886}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 11, y: 5, z: 12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6567946006491302728}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6185791110947542983
 GameObject:
   m_ObjectHideFlags: 0
@@ -10266,6 +10296,7 @@ Transform:
   - {fileID: 6567946007550145889}
   - {fileID: 5633749903411377143}
   - {fileID: 3230101859760004339}
+  - {fileID: 6295761988731443472}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -158,6 +158,7 @@ MonoBehaviour:
   yellowBoyOffset: {x: 0, y: 5, z: 0}
   allowMovingTime: 2
   transitionTime: 2
+  flyUpSpeed: 20
 --- !u!65 &5361188
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -817,11 +818,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 114249115}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2798281c0b110834bab2486b24b7d0ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  closeToFinishPos: {fileID: 1019417875}
+  nextToPlayerPos: {fileID: 1741924541}
+  IDForActivation: 3
+  movementSpeed: 10
+  timeInAction: 2
 --- !u!1 &141289610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1126,6 +1132,7 @@ MonoBehaviour:
   activeGreenBoy: {fileID: 2100000, guid: 960a8691204c2434baefba6f93a7368a, type: 2}
   startCD: 3
   timeBetweenActivation: 1
+  flyUpSpeed: 40
 --- !u!1 &361476020
 GameObject:
   m_ObjectHideFlags: 0
@@ -2643,6 +2650,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802628868}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &810870952 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5633749903411377143, guid: 59bd184f78a2c444986bb510b05ce8a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1766262221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &822287880
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,6 +3381,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1018590139}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1019417874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1019417875}
+  m_Layer: 0
+  m_Name: CloseToFinishPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1019417875
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1019417874}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 7.12, y: 8.7, z: 28.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1579118040}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1032401619 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7384517205319051517, guid: a9122a1583f63e346afb3b3403949171,
@@ -4722,7 +4765,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -12.19, y: 0.01, z: 2.97}
   m_LocalScale: {x: 4, y: 1, z: 0.4}
-  m_Children: []
+  m_Children:
+  - {fileID: 1019417875}
   m_Father: {fileID: 1615531595}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4743,6 +4787,7 @@ MonoBehaviour:
   raceTimer: {fileID: 1768761320}
   endRaceScreenUI: {fileID: 1319750027}
   duringRaceUI: {fileID: 1987517344}
+  lapFinished: {fileID: 114249117}
 --- !u!1 &1615531594
 GameObject:
   m_ObjectHideFlags: 0
@@ -4963,6 +5008,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1695988582}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1741924541 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6295761988731443472, guid: 59bd184f78a2c444986bb510b05ce8a5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1766262221}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1745218277
 GameObject:
   m_ObjectHideFlags: 0
@@ -5063,6 +5114,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 314257004922153591, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: m_Name
+      value: WrongWayCheck
+      objectReference: {fileID: 0}
+    - target: {fileID: 6185791110947542983, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: m_Name
+      value: WrongWayPivot
+      objectReference: {fileID: 0}
     - target: {fileID: 6567946005847272492, guid: 59bd184f78a2c444986bb510b05ce8a5,
         type: 3}
       propertyPath: m_Layer
@@ -5243,6 +5304,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7665887336840426959, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: redBoy
+      value: 
+      objectReference: {fileID: 1224833762}
+    - target: {fileID: 7665887336840426959, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: redJudgeFollowPos
+      value: 
+      objectReference: {fileID: 810870952}
+    - target: {fileID: 7665887336840426959, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: fl
+      value: 
+      objectReference: {fileID: 1579118041}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59bd184f78a2c444986bb510b05ce8a5, type: 3}
 --- !u!4 &1766262222 stripped

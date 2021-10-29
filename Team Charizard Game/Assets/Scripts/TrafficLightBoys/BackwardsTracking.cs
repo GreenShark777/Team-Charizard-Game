@@ -10,7 +10,7 @@ public class BackwardsTracking : MonoBehaviour
     private FinishLine fl = default;
 
     [SerializeField]
-    private Transform redJudgeFollowPos = default, //riferimento al giocatore e alla posizione in cui il giudice rosso deve stare quando va al contrario
+    private Transform redBoyFollowPos = default, //riferimento al giocatore e alla posizione in cui il giudice rosso deve stare quando va al contrario
         redBoy = default; //riferimento al giudice rosso
     
     //riferimento al giocatore
@@ -46,13 +46,13 @@ public class BackwardsTracking : MonoBehaviour
     private void Update()
     {
         //se deve avvisare il giocatore, gli sta costantemente davanti
-        if (isWarning) { redBoy.position = Vector3.Lerp(redBoy.position, redJudgeFollowPos.position, flyUpSpeed * Time.deltaTime); }
+        if (isWarning) { redBoy.position = Vector3.Lerp(redBoy.position, redBoyFollowPos.position, flyUpSpeed * Time.deltaTime); }
         //se non deve più avvisare il giocatore...
         if (stopWarning)
         {
-            //...continua a salire in sù fino a quando non è più nella visuale del giocatore
-            redBoy.position = new Vector3(redJudgeFollowPos.position.x, redBoy.position.y + (flyUpSpeed * Time.deltaTime),
-                redJudgeFollowPos.position.z);
+            //...il giudice rosso continua a salire in sù fino a quando non è più nella visuale del giocatore
+            redBoy.position = new Vector3(redBoyFollowPos.position.x, redBoy.position.y + (flyUpSpeed * Time.deltaTime),
+                redBoyFollowPos.position.z);
         
         }
         //crea un raycast
@@ -63,7 +63,7 @@ public class BackwardsTracking : MonoBehaviour
             //...se è un checkpoint...
             Checkpoints hitCheckpoint = hit.transform.GetComponent<Checkpoints>();
             //...controlla se è uno più indietro e avvisa il giocatore, altrimenti non lo avvisa
-            if (hitCheckpoint) { AdvisePlayer(hitCheckpoint.GetThisCheckpointID() <= fl.GetCurrentCheckpoint()); }
+            if (hitCheckpoint) { AdvisePlayer(hitCheckpoint.GetThisCheckpointID() < fl.GetCurrentCheckpoint()); }
             //else { AdvisePlayer(false); }
 
         }
@@ -77,14 +77,14 @@ public class BackwardsTracking : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //se si collide con il punto in cui il giudice rosso si mette per avvisare il giocatore, avvisa il giocatore
-        if (other.transform == redJudgeFollowPos && !isWarning) { AdvisePlayer(true); }
+        if (other.transform == redBoyFollowPos && !isWarning) { AdvisePlayer(true); }
 
     }
 
     private void OnTriggerExit(Collider other)
     {
         //se dal collider esce il collider del punto in cui il giudice rosso si mette per avvisare il giocatore, smette avvisare il giocatore
-        if (other.transform == redJudgeFollowPos && isWarning) { AdvisePlayer(false); }
+        if (other.transform == redBoyFollowPos && isWarning) { AdvisePlayer(false); }
 
     }
 
@@ -101,6 +101,8 @@ public class BackwardsTracking : MonoBehaviour
                 redBoy.gameObject.SetActive(true);
                 //...viene attivata la piattaforma del giudice rosso, se non lo è già...
                 if (!redBoyPlatform.activeSelf) { redBoyPlatform.SetActive(true); }
+                //...se il giudice rosso non è attivo nella hierarchy, vuol dire che è ancora figlio della piattaforma disattivata, quindi lo sparenta...
+                if (!redBoy.gameObject.activeInHierarchy) { redBoy.parent = null; }
                 //...infine, comunica che sta avvisando il giocatore
                 isWarning = true;
 

@@ -33,6 +33,12 @@ public class RespawnPlayer : MonoBehaviour
     private float allowMovingTime = 2, //indica quanto tempo deve passare prima che il giocatore possa muoversi di nuovo dopo la transizione
         transitionTime = 1; //indica quanto tempo deve durare la transizione
 
+    //indica quanto velocemente il giudice giallo va in sù dopo aver respawnato il giocatore
+    [SerializeField]
+    private float flyUpSpeed = 20;
+    //indica se il giocatore è stato respawnato, nel qual caso bisogna andare via
+    private bool respawnedPlayer = false;
+
 
     private void Awake()
     {
@@ -56,6 +62,19 @@ public class RespawnPlayer : MonoBehaviour
 
 
         //for (int x = 0; x < respawnPositions.Length; x++) { Debug.Log("RespawnPosition " + x + ") " + respawnPositions[x]); }
+
+    }
+
+    private void FixedUpdate()
+    {
+        //se il giocatore è stato respawnato...
+        if (respawnedPlayer)
+        {
+            //...il giudice giallo continua a salire in sù fino a quando non è più nella visuale del giocatore
+            yellowTrafficLightBoy.position = new Vector3(yellowTrafficLightBoy.position.x, yellowTrafficLightBoy.position.y + (flyUpSpeed * Time.deltaTime),
+                yellowTrafficLightBoy.position.z);
+
+        }
 
     }
 
@@ -86,6 +105,7 @@ public class RespawnPlayer : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RepositionPlayer(int waitBeforeTransition = 0)
     {
+        //fa partire la transizione di fadeIn della schermata nera
         fadeTransitionAnim.SetBool("Faded", false);
         //aspetta che finisca una transizione di qualche genere, se ne esiste
         yield return new WaitForSeconds(waitBeforeTransition);
@@ -108,19 +128,26 @@ public class RespawnPlayer : MonoBehaviour
         yellowTrafficLightBoy.gameObject.SetActive(true);
         //se la sua piattaforma è disattiva, la riattiva
         if (!yellowBoyPlatform.activeSelf) { yellowBoyPlatform.SetActive(true); }
+        //...se il giudice giallo non è attivo nella hierarchy, vuol dire che è ancora figlio della piattaforma disattivata, quindi lo sparenta...
+        if (!yellowTrafficLightBoy.gameObject.activeInHierarchy) { yellowTrafficLightBoy.parent = null; }
         //volta il giocatore verso la posizione giusta
         player.LookAt(dirToFaceAfterRespawn[index]);
         //volta il giudice giallo verso il giocatore
         yellowTrafficLightBoy.LookAt(player);
-
+        //fa partire la transizione di fadeOut della schermata nera
         fadeTransitionAnim.SetBool("Faded", true);
-
         //aspetta un po' di tempo
         yield return new WaitForSeconds(allowMovingTime);
         //il giocatore sarà nuovamente affetto da gravità
         kartCtrl.IsAffectedByGravity(true);
         //e potrà guidare di nuovo, continuando la gara
         kartCtrl.enabled = true;
+        //il giudice giallo inizierà a salire
+        respawnedPlayer = true;
+        //aspetta un po'
+        yield return new WaitForSeconds(transitionTime);
+        //infine, il giudice giallo viene disattivato
+        yellowTrafficLightBoy.gameObject.SetActive(false);
 
     }
     /// <summary>

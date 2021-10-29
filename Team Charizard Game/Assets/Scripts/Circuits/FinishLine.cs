@@ -28,6 +28,10 @@ public class FinishLine : MonoBehaviour
 
     //riferimento al testo che indica il tempo che ha impiegato il giocatore a finire la gara
     private Text finishedTimeText;
+    //riferimento allo script che si occupa del comportamento del giudice verde quando viene attraversato un checkpoint o la linea di fine
+    [SerializeField]
+    private LapFinished lapFinished = default;
+
     //riferimento allo script d'avviso del giudice rosso
     //[SerializeField]
     //private BackwardsTracking redBoyWarning = default;
@@ -79,6 +83,10 @@ public class FinishLine : MonoBehaviour
                 endRaceScreenUI.SetActive(true);
                 Debug.Log("Vittoria!");
             }
+            //se lo script del giudice non è abilitato, lo riabilita
+            if (!lapFinished.enabled) { lapFinished.enabled = true; }
+            //in ogni caso, comunica al giudice verde di aver finito un giro
+            lapFinished.CrossedFinishLine();
             
         }
         else //altrimenti vorrà dire che il giocatore ha provato a finire il percorso senza finire l'intero circuito
@@ -106,18 +114,31 @@ public class FinishLine : MonoBehaviour
             bool canChangeID = (newID != lastCheckpointID || newID == currentCheckpoint + 1);
             if (canChangeID)
             {
-                //...aggiorna il valore del checkpoint corrente, se non aveva provato il giocatore a barare o se questo è il primo checkpoint
-                if (!triedToCheat || newID == 0) { currentCheckpoint = newID; triedToCheat = false; }
+                //...se non aveva provato, il giocatore, a barare o se questo è il primo checkpoint...
+                if (!triedToCheat || newID == 0)
+                {
+                    //...aggiorna il valore del checkpoint corrente...
+                    currentCheckpoint = newID;
+                    //...comunica che il giocatore non sta barando...
+                    triedToCheat = false;
+                    //...e comunica al giudice verde quale checkpoint è stato passato
+                    lapFinished.CrossedACheckpoint(currentCheckpoint);
+
+                }
+
                 //...fa sparire il giudice rosso, se era attivo
                 //redBoyWarning.AdvisePlayer(false);
                 //Debug.Log("CAMBIATO CURRENT CHECKPOINT: " + currentCheckpoint);
+
             }
             //Debug.LogError("Can Change ID: " + canChangeID);
         } //altrimenti, il giocatore sta andando al contrario, quindi...
         else
         {
+
             //...fa spuntare il giudice rosso che gli comunica l'errore che sta facendo
             //redBoyWarning.AdvisePlayer(true);
+
             Debug.LogError("Stai andando al contrario!");
         }
     

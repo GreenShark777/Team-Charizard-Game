@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Si occupa del countdown per far iniziare la gara, e attiva e disattiva i vari script che devono partire solo quando il countdown è terminato
+using System.Collections;
 using UnityEngine;
 
 public class RaceStartCD : MonoBehaviour
@@ -25,7 +25,11 @@ public class RaceStartCD : MonoBehaviour
 
     [SerializeField]
     private float startCD = 2, //indica quanto tempo bisogna aspettare prima che il giocatore possa iniziare a caricare il boost iniziale
-        timeBetweenActivation = 1; //indica quanto tempo deve passare tra l'attivazione di un giudice di gara ad un altro
+        timeBetweenActivation = 1, //indica quanto tempo deve passare tra l'attivazione di un giudice di gara ad un altro
+        flyUpSpeed = 20; //indica quanto velocemente tutti i giudici nella piattaforma salgono dopo che la corsa inizia
+
+    //indica se la gara è iniziata o meno
+    private bool raceBegun = false;
 
 
     private void Awake()
@@ -41,6 +45,19 @@ public class RaceStartCD : MonoBehaviour
     {
         //fa partire la coroutine per il countdown all'inizio della gara
         StartCoroutine(StartRaceCountdown());
+
+    }
+
+    private void FixedUpdate()
+    {
+        //se la gara è iniziata...
+        if (raceBegun)
+        {
+            //...continua a salire in sù fino a quando i giudici nella piattaforma non saranno più nella visuale del giocatore
+            transform.position = new Vector3(transform.position.x, transform.position.y + (flyUpSpeed * Time.deltaTime),
+                transform.position.z);
+
+        }
 
     }
 
@@ -69,9 +86,16 @@ public class RaceStartCD : MonoBehaviour
         ActivateTrafficLightBoy(2);
         //attiva il timer di gara
         raceTimer.enabled = true;
+        //comunica che la gara è iniziata
+        raceBegun = true;
         //infine, comunica al giocatore che la gara è iniziata e potrà guidare
         kartCtrl.RaceBegun();
         Debug.LogError("Race Begun");
+        //aspetta un po'
+        yield return new WaitForSeconds(startCD);
+        //infine, disattiva la piattaforma con i giudici
+        gameObject.SetActive(false);
+        Debug.LogError("Deactivated");
     }
     /// <summary>
     /// Attiva uno dei giudici di gara in base al valore ricevuto
