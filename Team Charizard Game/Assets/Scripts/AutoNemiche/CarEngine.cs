@@ -23,9 +23,20 @@ public class CarEngine : MonoBehaviour
     [SerializeField]
     private GameObject freno,freno2;
     [SerializeField]
+    private ParticleSystem fumo;
+    [SerializeField]
     private float currentSpeed;
     [SerializeField]
     private float maxSpeed = 140;
+
+    [Header("Sensori")]
+    [SerializeField]
+    private float sensorLenght;
+    [SerializeField]
+    private float fronSensorPos;
+
+    Animator anim;
+
 
     public bool isBraking = false;
 
@@ -34,7 +45,7 @@ public class CarEngine : MonoBehaviour
     private int currentNode = 0;
     void Start()
     {
-
+        anim = GetComponent<Animator>();
         Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
 
         nodes = new List<Transform>();
@@ -55,12 +66,15 @@ public class CarEngine : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        
         applySteer();
-        Drive();
+        //Drive();
         checkWaypoints();
-        Braking();
-
+        //Braking();
+       
     }
+
+    
 
 
     private void applySteer()
@@ -72,36 +86,29 @@ public class CarEngine : MonoBehaviour
         wheelFL.steerAngle = newSteer;
         wheelFR.steerAngle = newSteer;
 
-        if (Mathf.Abs(newSteer) > maxAngleNotBraking)
-        {
-            isBraking = true;
-        }
-        else
-        {
-            isBraking = false;
-        }
+        
     }
 
 
-    private void Drive()
-    {
-        currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
+    //private void Drive()
+    //{
+    //    currentSpeed = 2 * Mathf.PI * wheelFL.radius * wheelFL.rpm * 60 / 1000;
        
-        if (currentSpeed < maxSpeed && !isBraking)
-        {
-            wheelFL.motorTorque = maxMotorTorque;
-            wheelFR.motorTorque = maxMotorTorque;
-        }
-        else
-        {
-            wheelFL.motorTorque = 0;
-            wheelFR.motorTorque = 0;
+    //    if (currentSpeed < maxSpeed && !isBraking)
+    //    {
+    //        wheelFL.motorTorque = maxMotorTorque;
+    //        wheelFR.motorTorque = maxMotorTorque;
+    //    }
+    //    else
+    //    {
+    //        wheelFL.motorTorque = 0;
+    //        wheelFR.motorTorque = 0;
 
 
-        }
+    //    }
 
 
-    }
+    //}
 
 
     private void checkWaypoints()
@@ -123,24 +130,28 @@ public class CarEngine : MonoBehaviour
     }
 
 
-    public void Braking()
-    {
-        if (isBraking)
-        {
-            freno.SetActive(true);
-            freno2.SetActive(true);
-            wheelRL.brakeTorque = maxBrakeTorque;
-            wheelRR.brakeTorque = maxBrakeTorque;
-        }
-        else
-        {
-            freno.SetActive(false);
-            freno2.SetActive(false);
-            wheelRL.brakeTorque = 0;
-            wheelRR.brakeTorque = 0;
+    //public void Braking()
+    //{
+    //    if (isBraking)
+    //    {
+    //        fumo.Play();
+    //        freno.SetActive(true);
+    //        freno2.SetActive(true);
+    //        wheelRL.brakeTorque = maxBrakeTorque;
+    //        wheelRR.brakeTorque = maxBrakeTorque;
+    //    }
+    //    else
+    //    {
+    //        fumo.Stop();
+    //        freno.SetActive(false);
+    //        freno2.SetActive(false);
+    //        wheelRL.brakeTorque = 0;
+    //        wheelRR.brakeTorque = 0;
 
-        }
+    //    }
 
-    }
+    //}
+
+
 
 }
