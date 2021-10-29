@@ -528,6 +528,11 @@ public class PlayerKartCtrl : MonoBehaviour
     /// <param name="newBoostTime"></param>
     private void SetBoostTime(float newBoostTime) { boostTime = newBoostTime; }
     /// <summary>
+    /// Ritorna la velocità reale a cui la macchina sta andando
+    /// </summary>
+    /// <returns></returns>
+    public float GetRealSpeed() { return realSpeed; }
+    /// <summary>
     /// Carica il boost iniziale quando il giocatore preme il tasto per andare avanti
     /// </summary>
     private void StartBoostCharge()
