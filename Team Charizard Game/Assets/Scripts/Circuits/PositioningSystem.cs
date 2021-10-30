@@ -2,9 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PositioningSystem : MonoBehaviour
 {
+    //riferimento al testo che indica la posizione del giocatore
+    [SerializeField]
+    private Text playerPosText = default;
     //array di riferimenti agli animator delle immagini per il posizionamento
     private Animator[] posImagesAnims = new Animator[4];
     //array di riferimenti al RectTransform delle immagini per il posizionamento
@@ -13,8 +17,10 @@ public class PositioningSystem : MonoBehaviour
     [SerializeField]
     private Vector2[] posImagesPositions = new Vector2[4];
     //array di indici di immagini di cui scambiare posizioni
-    [SerializeField]
+    //[SerializeField]
     private List<int> recordedUpIndexes = new List<int>();
+    //indica costantemente la posizione del giocatore
+    private int playerPosIndex = 0;
 
     private int goUpIndex = -1, //indica l'indice dell'immagine che deve andare sù nelle posizioni
         goDownIndex = -1; //indica l'indice dell'immagine che deve andare giù nelle posizioni
@@ -25,6 +31,9 @@ public class PositioningSystem : MonoBehaviour
 
     //indica che si stanno cambiando delle posizioni
     private bool changing = false;
+    //array di suffissi per i numeri di posizione
+    [SerializeField]
+    private string[] numberSuffix = default;
 
     //indica l'indice della posizione che si vuole cambiare(DEBUG)
     private int i = 0;
@@ -70,7 +79,7 @@ public class PositioningSystem : MonoBehaviour
         //DEBUG----------------------------------------------------------------------------------------------------------------------------------------------------------
         if (i >= posImagesAnims.Length - 1) { i = 0; }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0)/* && !changing*/) { ChangePositions(i); /*i++;*/ i = Random.Range(0, 4); }
+        if (Input.GetKeyDown(KeyCode.Mouse0)/* && !changing*/) { ChangePositions(i); i++; /*i = Random.Range(0, 4);*/ }
         //DEBUG----------------------------------------------------------------------------------------------------------------------------------------------------------
 
         //se si devono cambiare delle posizioni...
@@ -104,6 +113,8 @@ public class PositioningSystem : MonoBehaviour
             goDownIndex = checkingPos + 1;
             //...fa partire la coroutine per fermare il cambio di posizione
             StartCoroutine(StopChanging());
+            //...e cambia il testo che indica la posizione del giocatore(se in una delle 2 posizioni c'era il giocatore)
+            ChangePlayerPosText();
 
         } //altrimenti, salva il valore ottenuto come parametro nella lista
         else { recordedUpIndexes.Add(checkingPos); }
@@ -137,6 +148,38 @@ public class PositioningSystem : MonoBehaviour
         if (recordedUpIndexes.Count > 0) { ChangePositions(recordedUpIndexes[0]); recordedUpIndexes.RemoveAt(0); }
         Debug.LogError("Stopped changing");
     }
+    /// <summary>
+    /// Cambia il testo che indica la posizione del giocatore
+    /// </summary>
+    private void ChangePlayerPosText()
+    {
+        //Debug.Log("PREVIOUS PLAYER INDEX: " + playerPosIndex + " -> down: " + goDownIndex + " up: " + goUpIndex);
+        //se il giocatore si trova nella posizione del kart che è stato superato, la sua posizione indice diminuisce
+        if (goDownIndex == playerPosIndex) { playerPosIndex--; }
+        //altrimenti, se il giocatore si trova nella posizione del kart che ha eseguito il sorpasso, la sua posizione aumenta
+        else if (goUpIndex == playerPosIndex) { playerPosIndex++; }
+        //Debug.Log("LATER PLAYER INDEX: " + playerPosIndex);
+
+        /*
+        string numberSuffix = "";
+
+        switch (playerPosIndex + 1)
+        {
+
+            case 1: { numberSuffix = "st"; break; }
+            case 2: { numberSuffix = "nd"; break; }
+            case 3: { numberSuffix = "rd"; break; }
+            case 4: { numberSuffix = "th"; break; }
+            default: { Debug.LogError("Pos player error: " + playerPosIndex); break; }
+
+        }
+        */
+
+        //infine, cambia il testo del giocatore con il nuovo indice di posizione del giocatore
+        playerPosText.text = (playerPosIndex + 1) + numberSuffix[playerPosIndex];
+
+    }
+
 
     private void OnDrawGizmos()
     {
