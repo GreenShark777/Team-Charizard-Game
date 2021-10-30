@@ -2314,26 +2314,15 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1607615214}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 1644025763}
+        m_MethodName: GoToScene
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: TestGuida
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1140291565}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Scena_Lobby
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &697750761
@@ -4240,12 +4229,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1140291565 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8346279420360530301, guid: 6cb66f3951eecb84d9023a830a5be35b,
-    type: 3}
-  m_PrefabInstance: {fileID: 8346279421409848976}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1140291566 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8346279420360530302, guid: 6cb66f3951eecb84d9023a830a5be35b,
@@ -7860,6 +7843,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameObject-Livelli
+      objectReference: {fileID: 0}
+    - target: {fileID: 8346279420360530301, guid: 6cb66f3951eecb84d9023a830a5be35b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8346279420360530302, guid: 6cb66f3951eecb84d9023a830a5be35b,
         type: 3}
