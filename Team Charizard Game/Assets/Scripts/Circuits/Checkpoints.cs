@@ -404,6 +404,7 @@ public class Checkpoints : MonoBehaviour
             }
 
         }
+        positionsChanged = true;
         //se delle posizioni sono cambiate, cambia anche la UI di posizioni
         if (positionsChanged) { newPosSystem.SetPositions(currentPositions); }
 

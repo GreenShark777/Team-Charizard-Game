@@ -70,4 +70,19 @@ public class NewPositioningSystem : MonoBehaviour
 
     }
 
+    private void OnDrawGizmos()
+    {
+
+        if (posImagesAnims.Length > 0)
+        {
+
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[0].x, posImagesPositions[0].y, 0), 3);
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[1].x, posImagesPositions[1].y, 0), 3);
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[2].x, posImagesPositions[2].y, 0), 3);
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[3].x, posImagesPositions[3].y, 0), 3);
+
+        }
+
+    }
+
 }
