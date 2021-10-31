@@ -596,6 +596,11 @@ public class PlayerKartCtrl : MonoBehaviour
 
     }
 
+    public void STOOOOp()//by rob
+    {
+        kartRb.velocity = Vector3.zero;
+    }
+
     private void OnDrawGizmos()
     {
         //mostra fin dove arriva il RayCast per il controllo che si sta toccando a terra
@@ -603,5 +608,6 @@ public class PlayerKartCtrl : MonoBehaviour
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundDistance, transform.position.z));
 
     }
+
 
 }
