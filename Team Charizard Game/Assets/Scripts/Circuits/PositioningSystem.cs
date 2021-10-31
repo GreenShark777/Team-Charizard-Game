@@ -26,8 +26,8 @@ public class PositioningSystem : MonoBehaviour
         goDownIndex = -1; //indica l'indice dell'immagine che deve andare giù nelle posizioni
 
     [SerializeField]
-    private float changePosSpeed = 5, //indica la velocità con cui si muovono le immagini per cambiare posizione
-        stopChangeTimer = 1; //indica dopo quanto tempo si potrà cambiare nuovamente posizioni
+    private float changePosSpeed = 8, //indica la velocità con cui si muovono le immagini per cambiare posizione
+        stopChangeTimer = 0.5f; //indica dopo quanto tempo si potrà cambiare nuovamente posizioni
 
     //indica che si stanno cambiando delle posizioni
     private bool changing = false;
@@ -76,61 +76,66 @@ public class PositioningSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //se si devono cambiare delle posizioni...
+        if (changing)
+        {
+            
+            //...cambia la posizione dell'immagine che deve andare verso sù...
+            posImagesRect[goUpIndex].position = Vector3.Lerp(posImagesRect[goUpIndex].position, posImagesPositions[goDownIndex], changePosSpeed * Time.deltaTime);
+            //...cambia la posizione dell'immagine che deve andare verso giù
+            posImagesRect[goDownIndex].position = Vector3.Lerp(posImagesRect[goDownIndex].position, posImagesPositions[goUpIndex], changePosSpeed * Time.deltaTime);
+            
+
+
+        }
+
         //DEBUG----------------------------------------------------------------------------------------------------------------------------------------------------------
         if (i >= posImagesAnims.Length - 1) { i = 0; }
 
         if (Input.GetKeyDown(KeyCode.Mouse0)/* && !changing*/) { ChangePositions(i); i++; /*i = Random.Range(0, 4);*/ }
         //DEBUG----------------------------------------------------------------------------------------------------------------------------------------------------------
-
-        //se si devono cambiare delle posizioni...
-        if (changing)
-        {
-            //...cambia la posizione dell'immagine che deve andare verso sù...
-            posImagesRect[goUpIndex].position = Vector3.Lerp(posImagesRect[goUpIndex].position, posImagesPositions[goDownIndex], changePosSpeed * Time.deltaTime);
-            //...cambia la posizione dell'immagine che deve andare verso giù
-            posImagesRect[goDownIndex].position = Vector3.Lerp(posImagesRect[goDownIndex].position, posImagesPositions[goUpIndex], changePosSpeed * Time.deltaTime);
-
-        }
-        
     }
 
     /// <summary>
     /// Cambia le posizioni delle immagini in base alla posizione ricevuta
     /// </summary>
-    /// <param name="checkingPos"></param>
-    public void ChangePositions(int checkingPos)
+    /// <param name="posToSwap"></param>
+    public void ChangePositions(int posToSwap)
     {
         //se non sta già cambiando delle posizioni...
         if (!changing)
         {
             //...se la posizione ricevuta è sbagliata, lo comunica...
-            if (checkingPos >= posImagesAnims.Length - 1) { Debug.LogError("Dato valore troppo alto per posizione di controllo"); }
-            //...comunica che si stanno cambiando delle posizioni...
+            if (posToSwap >= posImagesAnims.Length - 1) { Debug.LogError("Dato valore troppo alto per posizione di controllo"); }
+            //...comunica che si stanno scambiando delle posizioni...
             changing = true;
             //...salva la posizione dell'immagine di cui cambiare posizione verso sù...
-            goUpIndex = checkingPos;
+            goUpIndex = posToSwap;
             //...salva la posizione dell'immagine di cui cambiare posizione verso giù...
-            goDownIndex = checkingPos + 1;
-            //...fa partire la coroutine per fermare il cambio di posizione
+            goDownIndex = posToSwap + 1;
+            //...fa partire la coroutine per fermare il cambio di posizione...
             StartCoroutine(StopChanging());
             //...e cambia il testo che indica la posizione del giocatore(se in una delle 2 posizioni c'era il giocatore)
             ChangePlayerPosText();
 
         } //altrimenti, salva il valore ottenuto come parametro nella lista
-        else { recordedUpIndexes.Add(checkingPos); }
+        else { recordedUpIndexes.Add(posToSwap); }
 
     }
+
     /// <summary>
     /// Smette di cambiare le posizioni delle immagini dopo aver aspettato dei secondi
     /// </summary>
     /// <returns></returns>
     private IEnumerator StopChanging()
     {
-        Debug.Log("HIGH POS: " + goDownIndex);
+        //Debug.Log("HIGH POS: " + goDownIndex);
         //fa partire l'animazione di cambio dell'immagine che deve andare verso giù
         posImagesAnims[goDownIndex].SetTrigger("trigger");
         //aspetta un po'
         yield return new WaitForSeconds(stopChangeTimer);
+
+        
         //scambia le posizioni nell'array degli animator delle immagini che sono state scambiate
         var animTemp = posImagesAnims[goDownIndex];
         posImagesAnims[goDownIndex] = posImagesAnims[goUpIndex];
@@ -139,6 +144,8 @@ public class PositioningSystem : MonoBehaviour
         var rectTemp = posImagesRect[goDownIndex];
         posImagesRect[goDownIndex] = posImagesRect[goUpIndex];
         posImagesRect[goUpIndex] = rectTemp;
+        
+
         //riporta le variabili indice ad un valore neutro
         goUpIndex = -1;
         goDownIndex = -1;
@@ -146,7 +153,7 @@ public class PositioningSystem : MonoBehaviour
         changing = false;
         //se esistono degli indici nella lista, richiama la funzione di cambio posizione con il primo indice disponibile e lo rimuove dalla lista
         if (recordedUpIndexes.Count > 0) { ChangePositions(recordedUpIndexes[0]); recordedUpIndexes.RemoveAt(0); }
-        Debug.LogError("Stopped changing");
+        
     }
     /// <summary>
     /// Cambia il testo che indica la posizione del giocatore
@@ -179,6 +186,11 @@ public class PositioningSystem : MonoBehaviour
         playerPosText.text = (playerPosIndex + 1) + numberSuffix[playerPosIndex];
 
     }
+    /// <summary>
+    /// Ritorna l'indice di posizione del giocatore(Es: il giocatore è primo, quindi la funzione restituirà 0)
+    /// </summary>
+    /// <returns></returns>
+    public int GetPlayerPosIndex() { return playerPosIndex; }
 
 
     private void OnDrawGizmos()
