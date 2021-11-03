@@ -84,11 +84,6 @@ public class setdestination : MonoBehaviour
     }
 
 
-    void animate()
-    {
-       
-
-
-    }
+  
 
 }

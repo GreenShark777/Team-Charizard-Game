@@ -45,11 +45,11 @@ public class CarEngine : MonoBehaviour
     private int currentNode = 0;
     void Start()
     {
-        anim = GetComponent<Animator>();
+        
         Transform[] pathTransform = path.GetComponentsInChildren<Transform>();
 
         nodes = new List<Transform>();
-
+        //cicla i waypoint
         for (int i = 0; i < pathTransform.Length; i++)
         {
             if (pathTransform[i] != path.transform)
@@ -68,9 +68,9 @@ public class CarEngine : MonoBehaviour
     {
         
         applySteer();
-        //Drive();
+        
         checkWaypoints();
-        //Braking();
+       
        
     }
 
@@ -79,10 +79,13 @@ public class CarEngine : MonoBehaviour
 
     private void applySteer()
     {
+        //calcola la direzione verso il nuovo waypoint con questa formula
         Vector3 relativeVector = transform.InverseTransformPoint(nodes[currentNode].position);
         
+        //cambia l angolazione delle ruote con quest altra formula
         float newSteer = (relativeVector.x / relativeVector.magnitude) * maxSteerAngle;
-        Debug.Log(newSteer);
+        
+        //imposta lo steerangel(rotazione) al float calcolato precedentemente
         wheelFL.steerAngle = newSteer;
         wheelFR.steerAngle = newSteer;
 
