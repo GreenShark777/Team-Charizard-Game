@@ -13,9 +13,14 @@ public class RaceStartCD : MonoBehaviour
 
     //riferimenti alle mesh dei giudici di gara(i ragazzi semaforo)
     [SerializeField]
-    private MeshRenderer redBoyMR = default,
-        yellowBoyMR = default,
-        greenBoyMR = default;
+    private SkinnedMeshRenderer redBoySMR = default,
+        yellowBoySMR = default,
+        greenBoySMR = default;
+
+    //riferimenti agli Animator dei giudici di gara
+    private Animator redBoyAnim,
+        yellowBoyAnim,
+        greenBoyAnim;
 
     //riferimenti ai materiali da dare ai giudici di gara per attivarli
     [SerializeField]
@@ -30,7 +35,8 @@ public class RaceStartCD : MonoBehaviour
     [SerializeField]
     private float startCD = 2, //indica quanto tempo bisogna aspettare prima che il giocatore possa iniziare a caricare il boost iniziale
         timeBetweenActivation = 1, //indica quanto tempo deve passare tra l'attivazione di un giudice di gara ad un altro
-        flyUpSpeed = 20; //indica quanto velocemente tutti i giudici nella piattaforma salgono dopo che la corsa inizia
+        flyUpSpeed = 20, //indica quanto velocemente tutti i giudici nella piattaforma salgono dopo che la corsa inizia
+        activationTimer = 0.2f; //indica quanto tempo ci mettono i giudici ad attivarsi
 
     //indica se la gara è iniziata o meno
     private bool raceBegun = false;
@@ -42,6 +48,10 @@ public class RaceStartCD : MonoBehaviour
         kartCtrl.enabled = false;
         //si disabilita, per aspettare che la cinematica di inizio gara finisca
         enabled = false;
+        //ottiene i riferimenti agli Animator dei giudici di gara
+        redBoyAnim = redBoySMR.GetComponentInParent<Animator>();
+        yellowBoyAnim = yellowBoySMR.GetComponentInParent<Animator>();
+        greenBoyAnim = greenBoySMR.GetComponentInParent<Animator>();
 
     }
 
@@ -79,15 +89,17 @@ public class RaceStartCD : MonoBehaviour
         //aspetta un altro po'
         yield return new WaitForSeconds(startCD / 2);
         //attiva il giudice di gara rosso
-        ActivateTrafficLightBoy(0);
+        StartCoroutine(ActivateTrafficLightBoy(0));
         //aspetta un certo intervallo
         yield return new WaitForSeconds(timeBetweenActivation);
         //attiva il giudice di gara giallo
-        ActivateTrafficLightBoy(1);
+        StartCoroutine(ActivateTrafficLightBoy(1));
         //aspetta un certo intervallo
         yield return new WaitForSeconds(timeBetweenActivation);
         //attiva il giudice di gara verde
-        ActivateTrafficLightBoy(2);
+        StartCoroutine(ActivateTrafficLightBoy(2));
+        //aspetta finisca l'animazione di attivazione del verde
+        yield return new WaitForSeconds(activationTimer);
         //attiva il timer di gara
         raceTimer.enabled = true;
         //comunica che la gara è iniziata
@@ -102,24 +114,57 @@ public class RaceStartCD : MonoBehaviour
         //infine, attiva i modelli dei giudici per le prossime animazioni...
         yellowBoyWithJoystick.SetActive(true);
         //...e disattiva quelli di prima
-        yellowBoyMR.gameObject.SetActive(false);
+        yellowBoySMR.gameObject.SetActive(false);
         //Debug.LogError("Deactivated");
     }
     /// <summary>
     /// Attiva uno dei giudici di gara in base al valore ricevuto
     /// </summary>
     /// <param name="boyToActivate"></param>
-    private void ActivateTrafficLightBoy(int boyToActivate)
+    private IEnumerator ActivateTrafficLightBoy(int boyToActivate)
     {
         //in base al valore ottenuto, attiva uno dei giudici di gara
         switch (boyToActivate)
         {
             //GIUDICE ROSSO
-            case 0: { redBoyMR.material = activeRedBoy; break; }
+            case 0:
+                {
+                    //fa partire l'animazione del giudice rosso per accensione
+                    redBoyAnim.enabled = true;
+                    //aspetta che finisca l'animazione
+                    yield return new WaitForSeconds(activationTimer);
+                    //cambia il materiale del giudice rosso con il materiale da attivo
+                    redBoySMR.material = activeRedBoy;
+                    //esce dallo switch
+                    break;
+                
+                }
             //GIUDICE GIALLO
-            case 1: { yellowBoyMR.material = activeYellowBoy; break; }
+            case 1:
+                {
+                    //fa partire l'animazione del giudice giallo per accensione
+                    yellowBoyAnim.enabled = true;
+                    //aspetta che finisca l'animazione
+                    yield return new WaitForSeconds(activationTimer);
+                    //cambia il materiale del giudice giallo con il materiale da attivo
+                    yellowBoySMR.material = activeYellowBoy;
+                    //esce dallo switch
+                    break;
+                
+                }
             //GIUDICE VERDE
-            case 2: { greenBoyMR.material = activeGreenBoy; break; }
+            case 2:
+                {
+                    //fa partire l'animazione del giudice verde per accensione
+                    greenBoyAnim.enabled = true;
+                    //aspetta che finisca l'animazione
+                    yield return new WaitForSeconds(activationTimer);
+                    //cambia il materiale del giudice verde con il materiale da attivo
+                    greenBoySMR.material = activeGreenBoy;
+                    //esce dallo switch
+                    break;
+                
+                }
             //VALORE ERRATO
             default: { Debug.LogError("Valore errato, non esiste un altro giudice di gara!"); break; }
 
