@@ -578,13 +578,16 @@ public class PlayerKartCtrl : MonoBehaviour
         prepareToBegin = false;
 
     }
-
+    /// <summary>
+    /// Ferma il kart e resetta le sue variabili di movimento. Se viene passato false, il Rigidbody diverrà kinematico e non sarà affetto da gravità e collisioni
+    /// </summary>
+    /// <param name="affected"></param>
     public void IsAffectedByGravity(bool affected)
     {
         //se il kart deve essere affetto da gravità il Rigidbody del giocatore rimane invariato, altrimenti diventa kinematico
         kartRb.isKinematic = !affected;
         //se non deve essere affetto da gravità, rimuove ogni forza che agisce su esso
-        if (!affected) { kartRb.velocity = Vector3.zero; }
+        /*if (!affected) {*/ kartRb.velocity = Vector3.zero; //}
         //resetta il timer che controlla se fare boost una volta arrivati per terra
         notOnGroundTimer = 0;
         //fa in modo che il kart non abbia boost, ni caso di rimasugli
@@ -596,11 +599,11 @@ public class PlayerKartCtrl : MonoBehaviour
         driftTime = 0;
 
     }
-
+    /*USARE, INVECE DI QUESTO, "IsAffectedByGravity"(quello qua sopra)
     public void STOOOOp()//by rob
     {
         kartRb.velocity = Vector3.zero;
-    }
+    }*/
 
     private void OnDrawGizmos()
     {

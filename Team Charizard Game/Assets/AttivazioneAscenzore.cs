@@ -25,7 +25,8 @@ public class AttivazioneAscenzore : MonoBehaviour
     {
         //pLayer.transform.parent = transform;
         pLayer.transform.SetParent(transform,true);
-        kart.STOOOOp();      
+        //kart.STOOOOp();      
+        kart.IsAffectedByGravity(true);
         kart.enabled = false;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;

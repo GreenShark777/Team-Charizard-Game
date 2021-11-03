@@ -1187,9 +1187,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   raceTimer: {fileID: 1768761320}
   kartCtrl: {fileID: 2004693187}
-  redBoySMR: {fileID: 0}
-  yellowBoySMR: {fileID: 0}
-  greenBoySMR: {fileID: 0}
+  redBoySMR: {fileID: 2018649498}
+  yellowBoySMR: {fileID: 2101524539}
+  greenBoySMR: {fileID: 1686669344}
   activeRedBoy: {fileID: 2100000, guid: 41b07efb4ab05fe49a935d9fe6f8f4d1, type: 2}
   activeYellowBoy: {fileID: 2100000, guid: b80eb1be23d291b4c878ee1e9a56c3f6, type: 2}
   activeGreenBoy: {fileID: 2100000, guid: 960a8691204c2434baefba6f93a7368a, type: 2}
@@ -5349,6 +5349,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1686669342}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &1686669344 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5153247694329891847, guid: 3e84d0c8d8eea9c48a4de06aa21eac1b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1686669342}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1686669345 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e84d0c8d8eea9c48a4de06aa21eac1b,
@@ -6720,6 +6726,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2018649496}
   m_PrefabAsset: {fileID: 0}
+--- !u!137 &2018649498 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5153247694329891847, guid: 3e84d0c8d8eea9c48a4de06aa21eac1b,
+    type: 3}
+  m_PrefabInstance: {fileID: 2018649496}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2018649499 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3e84d0c8d8eea9c48a4de06aa21eac1b,
@@ -7467,6 +7479,12 @@ PrefabInstance:
 --- !u!4 &2101524538 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3e84d0c8d8eea9c48a4de06aa21eac1b,
+    type: 3}
+  m_PrefabInstance: {fileID: 2101524537}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &2101524539 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5153247694329891847, guid: 3e84d0c8d8eea9c48a4de06aa21eac1b,
     type: 3}
   m_PrefabInstance: {fileID: 2101524537}
   m_PrefabAsset: {fileID: 0}
