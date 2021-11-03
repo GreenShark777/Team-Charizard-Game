@@ -23,6 +23,10 @@ public class RaceStartCD : MonoBehaviour
         activeYellowBoy = default,
         activeGreenBoy = default;
 
+    //riferimento al giudice giallo con joystick
+    [SerializeField]
+    private GameObject yellowBoyWithJoystick = default;
+
     [SerializeField]
     private float startCD = 2, //indica quanto tempo bisogna aspettare prima che il giocatore possa iniziare a caricare il boost iniziale
         timeBetweenActivation = 1, //indica quanto tempo deve passare tra l'attivazione di un giudice di gara ad un altro
@@ -93,8 +97,12 @@ public class RaceStartCD : MonoBehaviour
         Debug.LogError("Race Begun");
         //aspetta un po'
         yield return new WaitForSeconds(startCD);
-        //infine, disattiva la piattaforma con i giudici
+        //disattiva la piattaforma con i giudici
         gameObject.SetActive(false);
+        //infine, attiva i modelli dei giudici per le prossime animazioni...
+        yellowBoyWithJoystick.SetActive(true);
+        //...e disattiva quelli di prima
+        yellowBoyMR.gameObject.SetActive(false);
         Debug.LogError("Deactivated");
     }
     /// <summary>

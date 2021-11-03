@@ -88,6 +88,8 @@ public class LapFinished : MonoBehaviour
         gameObject.SetActive(false);
         //rende il giudice verde di nuovo figlio di nessuno
         transform.parent = null;
+        //fa in modo che non abbia variazioni di rotazione
+        transform.rotation = Quaternion.identity;
         //infine, disabilita questo script in modo da non far continuare erroneamente il FixedUpdate prima del dovuto
         enabled = false;
 
