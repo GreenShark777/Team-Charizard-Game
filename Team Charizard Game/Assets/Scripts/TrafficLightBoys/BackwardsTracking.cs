@@ -39,6 +39,7 @@ public class BackwardsTracking : MonoBehaviour
         //ottiene il riferimento al giocatore
         player = pivot.parent;
         //ottiene il riferimento alla piattaforma del giudice rosso
+        if(redBoy)
         redBoyPlatform = redBoy.GetChild(0).gameObject;
 
     }

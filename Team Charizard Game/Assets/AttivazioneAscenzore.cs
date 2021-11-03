@@ -8,7 +8,8 @@ public class AttivazioneAscenzore : MonoBehaviour
     private Animator aim;
   public PlayerKartCtrl kart;
     public GameObject menu,pLayer;
- 
+   
+
 
     // quando siamo in gioco il Mouse devve essere Bloccato più non visibile al giocatore e nel canvas GameObject menu sara gia dissativato
     private void Start()

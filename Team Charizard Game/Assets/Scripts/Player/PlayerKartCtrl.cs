@@ -164,6 +164,7 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica se il giocatore ha già effettuato un salto o meno
     private bool jumped = false;
     //indica se il giocatore deve aspettare l'inizio della corsa(e deve caricare il boost iniziale)
+    [SerializeField]
     private bool prepareToBegin = true;
 
     [Header("Start Boost Charge")]
