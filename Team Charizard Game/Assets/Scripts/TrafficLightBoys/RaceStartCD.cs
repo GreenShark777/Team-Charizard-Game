@@ -71,7 +71,7 @@ public class RaceStartCD : MonoBehaviour
     /// <returns></returns>
     private IEnumerator StartRaceCountdown()
     {
-        Debug.LogError("Start Countdown");
+        //Debug.LogError("Start Countdown");
         //aspetta tot secondi
         yield return new WaitForSeconds(startCD);
         //permette al giocatore di caricare il boost iniziale per la gara
@@ -94,7 +94,7 @@ public class RaceStartCD : MonoBehaviour
         raceBegun = true;
         //infine, comunica al giocatore che la gara è iniziata e potrà guidare
         kartCtrl.RaceBegun();
-        Debug.LogError("Race Begun");
+        //Debug.LogError("Race Begun");
         //aspetta un po'
         yield return new WaitForSeconds(startCD);
         //disattiva la piattaforma con i giudici
@@ -103,7 +103,7 @@ public class RaceStartCD : MonoBehaviour
         yellowBoyWithJoystick.SetActive(true);
         //...e disattiva quelli di prima
         yellowBoyMR.gameObject.SetActive(false);
-        Debug.LogError("Deactivated");
+        //Debug.LogError("Deactivated");
     }
     /// <summary>
     /// Attiva uno dei giudici di gara in base al valore ricevuto

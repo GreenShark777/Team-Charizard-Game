@@ -191,19 +191,10 @@ public class Checkpoints : MonoBehaviour
                         //...se la distanza dal checkpoint del kartX è minore di quella del kartY, il kartX riceverà un punto
                         if (distanceX < distanceY)
                         {
-                            /*
-                            int temp = currentPositions[kartX];
-                            currentPositions[kartX] = currentPositions[kartY];
-                            currentPositions[kartY] = temp;*/
-                            
                             //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartX]);
                         }
                         else //altrimenti, il kartY riceverà un punto
                         {
-                            /*
-                            int temp = currentPositions[kartY];
-                            currentPositions[kartY] = currentPositions[kartX];
-                            currentPositions[kartX] = temp;*/
                             kartXWon = false;
                             //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartY]);
                         }
@@ -214,19 +205,10 @@ public class Checkpoints : MonoBehaviour
                         //...se l'ID del checkpoint attraversato dal kartX è maggiore di quello del kartY, il kartX riceverà un punto
                         if (checkpointX > checkpointY)
                         {
-                            /*
-                            int temp = currentPositions[kartX];
-                            currentPositions[kartX] = currentPositions[kartY];
-                            currentPositions[kartY] = temp;*/
-
                             //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
                         }
                         else //altrimenti, il kartY riceverà un punto
                         {
-                            /*
-                            int temp = currentPositions[kartY];
-                            currentPositions[kartY] = currentPositions[kartX];
-                            currentPositions[kartX] = temp;*/
                             kartXWon = false;
                             //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
                         }
@@ -239,19 +221,10 @@ public class Checkpoints : MonoBehaviour
                     //...se il giro a cui il kartX è arrivato è maggiore di quello del kartY, il kartX riceverà un punto
                     if (lapX > lapY)
                     {
-                        /*
-                        int temp = currentPositions[kartX];
-                        currentPositions[kartX] = currentPositions[kartY];
-                        currentPositions[kartY] = temp;*/
-
                         //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
                     }
                     else //altrimenti, il kartY riceverà un punto
                     {
-                        /*
-                        int temp = currentPositions[kartY];
-                        currentPositions[kartY] = currentPositions[kartX];
-                        currentPositions[kartX] = temp;*/
                         kartXWon = false;
                         //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
                     }
@@ -260,23 +233,12 @@ public class Checkpoints : MonoBehaviour
                 //se è stato il kartX a "vincere" il controllo...
                 if (kartXWon)
                 {
-                    /*
-                    int temp = newCurrentPositions[kartX];
-                    newCurrentPositions[kartX] = newCurrentPositions[kartY];
-                    newCurrentPositions[kartY] = temp;*/
-
                     //...riceverà un punto il kartX
                     kartPoints[kartX]++;
                     //Debug.Log("INCREMENTA PUNTEGGIO DI " + kartsPositions[kartX] + " A " + kartPoints[kartX]);
                 }
-                else //altrimenti...
+                else //altrimenti, riceverà un punto il kartY
                 {
-                    /*
-                    int temp = newCurrentPositions[kartY];
-                    newCurrentPositions[kartY] = newCurrentPositions[kartX];
-                    newCurrentPositions[kartX] = temp;*/
-
-                    //...riceverà un punto il kartY
                     kartPoints[kartY]++;
                     //Debug.Log("INCREMENTA PUNTEGGIO DI " + kartsPositions[kartY] + " A " + kartPoints[kartY]);
                 }
@@ -404,7 +366,6 @@ public class Checkpoints : MonoBehaviour
             }
 
         }
-        positionsChanged = true;
         //se delle posizioni sono cambiate, cambia anche la UI di posizioni
         if (positionsChanged) { newPosSystem.SetPositions(currentPositions); }
 

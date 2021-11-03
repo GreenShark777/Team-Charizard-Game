@@ -57,14 +57,11 @@ public class Collectable : MonoBehaviour
             }
 
         }
-        else //altrimenti...
-        {
-            //...se siamo al numero massimo di collezionabili, il colore del testo diventa rosso
-            if (nCollected == maxCollectables) { nCollectedText.color = Color.red; }
-            //...altrimenti, se per qualche motivo il numero di collezionabili è oltre il massimo, lo riporta al valore massimo
-            else if (nCollected > maxCollectables) { nCollected = maxCollectables; }
-        }
-        //viene fatto diventare invisibile e non interagibile questo collezionabile per un po' di tempo
+        //se siamo al numero massimo di collezionabili, il colore del testo diventa rosso
+        if (nCollected == maxCollectables) { nCollectedText.color = Color.red; }
+        //altrimenti, se per qualche motivo il numero di collezionabili è oltre il massimo, lo riporta al valore massimo
+        else if (nCollected > maxCollectables) { nCollected = maxCollectables; }
+        //viene fatto diventare, in ogni caso, invisibile e non interagibile questo collezionabile per un po' di tempo
         collectableAnim.SetTrigger("obtained");
         Debug.Log("Ottenuto collezionabile");
     }

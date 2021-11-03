@@ -6677,6 +6677,11 @@ PrefabInstance:
       propertyPath: nCollectedText
       value: 
       objectReference: {fileID: 1343046413}
+    - target: {fileID: 2236070129435058597, guid: 81be8f3dec7cc79489d797eaaa47fe75,
+        type: 3}
+      propertyPath: animSpeed
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2236070129435058598, guid: 81be8f3dec7cc79489d797eaaa47fe75,
         type: 3}
       propertyPath: m_Name
