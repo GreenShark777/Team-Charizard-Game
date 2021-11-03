@@ -13,7 +13,7 @@ public class NewPositioningSystem : MonoBehaviour
     private RectTransform[] posImagesRect = new RectTransform[4];
     //array di posizioni in cui devono andare le immagini
     [SerializeField]
-    private Vector2[] posImagesPositions = new Vector2[4];
+    private Transform[] posImagesPositions = new Transform[4];
     //array di suffissi per i numeri di posizione
     [SerializeField]
     private string[] numberSuffix = default;
@@ -53,7 +53,7 @@ public class NewPositioningSystem : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             //cambia la posizione dell'immagine nella posizione calcolata
-            posImagesRect[i].position = posImagesPositions[calculatedPositions[i] - 1];
+            posImagesRect[i].position = posImagesPositions[calculatedPositions[i] - 1].position;
 
         }
         //infine, cambia il testo che indica la posizione del giocatore
@@ -76,10 +76,10 @@ public class NewPositioningSystem : MonoBehaviour
         if (posImagesAnims.Length > 0)
         {
 
-            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[0].x, posImagesPositions[0].y, 0), 3);
-            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[1].x, posImagesPositions[1].y, 0), 3);
-            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[2].x, posImagesPositions[2].y, 0), 3);
-            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[3].x, posImagesPositions[3].y, 0), 3);
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[0].position.x, posImagesPositions[0].position.y, 0), 3);
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[1].position.x, posImagesPositions[1].position.y, 0), 3);
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[2].position.x, posImagesPositions[2].position.y, 0), 3);
+            Gizmos.DrawWireSphere(new Vector3(posImagesPositions[3].position.x, posImagesPositions[3].position.y, 0), 3);
 
         }
 
