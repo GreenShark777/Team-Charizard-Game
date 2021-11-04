@@ -13,33 +13,7 @@ public class CarEngine : MonoBehaviour
     [SerializeField]
     private WheelCollider wheelRL;
     [SerializeField]
-    private WheelCollider wheelRR;
-    [SerializeField]
-    private float maxMotorTorque;
-    [SerializeField]
-    private float maxBrakeTorque;
-    [SerializeField]
-    private float maxAngleNotBraking;
-    [SerializeField]
-    private GameObject freno,freno2;
-    [SerializeField]
-    private ParticleSystem fumo;
-    [SerializeField]
-    private float currentSpeed;
-    [SerializeField]
-    private float maxSpeed = 140;
-
-    [Header("Sensori")]
-    [SerializeField]
-    private float sensorLenght;
-    [SerializeField]
-    private float fronSensorPos;
-
-    Animator anim;
-
-
-    public bool isBraking = false;
-
+    private WheelCollider wheelRR;                             
     public Transform path;
     private List<Transform> nodes;
     private int currentNode = 0;

@@ -9,7 +9,7 @@ public class setdestination : MonoBehaviour
     public List<Transform> wp;
     NavMeshAgent agent;
     int wpIndex;
-    Animator anim;
+    
     public Vector3 dir;
 
 
@@ -17,7 +17,7 @@ public class setdestination : MonoBehaviour
     private void Start()
     {
          agent = GetComponent<NavMeshAgent>(); //prende la navmesh 
-         anim = GetComponent<Animator>();
+        
 
     }
 
@@ -48,12 +48,7 @@ public class setdestination : MonoBehaviour
         }
 
 
-        if(Vector3.Distance ( transform.position , wp[wpIndex].position) < 10)
-        {
-            
-            
-
-        }
+       
         
     }
 
