@@ -1337,10 +1337,10 @@ MonoBehaviour:
   activeYellowBoy: {fileID: 2100000, guid: b80eb1be23d291b4c878ee1e9a56c3f6, type: 2}
   activeGreenBoy: {fileID: 2100000, guid: 960a8691204c2434baefba6f93a7368a, type: 2}
   yellowBoyWithJoystick: {fileID: 88259721}
-  startCD: 3
+  startCD: 2
   timeBetweenActivation: 1
   flyUpSpeed: 40
-  activationTimer: 0.2
+  activationTimer: 0.35
 --- !u!1 &361476020
 GameObject:
   m_ObjectHideFlags: 0
@@ -8378,6 +8378,11 @@ PrefabInstance:
       propertyPath: enemiesInfo.Array.data[2]
       value: 
       objectReference: {fileID: 1424966677}
+    - target: {fileID: 5383609455081564213, guid: 43b32509bbb16504191e20d078aa4f66,
+        type: 3}
+      propertyPath: maxLapCount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5383609455081564216, guid: 43b32509bbb16504191e20d078aa4f66,
         type: 3}
       propertyPath: m_Name

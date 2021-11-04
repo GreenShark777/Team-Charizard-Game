@@ -1,7 +1,5 @@
 ﻿//Si occupa di come la telecamera segue il giocatore e come si ruota in base a quello che fa quest'ultimo
 //Ispirato dal video di Ishaan35:https://www.youtube.com/watch?v=q0cUClufuKE&t=16s
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
@@ -25,7 +23,7 @@ public class CameraFollow : MonoBehaviour
     private Vector3 originalCamPos;
     //indica la posizione locale della telecamera mentre il giocatore è in boost
     private Vector3 boostCamPos;
-
+    //indica se il giocatore sta guardando dietro di sè
     private bool lookingBack = false;
 
 

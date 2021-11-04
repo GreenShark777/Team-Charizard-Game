@@ -115,6 +115,9 @@ public class FinishLine : MonoBehaviour
                 duringRaceUI.SetActive(false);
                 //...aggiorna il testo del tempo nella schermata di fine gara al tempo che ha impiegato il giocatore a finire il percorso...
                 finishedTimeText.text = raceTimer.GetRaceTimeText();
+                //...attiva il cursore in modo che il giocatore possa cliccare i bottoni...
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 //...e attiva la schermata di fine gara
                 endRaceScreenUI.SetActive(true);
 
