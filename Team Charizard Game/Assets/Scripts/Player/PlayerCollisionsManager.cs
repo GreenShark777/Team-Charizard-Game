@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Si occupa delle collisioni del giocatore
 using UnityEngine;
 
 public class PlayerCollisionsManager : MonoBehaviour
@@ -11,7 +10,7 @@ public class PlayerCollisionsManager : MonoBehaviour
         IGiveDamage dmgGiver = other.GetComponent<IGiveDamage>();
         //se il riferimento esiste, il giocatore riceve danno
         if (dmgGiver != null) { PlayerGotHit(dmgGiver); }
-
+        Debug.Log("Collision: " + dmgGiver);
     }
 
     private void PlayerGotHit(IGiveDamage dmgGiver)
@@ -20,6 +19,8 @@ public class PlayerCollisionsManager : MonoBehaviour
         //FARE PRENDERE DANNO AL GIOCATORE IN BASE AL FLOAT RICEVUTO DALLA FUNZIONE
         //vitaGiocatore(o riferimento al PlayerHealth e richiamare un suo metodo) -= dmgGiver.GiveDamage();
 
+
+        Debug.Log("Player Got Hit: " + dmgGiver.GiveDamage());
     }
 
 }
