@@ -236,6 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpeed: -100
   reshootTimer: 10
+  multipleProjectiles: 0
 --- !u!1 &581757836150570239
 GameObject:
   m_ObjectHideFlags: 0
