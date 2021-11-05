@@ -39,6 +39,9 @@ public class PlayerKartCtrl : MonoBehaviour
     private Rigidbody kartRb;
     //riferimento all'Animator del kart
     private Animator kartAnim;
+    //riferimento al manager delle cinematiche
+    [SerializeField]
+    private CinematicsManager cm = default;
 
     //VARIABILI DI MOVIMENTO
     [Header("Movement")]
@@ -218,6 +221,17 @@ public class PlayerKartCtrl : MonoBehaviour
 
             //controlla se il giocatore vuole saltare e, se preme il tasto, si occupa del salto
             Jump();
+            //se la corsa è finita...
+            if (FinishLine.RaceFinished)
+            {
+                //...disattiva questo script, impedendo al giocatore di muoversi...
+                enabled = false;
+                //...attiva la cinematica di fine gara...
+                cm.ToNextCinematic(true);
+
+                //ATTIVA LO SCRIPT DEL GIOCATORE PER FARLO MUOVERE CON AI
+
+            }
 
         } //altrimenti, controlla se il giocatore sta premendo il tasto per caricare il boost iniziale
         else { StartBoostCharge(); }
