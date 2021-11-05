@@ -6,6 +6,8 @@ public class PlayerKartCtrl : MonoBehaviour
 {
     //RIFERIMENTI
     [Header("References")]
+    
+    /*
     //riferimenti alle ruote del kart
     [SerializeField]
     private Transform frontRightTire = default;
@@ -17,6 +19,7 @@ public class PlayerKartCtrl : MonoBehaviour
     //riferimenti ai figli delle ruote frontali
     private Transform childFrontSxTire,
         childFrontDxTire;
+    */
 
     //riferimenti al contenitore dei particellari di drift
     [SerializeField]
@@ -154,7 +157,7 @@ public class PlayerKartCtrl : MonoBehaviour
         maxLeftSteer = 155; //...e sinistra
 
     //indica la rotazione Y iniziale delle ruote
-    private float startWheelsYRotation;
+    //private float startWheelsYRotation;
 
     //VARIABILI PER IL SALTO
     [Header("Jump")]
@@ -184,12 +187,14 @@ public class PlayerKartCtrl : MonoBehaviour
         kartRb = GetComponent<Rigidbody>();
         //ottiene il riferimento all'Animator del kart
         kartAnim = GetComponent<Animator>();
+
+        /*
         //ottiene il riferimento ai figli delle ruote frontali
         childFrontDxTire = frontRightTire.GetChild(0);
         childFrontSxTire = frontLeftTire.GetChild(0);
         //ottiene la rotazione nell'asse Y delle ruote frontali
         startWheelsYRotation = frontRightTire.localEulerAngles.y;
-
+        */
     }
 
     private void Update()
@@ -207,8 +212,10 @@ public class PlayerKartCtrl : MonoBehaviour
             Drift();
             //controlla se 
             Boost();
+
             //controlla la direzione verso cui devono ruotare le ruote del kart
-            TireSteer();
+            //TireSteer();
+
             //controlla se il giocatore vuole saltare e, se preme il tasto, si occupa del salto
             Jump();
 
@@ -454,6 +461,8 @@ public class PlayerKartCtrl : MonoBehaviour
         }
 
     }
+
+    /*
     /// <summary>
     /// Si occupa di ruotare le ruote del kart del giocatore
     /// </summary>
@@ -496,6 +505,8 @@ public class PlayerKartCtrl : MonoBehaviour
         }
 
     }
+    */
+
     /// <summary>
     /// Fa saltare il giocatore, se preme il tasto di salto
     /// </summary>

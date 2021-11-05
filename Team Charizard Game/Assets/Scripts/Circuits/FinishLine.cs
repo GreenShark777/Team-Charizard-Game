@@ -45,6 +45,9 @@ public class FinishLine : MonoBehaviour
     private bool playerLost = false, //indica se un nemico ha finito la gara prima del giocatore, nel qualcaso il giocatore ha perso
         enemyAhead = false; //indica che un nemico è più avanti del giocatore nel numero di giri
 
+    //indica se la gara è finita o meno
+    public static bool RaceFinished = false;
+
     //riferimento allo script d'avviso del giudice rosso
     //[SerializeField]
     //private BackwardsTracking redBoyWarning = default;
@@ -52,6 +55,8 @@ public class FinishLine : MonoBehaviour
 
     private void Awake()
     {
+        //ad inizio gara, comunica che la gara non è finita
+        RaceFinished = false;
         //cambia il testo che tiene conto dei giri che il giocatore ha finito
         lapText.text = "LAP: " + currentLap + " / " + maxLapCount;
         //ottiene il riferimento ai testi da cambiare a fine la gara
@@ -95,6 +100,8 @@ public class FinishLine : MonoBehaviour
             } //altrimenti il giocatore ha completato l'ultimo giro, quindi...
             else
             {
+                //...comunica che la gara è finita...
+                RaceFinished = true;
                 //...se il giocatore ha finito la gara prima di tutti i nemici...
                 if (!playerLost)
                 {

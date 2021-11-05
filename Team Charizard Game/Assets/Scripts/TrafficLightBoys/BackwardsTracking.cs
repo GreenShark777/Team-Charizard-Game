@@ -39,8 +39,7 @@ public class BackwardsTracking : MonoBehaviour
         //ottiene il riferimento al giocatore
         player = pivot.parent;
         //ottiene il riferimento alla piattaforma del giudice rosso
-        if(redBoy)
-        redBoyPlatform = redBoy.GetChild(0).gameObject;
+        if(redBoy) redBoyPlatform = redBoy.GetChild(0).gameObject;
 
     }
 
@@ -92,8 +91,8 @@ public class BackwardsTracking : MonoBehaviour
 
     public void AdvisePlayer(bool warnPlayer)
     {
-        //se bisogna avvisare il giocatore che sta andando dalla parte sbagliata...
-        if (warnPlayer)
+        //se bisogna avvisare il giocatore che sta andando dalla parte sbagliata, e non è già finita la gara...
+        if (warnPlayer && !FinishLine.RaceFinished)
         {
             //...se non è già stato attivato tutto...
             if (!isWarning)

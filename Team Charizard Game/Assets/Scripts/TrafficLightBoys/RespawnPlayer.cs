@@ -146,6 +146,8 @@ public class RespawnPlayer : MonoBehaviour
         respawnedPlayer = true;
         //aspetta un po'
         yield return new WaitForSeconds(transitionTime);
+        //fa in modo che il giudice giallo salga più
+        respawnedPlayer = false;
         //infine, il giudice giallo viene disattivato
         yellowTrafficLightBoy.gameObject.SetActive(false);
 
