@@ -78,7 +78,8 @@ public class PlayerKartCtrl : MonoBehaviour
         driftSteerSpeed = 8, //indica la velocità di sterzamento in drift
         steerResistSpeed = 30, //indica a quale velocità di movimento il kart deve iniziare a sterzare più lentamente
         maxResist = 4, //indica quanta resistenza viene applicata allo sterzamento ad alta velocità
-        minResist = 1.5f; //indica quanta resistenza viene applicata allo sterzamento a bassa velocità
+        minResist = 1.5f, //indica quanta resistenza viene applicata allo sterzamento a bassa velocità
+        flyingSteerMaxRotation = 13; //indica quanto deve ruotare il kart nell'asse Z quando sterza
 
     //indica la direzione in cui si sta sterzando
     private float steerDirection;
@@ -143,6 +144,7 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica per quanto tempo ancora il giocatore deve rimanere in boost
     private float boostTime;
 
+    /*
     //VARIABILI DI STERZAMENTO DELLE RUOTE
     [Header("Tire Steer")]
     //indica quanto velocemente le ruote ruotano verso la direzione in cui devono puntare
@@ -161,6 +163,7 @@ public class PlayerKartCtrl : MonoBehaviour
 
     //indica la rotazione Y iniziale delle ruote
     //private float startWheelsYRotation;
+    */
 
     //VARIABILI PER IL SALTO
     [Header("Jump")]
@@ -277,7 +280,7 @@ public class PlayerKartCtrl : MonoBehaviour
             //...ricalcola la direzione verso cui si sta sterzando, dando più rotazione se va sta sterzando a sinistra o meno se sta sterzando a destra...
             steerDirection = Input.GetAxis("Horizontal") < 0 ? -maxSteerInDrift : -minSteerInDrift;
             //...ruota il kart nell'asse Y fino ad arrivare al valore massimo impostato per il drift sinistro
-            newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, -maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
+            newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, -maxDriftSteer, maxDriftSteer), driftSteerSpeed * Time.deltaTime);
             //...se si sta scivolando e si sta toccando terra, al kart viene aggiunta una forza acceleratrice verso la parte opposta(forza centrifuga)
             if (isSliding && touchingGround)
                 kartRb.AddForce(transform.right * outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
@@ -289,13 +292,22 @@ public class PlayerKartCtrl : MonoBehaviour
             //...ricalcola la direzione verso cui si sta sterzando, dando più rotazione se va sta sterzando a destra o meno se sta sterzando a sinistra...
             steerDirection = Input.GetAxis("Horizontal") > 0 ? maxSteerInDrift : minSteerInDrift;
             //...ruota il kart nell'asse Y fino ad arrivare al valore massimo impostato per il drift destro
-            newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, maxDriftSteer, 0), driftSteerSpeed * Time.deltaTime);
+            newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, maxDriftSteer, -maxDriftSteer), driftSteerSpeed * Time.deltaTime);
             //...se si sta scivolando e si sta toccando terra, al kart viene aggiunta una forza acceleratrice verso la parte opposta(forza centrifuga)
             if (isSliding && touchingGround)
                 kartRb.AddForce(transform.right * -outwardsDriftForce * Time.deltaTime, ForceMode.Acceleration);
 
-        } //altrimenti non si sta driftando verso nessun lato, quindi ripotra il kart alla rotazione iniziale
-        else { newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, 0f, 0), maxDriftSteer * Time.deltaTime); }
+        } //altrimenti non si sta driftando verso nessun lato, quindi ripotra il kart alla rotazione normale
+        else
+        {
+            newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, 0, (-steerDirection * flyingSteerMaxRotation)), driftSteerSpeed * Time.deltaTime);
+            /*
+            //
+            if (steerDirection != 0)
+            { newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, 0, (-steerDirection * 13)), steerSpeed * Time.deltaTime); }
+            else newKartRotation = Quaternion.Lerp(actualKartRotation, Quaternion.Euler(0, 0f, 0), driftSteerSpeed * Time.deltaTime);
+            */
+        }
         //dopo tutti i controlli e calcoli, aggiorna la rotazione del kart
         kart.localRotation = newKartRotation;
         //calcola quanto si può sterzare in base alla velocità a cui il giocatore sta andando(maggiore la velocità, maggiore la resistenza allo sterzamento)
