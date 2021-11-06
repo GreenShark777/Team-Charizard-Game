@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class setdestination : MonoBehaviour
 {
-
+    public LayerMask ground;
     public List<Transform> wp;
     NavMeshAgent agent;
     int wpIndex;
@@ -56,13 +56,13 @@ public class setdestination : MonoBehaviour
 
     void groundCheck()
     {
-        
+        Debug.Log("GROUNDCHECK");
         //crea un RayCast        
         RaycastHit hit;         
         //fa partire il raycast dal centro del kart e lo fa andare verso sotto, se entro la distanza impostata c'è del terreno...        
-        if (Physics.Raycast(transform.position, -transform.up, out hit, 1,7/*, groundLayer*/))         {
+        if (Physics.Raycast(transform.position, -transform.up, out hit, 1.7f,ground/*, groundLayer*/))         {
             //...ruota il kart in base alla pendenza dell'oggetto su cui si è...             
-            
+            Debug.Log("ORA MI PIEGO");
          transform.GetChild(0).rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) *                 
           transform.rotation, 100f * Time.deltaTime); } 
 
