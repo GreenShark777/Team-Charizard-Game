@@ -106,7 +106,6 @@ public class PlayerKartCtrl : MonoBehaviour
     //indica quanto velocemente si deve ruotare il giocatore per mettere le ruote del kart sempre per terra anche quando il terreno è inclinato
     [SerializeField]
     private float rotationSpeed = 7.5f;
-
     //indica che si sta toccando per terra
     private bool touchingGround;
 
