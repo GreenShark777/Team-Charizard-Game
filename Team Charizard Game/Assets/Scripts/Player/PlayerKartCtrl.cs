@@ -39,9 +39,10 @@ public class PlayerKartCtrl : MonoBehaviour
     private Rigidbody kartRb;
     //riferimento all'Animator del kart
     private Animator kartAnim;
+
     //riferimento al manager delle cinematiche
-    [SerializeField]
-    private CinematicsManager cm = default;
+    //[SerializeField]
+    //private CinematicsManager cm = default;
 
     //VARIABILI DI MOVIMENTO
     [Header("Movement")]
@@ -228,10 +229,11 @@ public class PlayerKartCtrl : MonoBehaviour
             {
                 //...disattiva questo script, impedendo al giocatore di muoversi...
                 enabled = false;
-                //...attiva la cinematica di fine gara...
-                cm.ToNextCinematic(true);
 
                 //ATTIVA LO SCRIPT DEL GIOCATORE PER FARLO MUOVERE CON AI
+
+                //...attiva la cinematica di fine gara...
+                //cm.ToNextCinematic(/*true*/);
 
             }
 

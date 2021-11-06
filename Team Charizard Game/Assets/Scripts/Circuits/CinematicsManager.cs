@@ -1,5 +1,4 @@
 ﻿//Si occupa di gestire le cinematiche del circuito ad inizio scena
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CinematicsManager : MonoBehaviour
@@ -10,11 +9,15 @@ public class CinematicsManager : MonoBehaviour
     //array di tutte le cinematiche di questo circuito
     [SerializeField]
     private CircuitCinematics[] allCircuitCinematics = default;
+
+    /*
     //lista di tutte le cinematiche di fine gara
     [SerializeField]
     private List<CircuitCinematics> allEndRaceCinematics = default;
     //lista di tutte le cinematiche di fine gara non ancora ciclate
     private List<CircuitCinematics> toCycleEndRaceCinematics = new List<CircuitCinematics>();
+    */
+
     //riferimento alla telecamera del giocatore
     [SerializeField]
     private Transform cam = default;
@@ -40,9 +43,10 @@ public class CinematicsManager : MonoBehaviour
         camStartPosition = cam.localPosition;
         camStartRotation = cam.rotation;
         //fa partire la prima cinematica
-        ToNextCinematic(false);
+        ToNextCinematic(/*false*/);
+
         //copia l'array di cinematiche di fine gara
-        foreach (CircuitCinematics cinematic in allEndRaceCinematics) { toCycleEndRaceCinematics.Add(cinematic); }
+        //foreach (CircuitCinematics cinematic in allEndRaceCinematics) { toCycleEndRaceCinematics.Add(cinematic); }
 
     }
 
@@ -66,11 +70,23 @@ public class CinematicsManager : MonoBehaviour
     /// <summary>
     /// Fa partire la cinematica immediatamente successiva
     /// </summary>
-    /// <param name="endRace"></param>
-    public void ToNextCinematic(bool endRace)
+    ///// <param name="endRace"></param>
+    public void ToNextCinematic(/*bool endRace*/)
     {
         //disabilita lo script che costringe la telecamera a seguire il giocatore, se è ancora attivo per qualche motivo
         if(cf.enabled) cf.enabled = false;
+        //se l'indice di cinematiche non è oltre il range di cinematiche in lista...
+        if (cinematicIndex < allCircuitCinematics.Length)
+        {
+            //...fa partire la prossima cinematica e ne prende riferimento...
+            startedCinematic = StartCoroutine(allCircuitCinematics[cinematicIndex].StartCinematic(cam));
+            //...e incrementa l'indice per la prossima cinematica
+            cinematicIndex++;
+
+        } //altrimenti, fa partire il countdown per iniziare la gara
+        else { StartRaceCountdown(); }
+
+        /*
         //se non devono essere le cinematiche di fine gara, fa partire le cinematiche di inizio gara
         if (!endRace)
         {
@@ -107,7 +123,7 @@ public class CinematicsManager : MonoBehaviour
             }
             
         }
-
+        */
     }
     /// <summary>
     /// Prepara la scena per far partire il countdown di inizio gara
@@ -124,8 +140,10 @@ public class CinematicsManager : MonoBehaviour
             raceStartCD.enabled = true;
             //riabilita lo script che costringe la telecamera a seguire il giocatore
             cf.enabled = true;
+            
             //prepara l'indice di cinematiche per il ciclo di cinematiche di fine gara
-            cinematicIndex = allEndRaceCinematics.Count;
+            //cinematicIndex = allEndRaceCinematics.Count;
+
             //disabilita questo script
             enabled = false;
 

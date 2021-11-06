@@ -13,7 +13,6 @@ public class CircuitCinematics : MonoBehaviour
 
     //riferimento alla rotazione che dovrà avere la telecamera durante la cinematica
     Quaternion rotateTo;
-
     //indica quando tempo deve durare la cinematica
     [SerializeField]
     private float cinematicDuration = 2, 
@@ -24,9 +23,10 @@ public class CircuitCinematics : MonoBehaviour
     //indica se la telecamera deve essere ruotata o meno
     [SerializeField]
     private bool rotateCamera = false;
+
     //indica se questa cinematica è di fine o inizio gara
-    [SerializeField]
-    private bool isEndRaceCinematic = false;
+    //[SerializeField]
+    //private bool isEndRaceCinematic = false;
 
 
     private void Awake()
@@ -70,20 +70,14 @@ public class CircuitCinematics : MonoBehaviour
             moveCamera = true;
 
         }
-
-        if (rotateCamera)
-        {
-
-            rotateTo = (moveCamera) ? moveCameraTo.rotation : transform.rotation;
-
-        }
-
+        //se bisogna ruotare la telecamera, ottiene il riferimento al punto che determina come deve ruotare la telecamera
+        if (rotateCamera) { rotateTo = (moveCamera) ? moveCameraTo.rotation : transform.rotation; }
         //aspetta che finisca la cinematica
         yield return new WaitForSeconds(cinematicDuration);
         //disattiva questa cinematica
         enabled = false;
         //infine, comunica al manager delle cinematiche di andare avanti con le cinematiche
-        cm.ToNextCinematic(isEndRaceCinematic);
+        cm.ToNextCinematic(/*isEndRaceCinematic*/);
 
     }
 
