@@ -27,8 +27,8 @@ MonoBehaviour:
     showAlpha: 0
     showEyeDropper: 1
   tint:
-    m_OverrideState: 1
-    m_Value: {r: 0.49056602, g: 0.45817015, b: 0.45817015, a: 1}
+    m_OverrideState: 0
+    m_Value: {r: 0.3301887, g: 0, b: 0.15074423, a: 1}
     hdr: 1
     showAlpha: 0
     showEyeDropper: 1
@@ -56,7 +56,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 32.53
   albedo:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: {r: 0, g: 0, b: 0, a: 1}
     hdr: 0
     showAlpha: 1
@@ -105,32 +105,32 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   rotation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 59
     min: 0
     max: 360
   skyIntensityMode:
-    m_OverrideState: 1
-    m_Value: 2
+    m_OverrideState: 0
+    m_Value: 1
   exposure:
     m_OverrideState: 1
     m_Value: 9.42
   multiplier:
     m_OverrideState: 1
-    m_Value: 500
+    m_Value: 0
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 1
-    m_Value: 0.0761781
+    m_Value: 0.60597014
     min: 0
   upperHemisphereLuxColor:
     m_OverrideState: 1
-    m_Value: {x: 0.15345687, y: 0.022817533, z: 0.5}
+    m_Value: {x: 0.5, y: 0.067802235, z: 0.10776666}
   desiredLuxValue:
-    m_OverrideState: 1
-    m_Value: 10000
+    m_OverrideState: 0
+    m_Value: 2
   updateMode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   updatePeriod:
     m_OverrideState: 1
@@ -141,7 +141,7 @@ MonoBehaviour:
     m_Value: 0
   hdriSky:
     m_OverrideState: 1
-    m_Value: {fileID: 8900000, guid: 90806c14ef959d944ab01be77852fd63, type: 3}
+    m_Value: {fileID: 8900000, guid: 7e26ef8a46b8cd84283920eadd8508c3, type: 3}
   enableBackplate:
     m_OverrideState: 0
     m_Value: 0

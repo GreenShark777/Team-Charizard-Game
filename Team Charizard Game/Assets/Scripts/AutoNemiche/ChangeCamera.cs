@@ -21,9 +21,22 @@ public class ChangeCamera : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            
-            i += 1;
-            changeCamera();
+            if(i > points.Count - 1)
+            {
+
+                i = 0;
+
+            }
+            else
+            {
+                
+                //richiama il void
+                changeCamera();
+
+            }
+
+           
+
 
         }
 
@@ -32,7 +45,7 @@ public class ChangeCamera : MonoBehaviour
 
     void changeCamera()
     {
-
+        i += 1;
         transform.position = points[i].position;
         
 

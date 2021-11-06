@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class enemyCarHealth : MonoBehaviour
 {
@@ -38,12 +39,22 @@ public class enemyCarHealth : MonoBehaviour
 
             }
 
-            if (healthRef < 1)
+            if (healthRef <= 1)
             {
-                lifeBar.fillAmount = 1;
                 isKillable = true;
+                
+                
                 lifeBar.sprite = explosion;
-               
+
+                lifeBar.fillAmount += 5;
+
+
+            }
+
+            if(healthRef < -3f)
+            {
+
+                Debug.Log("explode");
 
             }
 
@@ -64,12 +75,15 @@ public class enemyCarHealth : MonoBehaviour
     private Sprite explosion;
     [SerializeField]
     private Transform player;
-   
-    bool isKillable;
+    [SerializeField]
+    private NavMeshAgent agent;
 
+    bool isKillable;
+    float actualSpeed;
     Animator anim;
     private void Start()
     {
+        actualSpeed = agent.speed;
         //imposta starthealt = al valore di health in modo da avere sempre un riferimento alla salute massima
         startHealth = health;
         //prende automaticamente il riferimento all animator
@@ -79,22 +93,35 @@ public class enemyCarHealth : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G) && isKillable == false)
+        if (Input.GetKeyDown(KeyCode.G))
         {
+            StartCoroutine(slowDown());
+
             StartCoroutine(showLifeBar());
             //diminuisce la vita di 1
             healthRef -= 1;
+            //diminuisce il fill amount di 03 per cambiare lo slider
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.G) && isKillable == false)
+        {
             //diminuisce il fill amount di 03 per cambiare lo slider
             lifeBar.fillAmount -= 0.3f;
         }
 
         if (healthRef < 1 && isKillable)
         {
-            if (Vector3.Distance(transform.position, player.transform.position) < 15)
+            if (Vector3.Distance(transform.position, player.transform.position) < 20)
             {
                 //parte animazione fadeOUT
                 anim.SetBool("fade", true);
-                
+                if (Input.GetKeyDown(KeyCode.K))
+                {
+
+                    Debug.Log("esecuzione");
+
+                }
 
             }
             else
@@ -121,6 +148,15 @@ public class enemyCarHealth : MonoBehaviour
         //fa partire l animazione di fadeOUT
         anim.SetBool("fade", false);
         
+
+
+    }
+
+    public IEnumerator slowDown()
+    {
+        agent.speed = 0;
+        yield return new WaitForSeconds(1f);
+        agent.speed = actualSpeed;
 
 
     }
