@@ -7,6 +7,7 @@ TagManager:
   - turnLeft
   - turnRight
   - Enemy
+  - ItemBox
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - 
   - toIgnore
   - Ground
-  - 
+  - 3DUI
   - 
   - 
   - 

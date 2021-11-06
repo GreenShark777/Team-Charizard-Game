@@ -40,6 +40,9 @@ public class PlayerKartCtrl : MonoBehaviour
     //riferimento all'Animator del kart
     private Animator kartAnim;
 
+    [SerializeField]
+    private PlayerPosMinimap psm = default;
+
     //riferimento al manager delle cinematiche
     //[SerializeField]
     //private CinematicsManager cm = default;
@@ -262,6 +265,8 @@ public class PlayerKartCtrl : MonoBehaviour
         newVel.y = kartRb.velocity.y;
         //aggiorna la velocity al nuovo valore ottenuto
         kartRb.velocity = newVel;
+
+        if (psm) { psm.MovePlayerDot(newVel); }
 
     }
     /// <summary>
