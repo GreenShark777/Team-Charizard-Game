@@ -184,4 +184,6 @@ public class RespawnPlayer : MonoBehaviour
 
     }
 
+    public float GetActualRespawnTime() { return transitionTime + allowMovingTime; }
+
 }
