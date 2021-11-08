@@ -1,45 +1,38 @@
 ﻿//Si occupa di gestire la vita del giocatore e ciò che deve succedere quando viene colpito
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
-    //riferimento allo Slider che indica la vita rimanente al giocatore
+    //riferimento allo script di cambio dello Slider che indica la vita rimanente al giocatore
     [SerializeField]
-    private Slider healthSlider = default;
+    private SliderChange healthSlider = default;
     //riferimento allo script di respawn del giocatore, in caso di morte
     [SerializeField]
     private RespawnPlayer respawner = default;
 
     [SerializeField]
     private float health = 100, //indica la vita corrente del giocatore
-        sliderValueChangeRate = 10, //indica quanto velocemente la barra della vita deve cambiare
-        fasterSliderChangeRate = 100, //indica quanto velocemente la barra della vita deve cambiare quando deve essere più veloce
-        acceptableDist = 0.1f, //indica quanto vicino deve almeno essere lo slider della vita per smettere di cambiare
         reduceHitTimer = 0.5f, //indica per quanto tempo il giocatore riceve meno danni da attacchi(ciò avviene quando il giocatore viene colpito)
         reductionRate = 0.5f; //indica di quanto il danno ricevuto viene diminuito per attacchi in sequenza
 
-    private float maxHealth, //indica la vita massima del giocatore
-        startSliderChangeRate; //indica il valore iniziale del valore di aumento dello slider della vita
+    private float maxHealth; //indica la vita massima del giocatore
 
     //indica se i danni che il giocatore deve ricevere devono essere ridotti o meno
     private bool reduceDmg = false;
 
-    private Coroutine sliderChangeCoroutine, //riferimento alla Coroutine di cambio valore di slider attivo
-        reduceDmgCoroutine; //riferimento alla Coroutine di riduzione del danno
+    /*private Coroutine sliderChangeCoroutine, //riferimento alla Coroutine di cambio valore di slider attivo
+        reduceDmgCoroutine; //riferimento alla Coroutine di riduzione del danno*/
 
 
-    private void Awake()
+    private void Start()
     {
         //ottiene la vita massima
         maxHealth = health;
         //imposta il valore massimo dello slider della vita
-        healthSlider.maxValue = maxHealth;
+        healthSlider.ChangeSliderMaxValue(maxHealth);
         //porta il valore attuale dello slider alla vita massima del giocatore
-        healthSlider.value = maxHealth;
-        //ottiene il valore iniziale del valore di aumento dello slider della vita
-        startSliderChangeRate = sliderValueChangeRate;
+        healthSlider.ChangeSliderValue(maxHealth);
 
     }
     /// <summary>
@@ -59,27 +52,29 @@ public class PlayerHealth : MonoBehaviour
                 //...se il danno deve essere ridotto, la vita viene ricalcolata...
                 if (reduceDmg) { calculatedHealth -= value * reductionRate; /*Debug.Log("Reduced Damage");*/ }
                 //...e fa partire la coroutine per il timer che indica per quanto tempo i danni ricevuti vengono diminuiti
-                if (reduceDmgCoroutine != null) { StopCoroutine(reduceDmgCoroutine); }
-                reduceDmgCoroutine = StartCoroutine(ReduceDamage());
+                //if (reduceDmgCoroutine != null) { StopCoroutine(reduceDmgCoroutine); }
+                /*reduceDmgCoroutine = */StartCoroutine(ReduceDamage());
 
             }
             else //altrimenti sta ricevendo vita, quindi...
             {
 
-
+                //DARE UN FEEDBACK?
 
             }
             //in ogni caso, la vita del giocatore viene cambiata in base al valore ricevuto
             health = calculatedHealth;
             //la barra della vita del giocatore viene lentamente cambiata per combaciare con la vita attuale del giocatore
-            if (sliderChangeCoroutine != null) { StopCoroutine(sliderChangeCoroutine); Debug.LogError("Stop changing"); }
-            sliderChangeCoroutine = StartCoroutine(ChangeSliderValue(health > healthSlider.value));
+            //if (sliderChangeCoroutine != null) { StopCoroutine(sliderChangeCoroutine); /*Debug.LogError("Stop changing");*/ }
+            /*sliderChangeCoroutine = */StartCoroutine(healthSlider.ChangeSliderValueSlowly(health > healthSlider.GetSliderValue(), health));
             //infine, se il giocatore ha perso tutta la vita viene fatta partire la coroutine di distruzione temporanea
             if (health <= 0) { StartCoroutine(PlayerDestroyed()); }
 
         }
 
     }
+
+    /*
     /// <summary>
     /// Cambia lentamente il valore dello slider, fino ad arrivare al valore corrente della vita del giocatore
     /// </summary>
@@ -88,15 +83,17 @@ public class PlayerHealth : MonoBehaviour
     private IEnumerator ChangeSliderValue(bool increment)
     {
         //cambia il valore dello slider della vita per pareggiare la vita attuale del giocatore
-        healthSlider.value += sliderValueChangeRate * (increment ? Time.deltaTime : -Time.deltaTime);
+        healthSlider.ChangeSliderValue(healthSlider.GetSliderValue() + (sliderValueChangeRate * (increment ? Time.deltaTime : -Time.deltaTime)));
         //aspetta la fine del frame
         yield return new WaitForEndOfFrame();
-        Debug.Log("Dist: " + (healthSlider.value - health));
+        //Debug.Log("Dist: " + (healthSlider.value - health));
         //se la differenza tra il valore nello slider e la vita del giocatore è ancora troppo grande, continua a cambiare il valore dello slider
-        if (Mathf.Abs(healthSlider.value - health) >= acceptableDist) { StartCoroutine(ChangeSliderValue(health > healthSlider.value)); yield break; }
+        if (Mathf.Abs(healthSlider.GetSliderValue() - health) >= acceptableDist) { StartCoroutine(ChangeSliderValue(health > healthSlider.GetSliderValue())); yield break; }
         else if (sliderValueChangeRate != startSliderChangeRate) { sliderValueChangeRate = startSliderChangeRate; }
         
     }
+    */
+
     /// <summary>
     /// Fa ridurre i danni che il giocatore subisce per un po' di tempo
     /// </summary>
@@ -112,7 +109,10 @@ public class PlayerHealth : MonoBehaviour
         reduceDmg = false;
         //Debug.Log("No more reduction");
     }
-
+    /// <summary>
+    /// Comunica al Respawner che il giocatore è stato distrutto
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator PlayerDestroyed()
     {
         //porta la vita al valore minimo possibile
@@ -122,7 +122,7 @@ public class PlayerHealth : MonoBehaviour
         //aspetta un po'
         yield return new WaitForSeconds(respawner.GetActualRespawnTime());
         //fa in modo che la barra della vita si ricarichi più velocemente per questa volta
-        sliderValueChangeRate = fasterSliderChangeRate;
+        healthSlider.FastenChangeRate();
         //riporta la vita al valore massimo
         health = 0.1f;
         ChangeHealth(maxHealth);

@@ -90,8 +90,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5575412278410808968}
   - component: {fileID: 8745630666181216812}
-  - component: {fileID: 4335901290232725776}
   - component: {fileID: 466641059}
+  - component: {fileID: 2945483625887862588}
+  - component: {fileID: 4335901290232725776}
   m_Layer: 0
   m_Name: PlayerCollisionManager
   m_TagString: Player
@@ -125,19 +126,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a17f8fb70f05b246ad09a4dd036e90d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &4335901290232725776
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2535115863074978716}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.05, y: 3.3909461, z: 7.071741}
-  m_Center: {x: 0, y: 0.26047313, z: -0.36986256}
 --- !u!114 &466641059
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +138,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98d0d153b38bdbf459b863ef96289570, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthSlider: {fileID: 0}
+  respawner: {fileID: 0}
+  health: 100
+  sliderValueChangeRate: 5
+  fasterSliderChangeRate: 50
+  acceptableDist: 0.1
+  reduceHitTimer: 1.5
+  reductionRate: 0.5
+--- !u!114 &2945483625887862588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2535115863074978716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e517b4f9508c943bf4c3eb39b4ef43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &4335901290232725776
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2535115863074978716}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.05, y: 3.4, z: 7}
+  m_Center: {x: 0, y: 0.26, z: -0.37}
 --- !u!1 &2609232432997486886
 GameObject:
   m_ObjectHideFlags: 0
