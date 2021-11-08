@@ -10,6 +10,8 @@ public class PlayerHealth : MonoBehaviour
     //riferimento allo script di respawn del giocatore, in caso di morte
     [SerializeField]
     private RespawnPlayer respawner = default;
+    //riferimento allo script che si occupa dell'abilità del giocatore
+    private PlayerAbility pa;
 
     [SerializeField]
     private float health = 100, //indica la vita corrente del giocatore
@@ -18,8 +20,8 @@ public class PlayerHealth : MonoBehaviour
 
     private float maxHealth; //indica la vita massima del giocatore
 
-    //indica se i danni che il giocatore deve ricevere devono essere ridotti o meno
-    private bool reduceDmg = false;
+    private bool reduceDmg = false, //indica se i danni che il giocatore deve ricevere devono essere ridotti o meno
+        shieldActive = false; //indica se lo scudo del giocatore è attivo
 
     /*private Coroutine sliderChangeCoroutine, //riferimento alla Coroutine di cambio valore di slider attivo
         reduceDmgCoroutine; //riferimento alla Coroutine di riduzione del danno*/
@@ -33,6 +35,8 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.ChangeSliderMaxValue(maxHealth);
         //porta il valore attuale dello slider alla vita massima del giocatore
         healthSlider.ChangeSliderValue(maxHealth);
+        //ottiene il riferimento allo script che si occupa dell'abilità del giocatore
+        pa = GetComponent<PlayerAbility>();
 
     }
     /// <summary>
@@ -49,15 +53,31 @@ public class PlayerHealth : MonoBehaviour
             //se il valore ricevuto è minore di 0, vuol dire che sta ricevendo danno, quindi...
             if (value < 0)
             {
-                //...se il danno deve essere ridotto, la vita viene ricalcolata...
-                if (reduceDmg) { calculatedHealth -= value * reductionRate; /*Debug.Log("Reduced Damage");*/ }
-                //...e fa partire la coroutine per il timer che indica per quanto tempo i danni ricevuti vengono diminuiti
-                //if (reduceDmgCoroutine != null) { StopCoroutine(reduceDmgCoroutine); }
-                /*reduceDmgCoroutine = */StartCoroutine(ReduceDamage());
+                //...se lo scudo non è attivo...
+                if (!shieldActive)
+                {
+                    //...controlla se il danno deve essere ridotto, nel qual caso la vita viene ricalcolata...
+                    if (reduceDmg) { calculatedHealth -= value * reductionRate; /*Debug.Log("Reduced Damage");*/ }
+                    //...e fa partire la coroutine per il timer che indica per quanto tempo i danni ricevuti vengono diminuiti
+                    //if (reduceDmgCoroutine != null) { StopCoroutine(reduceDmgCoroutine); }
+                    /*reduceDmgCoroutine = */
+                    StartCoroutine(ReduceDamage());
+
+                }
+                else //altrimenti...
+                {
+                    //...lo scudo viene disattivato...
+                    pa.EndOfAbility();
+                    //...e il giocatore non subisce danno
+                    calculatedHealth = health;
+
+                }
 
             }
             else //altrimenti sta ricevendo vita, quindi...
             {
+                //...controlla se ha superato la vita massima, nel qual caso glielo impedisce
+                calculatedHealth = Mathf.Clamp(calculatedHealth, maxHealth, maxHealth);
 
                 //DARE UN FEEDBACK?
 
@@ -128,5 +148,15 @@ public class PlayerHealth : MonoBehaviour
         ChangeHealth(maxHealth);
 
     }
+    /// <summary>
+    /// Permette di comunicare allo script se lo scudo del giocatore è attivo o meno
+    /// </summary>
+    /// <param name="status"></param>
+    public void ShieldStatus(bool status) { shieldActive = status; }
+    /// <summary>
+    /// Ritorna lo stato dello scudo del giocatore
+    /// </summary>
+    /// <returns></returns>
+    public bool IsShieldActive() { return shieldActive; }
 
 }

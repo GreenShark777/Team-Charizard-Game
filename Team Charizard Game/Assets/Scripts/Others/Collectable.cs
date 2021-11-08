@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class Collectable : MonoBehaviour
 {
-    //riferimento al
+    //riferimento al testo che ndica il numero di collezionabili ottenuti
     [SerializeField]
     private Text nCollectedText = default;
     //riferimento all'Animator di questo collezionabile

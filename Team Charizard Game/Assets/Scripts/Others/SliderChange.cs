@@ -16,6 +16,9 @@ public class SliderChange : MonoBehaviour
     private float startSliderChangeRate, //indica il valore iniziale del valore di aumento dello slider della vita
         targetValue; //indica il valore a cui bisogna arrivare
 
+    //riferimento al metodo da richiamare una volta raggiunto il valore obiettivo
+    public delegate void MethodToRecall();
+
     private void Awake()
     {
         //ottiene il riferimento allo slider di cui bisogna cambiare il valore
@@ -45,7 +48,7 @@ public class SliderChange : MonoBehaviour
     /// <param name="increment"></param>
     /// <param name="targetValue"></param>
     /// <returns></returns>
-    public IEnumerator ChangeSliderValueSlowly(bool increment, float newTargetValue)
+    public IEnumerator ChangeSliderValueSlowly(bool increment, float newTargetValue, MethodToRecall method = null)
     {
         //aggiorna il valore obiettivo
         targetValue = newTargetValue;
@@ -53,10 +56,18 @@ public class SliderChange : MonoBehaviour
         slider.value += (sliderValueChangeRate * (increment ? Time.deltaTime : -Time.deltaTime));
         //aspetta la fine del frame
         yield return new WaitForEndOfFrame();
-        //Debug.Log("Dist: " + (healthSlider.value - health));
+        //Debug.Log("Dist: " + (Mathf.Abs(slider.value - targetValue)) + " -> To Increment? " + increment + " || val: " + slider.value + " target: " + targetValue);
         //se la differenza tra il valore nello slider e la vita del giocatore è ancora troppo grande, continua a cambiare il valore dello slider
-        if (Mathf.Abs(slider.value - targetValue) >= acceptableDist) { StartCoroutine(ChangeSliderValueSlowly(targetValue > slider.value, targetValue)); yield break; }
-        else if (sliderValueChangeRate != startSliderChangeRate) { sliderValueChangeRate = startSliderChangeRate; }
+        if (Mathf.Abs(slider.value - targetValue) >= acceptableDist) { StartCoroutine(ChangeSliderValueSlowly(targetValue > slider.value, targetValue, method)); yield break; }
+        //altrimenti, si è arrivati al valore obiettivo, quindi...
+        else
+        {
+            //...se il riferimento al metodo da richiamare non è nullo, richiama quella funzione...
+            if (method != null) { method(); }
+            //...e se la velocità di cambio del valore non è uguale a quella iniziale, la riporta al valore iniziale
+            if (sliderValueChangeRate != startSliderChangeRate) { sliderValueChangeRate = startSliderChangeRate; }
+
+        }
 
     }
     /// <summary>
