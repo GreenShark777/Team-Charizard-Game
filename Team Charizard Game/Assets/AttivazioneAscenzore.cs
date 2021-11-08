@@ -29,7 +29,7 @@ public class AttivazioneAscenzore : MonoBehaviour
         kart.IsAffectedByGravity(true);
         kart.enabled = false;
         Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.None;
         menu.gameObject.SetActive(true);
        
     }
@@ -39,7 +39,7 @@ public class AttivazioneAscenzore : MonoBehaviour
         pLayer.transform.parent = null;
         kart.enabled = true;
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Locked;
         menu.gameObject.SetActive(false);
     }
 
@@ -47,7 +47,7 @@ public class AttivazioneAscenzore : MonoBehaviour
     {
         kart.enabled = true;
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Locked;
         menu.gameObject.SetActive(false);
         
     }
