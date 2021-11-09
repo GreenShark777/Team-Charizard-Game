@@ -183,7 +183,10 @@ public class RespawnPlayer : MonoBehaviour
         dirToFaceAfterRespawn[checkpointID] = dirToFace;
 
     }
-
+    /// <summary>
+    /// Ritorna il tempo che impiega il giocatore a respawnare
+    /// </summary>
+    /// <returns></returns>
     public float GetActualRespawnTime() { return transitionTime + allowMovingTime; }
 
 }

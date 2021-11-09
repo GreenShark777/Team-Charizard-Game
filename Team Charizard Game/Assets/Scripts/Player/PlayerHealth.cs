@@ -12,13 +12,19 @@ public class PlayerHealth : MonoBehaviour
     private RespawnPlayer respawner = default;
     //riferimento allo script che si occupa dell'abilità del giocatore
     private PlayerAbility pa;
+    //riferimento all'animator del kart del giocatore
+    [SerializeField]
+    private Animator playerKartAnim = default;
+    //riferimento al Rigidbody del giocatore
+    private Rigidbody playerRb;
 
     [SerializeField]
     private float health = 100, //indica la vita corrente del giocatore
         reduceHitTimer = 0.5f, //indica per quanto tempo il giocatore riceve meno danni da attacchi(ciò avviene quando il giocatore viene colpito)
         reductionRate = 0.5f; //indica di quanto il danno ricevuto viene diminuito per attacchi in sequenza
 
-    private float maxHealth; //indica la vita massima del giocatore
+    //indica la vita massima del giocatore
+    private float maxHealth;
 
     private bool reduceDmg = false, //indica se i danni che il giocatore deve ricevere devono essere ridotti o meno
         shieldActive = false; //indica se lo scudo del giocatore è attivo
@@ -37,6 +43,8 @@ public class PlayerHealth : MonoBehaviour
         healthSlider.ChangeSliderValue(maxHealth);
         //ottiene il riferimento allo script che si occupa dell'abilità del giocatore
         pa = GetComponent<PlayerAbility>();
+
+        playerRb = GetComponentInParent<Rigidbody>();
 
     }
     /// <summary>
@@ -135,6 +143,12 @@ public class PlayerHealth : MonoBehaviour
     /// <returns></returns>
     private IEnumerator PlayerDestroyed()
     {
+        //fa partire l'animazione di distruzione del giocatore
+        playerKartAnim.SetBool("destroyed", true);
+        //rimuove tutti i constraint alla rotazione del rigidbody del giocatore
+        playerRb.constraints = RigidbodyConstraints.None;
+        //fa in modo che la barra della vita si scarichi più velocemente per questa volta
+        healthSlider.FastenChangeRate();
         //porta la vita al valore minimo possibile
         health = 0;
         //comunica allo script di respawn che il giocatore è stato sconfitto
@@ -146,6 +160,12 @@ public class PlayerHealth : MonoBehaviour
         //riporta la vita al valore massimo
         health = 0.1f;
         ChangeHealth(maxHealth);
+        //carica al massimo l'abilità del giocatore
+        pa.RefillCharge();
+        //fa terminare l'animazione di distruzione del giocatore
+        playerKartAnim.SetBool("destroyed", false);
+        //riporta tutti i constraint alla rotazione del rigidbody del giocatore
+        playerRb.constraints = RigidbodyConstraints.FreezeRotation;
 
     }
     /// <summary>

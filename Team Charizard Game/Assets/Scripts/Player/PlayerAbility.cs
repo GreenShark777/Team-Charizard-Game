@@ -104,4 +104,14 @@ public class PlayerAbility : MonoBehaviour
         //Debug.Log("End Of Ability: " + ph.IsShieldActive());
     }
 
+    public void RefillCharge()
+    {
+        //fa in modo che la barra dell'abilità si ricarichi più velocemente per questa volta
+        abilitySlider.FastenChangeRate();
+        //riporta la carica al massimo e cambia il valore dello slider
+        charge = maxCharge - chargeAmount;
+        Recharge();
+
+    }
+
 }
