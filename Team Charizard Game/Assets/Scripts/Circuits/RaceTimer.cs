@@ -32,7 +32,7 @@ public class RaceTimer : MonoBehaviour
         //converte i millisecondi in testo, e aggiunge uno zero dietro nel caso i millisecondi non siano 10 o più
         string millisecondsInText = ((int)milliseconds < 10) ? "0" + (int)milliseconds : "" + (int)milliseconds;
         //aggiorna il testo in base ai minuti, secondi e millisecondi dall'inizio della gara
-        timeSpentText.text = minutes + ":" + secondsInText + "." + millisecondsInText;
+        timeSpentText.text = minutes + ":" + secondsInText + "." + millisecondsInText.Substring(0, millisecondsInText.Length - 1);
         //se si arriva al massimo numero consentito di minuti, secondi e millisecondi...
         if (minutes == 99 && seconds == 59 && milliseconds >= 99)
         {

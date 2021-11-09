@@ -10,7 +10,9 @@ public class RaceStartCD : MonoBehaviour
     //riferimento allo script di movimento del kart del giocatore
     [SerializeField]
     private PlayerKartCtrl kartCtrl = default;
-
+    //riferimento al manager delle collisioni del giocatore
+    [SerializeField]
+    private GameObject playerCollisionsManager = default;
     //riferimenti alle mesh dei giudici di gara(i ragazzi semaforo)
     [SerializeField]
     private SkinnedMeshRenderer redBoySMR = default,
@@ -42,6 +44,8 @@ public class RaceStartCD : MonoBehaviour
     {
         //fa in modo che il giocatore non possa muoversi fino alla fine del countdown
         kartCtrl.enabled = false;
+        //disattiva il manager delle collisioni del giocatore, in modo che non possa subire danni o usare la sua abilità
+        playerCollisionsManager.SetActive(false);
         //si disabilita, per aspettare che la cinematica di inizio gara finisca
         enabled = false;
         //ottiene i riferimenti agli Animator dei giudici di gara
@@ -100,6 +104,8 @@ public class RaceStartCD : MonoBehaviour
         raceTimer.enabled = true;
         //comunica che la gara è iniziata
         raceBegun = true;
+        //riattiva il manager delle collisioni del giocatore, in modo che possa subire danni e usare la sua abilità
+        playerCollisionsManager.SetActive(true);
         //infine, comunica al giocatore che la gara è iniziata e potrà guidare
         kartCtrl.RaceBegun();
         //Debug.LogError("Race Begun");

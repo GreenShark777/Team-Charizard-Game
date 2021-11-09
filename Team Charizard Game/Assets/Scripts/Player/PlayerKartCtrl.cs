@@ -68,9 +68,13 @@ public class PlayerKartCtrl : MonoBehaviour
 
     //VARIABILI DI STERZAMENTO DEL KART
     [Header("Kart Steer")]
-    //indica quanto velocemente ruotano le ruote del kart
+    //indica quanto velocemente ruota il kart
     [SerializeField]
     private float steerSpeed = 3;
+    
+    [SerializeField]
+    private float steerSpeedNoMov = 12, //indica quanto velocemente ruota il kart quando il giocatore è fermo
+        acceptNoMov = 0.5f; //indica quanta poca velocità il giocatore deve avere per essere considerato fermo
 
     [SerializeField]
     private float maxSteerInDrift = 1.5f, //indica il valore massimo di sterzata in drift verso la direzione in cui si sta driftando
@@ -311,9 +315,13 @@ public class PlayerKartCtrl : MonoBehaviour
         }
         //dopo tutti i controlli e calcoli, aggiorna la rotazione del kart
         kart.localRotation = newKartRotation;
-        //calcola quanto si può sterzare in base alla velocità a cui il giocatore sta andando(maggiore la velocità, maggiore la resistenza allo sterzamento)
-        float steerAmount = (realSpeed > steerResistSpeed) ? realSpeed / maxResist * steerDirection 
-                                                           : realSpeed / minResist * steerDirection;
+        /*
+         * calcola quanto si può sterzare in base alla velocità a cui il giocatore sta andando(maggiore la velocità, maggiore la resistenza allo sterzamento)
+         * se il giocatore è fermo, ruoterà su sè stesso
+         */
+        float steerAmount = (Mathf.Abs(currentSpeed) <= acceptNoMov) ? steerDirection * steerSpeedNoMov
+                                                                     : (realSpeed > steerResistSpeed) ? realSpeed / maxResist * steerDirection
+                                                                                                      : realSpeed / minResist * steerDirection;
 
         //infine, calcola e ruota il kart nella direzione in cui si sta sterzando
         Vector3 steerDirVect = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y + steerAmount, transform.eulerAngles.z);
@@ -651,5 +659,26 @@ public class PlayerKartCtrl : MonoBehaviour
 
     }
 
+    private void OnDisable()
+    {
+        //ferma tutti i particellari di boost, se non lo sono già
+        for (int i = 0; i < boostPS.childCount; i++)
+        {
+
+            ParticleSystem cycledBoostPS = boostPS.GetChild(i).GetComponent<ParticleSystem>();
+
+            if (cycledBoostPS.isPlaying) { cycledBoostPS.Stop(); }
+
+        }
+        //ferma tutti i particellari di drift, se non lo sono già
+        for (int i = 0; i < driftsPSContainer.childCount; i++)
+        {
+
+            ParticleSystem cycledBoostPS = driftsPSContainer.GetChild(i).GetComponent<ParticleSystem>();
+
+            if (cycledBoostPS.isPlaying) { cycledBoostPS.Stop(); }
+
+        }
+    }
 
 }

@@ -7,7 +7,7 @@ public class ShootingTrapBehaviour : MonoBehaviour
 {
     //riferimento al proiettile da sparare
     private Transform projectile;
-
+    //riferimento al rigidbody del proiettile
     private Rigidbody projectileRb;
 
     //riferimento al Rigidbody del proiettile
