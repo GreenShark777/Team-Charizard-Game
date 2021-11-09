@@ -84,6 +84,7 @@ GameObject:
   m_Component:
   - component: {fileID: 148025239}
   - component: {fileID: 148025240}
+  - component: {fileID: 148025241}
   m_Layer: 5
   m_Name: HealthSlider
   m_TagString: Untagged
@@ -161,6 +162,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &148025241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 148025238}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0554e44df494a4295b7cb218c54674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliderValueChangeRate: 5
+  fasterSliderChangeRate: 50
+  acceptableDist: 0.1
 --- !u!1 &198752460
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,7 +812,7 @@ RectTransform:
   m_GameObject: {fileID: 792137212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.53101, y: 0.53101, z: 0.53101}
+  m_LocalScale: {x: 0.53, y: 0.53, z: 0.53}
   m_Children:
   - {fileID: 536970940}
   - {fileID: 2002075957}
@@ -1313,6 +1329,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1478441073}
   - component: {fileID: 1478441074}
+  - component: {fileID: 1478441075}
   m_Layer: 5
   m_Name: AbilitySlider
   m_TagString: Untagged
@@ -1382,7 +1399,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_FillRect: {fileID: 1859068338}
   m_HandleRect: {fileID: 0}
-  m_Direction: 0
+  m_Direction: 1
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
@@ -1390,6 +1407,21 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1478441075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478441072}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe0554e44df494a4295b7cb218c54674, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sliderValueChangeRate: 10
+  fasterSliderChangeRate: 100
+  acceptableDist: 0.1
 --- !u!1 &1595625173
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,7 +1620,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.000061035156, y: 0.000030517578}
+  m_AnchoredPosition: {x: 0.000061035156, y: 0.000030517578}
   m_SizeDelta: {x: 0.000061035156, y: -0.000024795532}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1859068340
