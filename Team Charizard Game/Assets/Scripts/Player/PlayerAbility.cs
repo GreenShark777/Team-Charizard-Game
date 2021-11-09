@@ -61,7 +61,7 @@ public class PlayerAbility : MonoBehaviour
         if (!canUse && !ph.IsShieldActive())
         {
             //...ricarica l'abilità...
-            charge += chargeAmount;
+            charge = (usedAbility) ? 0 : Mathf.Clamp(charge + chargeAmount, 0, maxCharge);
             //...comunica se si può utilizzare o meno l'abilità, in base al livello di carica...
             canUse = charge >= maxCharge;
             //...e cambia il valore dello slider dell'abilità(nel caso l'abilità sia stata usata, passa come riferimento il metodo da richiamare a fine abilità)
@@ -84,7 +84,7 @@ public class PlayerAbility : MonoBehaviour
         //comunica che l'abilità non può più essere utilizzata
         canUse = false;
         //riporta la carica a 0 e cambia il valore dello slider
-        charge = 0 - chargeAmount;
+        //charge = 0 - chargeAmount;
         Recharge(true);
         //attiva lo scudo
         playerShield.SetActive(true);
