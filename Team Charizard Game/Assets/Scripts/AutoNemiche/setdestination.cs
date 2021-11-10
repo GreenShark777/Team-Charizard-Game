@@ -56,7 +56,7 @@ public class setdestination : MonoBehaviour
 
     void groundCheck()
     {
-        Debug.Log("GROUNDCHECK");
+        
         //crea un RayCast        
         RaycastHit hit;         
         //fa partire il raycast dal centro del kart e lo fa andare verso sotto, se entro la distanza impostata c'è del terreno...        

@@ -11,7 +11,7 @@ public class enemyCarHealth : MonoBehaviour
 
 
     private float startHealth;
-    [SerializeField]
+    
     private float healthRef 
     {
 
@@ -19,6 +19,12 @@ public class enemyCarHealth : MonoBehaviour
 
         set
         {
+            if(healthRef >3)
+            {
+                sparks.SetActive(false);
+                sparks2.SetActive(false);
+                
+            }
 
             health = value;
 
@@ -31,6 +37,7 @@ public class enemyCarHealth : MonoBehaviour
                 sparks.SetActive(true);
 
             }
+            
 
             if (healthRef < 2 && healthRef >= 1)
             {
@@ -77,12 +84,20 @@ public class enemyCarHealth : MonoBehaviour
     private Transform player;
     [SerializeField]
     private NavMeshAgent agent;
+    [SerializeField]
+    private Animator carAnimator;
+    [SerializeField]
+    private Transform kart;
 
+    private Vector3 rightKartPosition;
     bool isKillable;
     float actualSpeed;
     Animator anim;
+    bool isExecuted;
     private void Start()
     {
+        rightKartPosition = kart.localPosition;
+        carAnimator.enabled = false;
         actualSpeed = agent.speed;
         //imposta starthealt = al valore di health in modo da avere sempre un riferimento alla salute massima
         startHealth = health;
@@ -116,9 +131,9 @@ public class enemyCarHealth : MonoBehaviour
             {
                 //parte animazione fadeOUT
                 anim.SetBool("fade", true);
-                if (Input.GetKeyDown(KeyCode.K))
+                if (Input.GetKeyDown(KeyCode.K) && isExecuted == false)
                 {
-
+                    StartCoroutine(Esecuzione());
                     Debug.Log("esecuzione");
 
                 }
@@ -154,11 +169,44 @@ public class enemyCarHealth : MonoBehaviour
 
     public IEnumerator slowDown()
     {
+        //imposta la velocità a 0
         agent.speed = 0;
         yield return new WaitForSeconds(1f);
+
+        //rimette la velocità a quella iniziale
         agent.speed = actualSpeed;
 
 
     }
+
+
+    IEnumerator Esecuzione()
+    {
+        //rende la variabile true per evitare che possa essere richiamata più volte
+        isExecuted = true;
+        //attiva l animator
+        carAnimator.enabled = true;
+        //passaggio da idle alla substateMachine
+        carAnimator.SetBool("death", true);
+        //setta questa variabile random, in modo da far partire un animazione random
+        carAnimator.SetInteger("deathIndex", Random.Range(0, 4));
+        //aspetta 3 secondi
+        yield return new WaitForSeconds(1.5f);
+        
+        carAnimator.SetInteger("deathIndex", Random.Range(0, 4));
+        //rende la variaible falsa per tornare all idle
+        carAnimator.SetBool("death", false);
+        //disattiva l animator
+        carAnimator.enabled = false;
+        //permette di ripetere tutto da capo
+        isExecuted = false;
+        //riposiziona il kart alla giusta posizione
+        kart.localPosition = rightKartPosition;
+
+        Debug.Log("fineEsecuzione");
+
+
+    }
+
 
 }
