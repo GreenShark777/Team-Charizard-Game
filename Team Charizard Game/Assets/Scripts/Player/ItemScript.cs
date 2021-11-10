@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿//Si occupa dell'uso e ottenimento degli oggetti da parte del giocatore
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ItemScript : MonoBehaviour
 {
@@ -9,38 +8,36 @@ public class ItemScript : MonoBehaviour
     private const int N_ITEMS = 5;
     //indica se il giocatore ha un oggetto
     private bool hasItem = false;
-    //riferimento al contenitore degli oggetti
+    
     [SerializeField]
-    private Transform itemsContainer = default;
+    private Transform itemsContainer = default, //riferimento al contenitore degli oggetti
+        itemsUseSpawn = default; //riferimento al punto di spawn degli oggetti quando vengono usati
+
     //array di riferimenti agli oggetti che il giocatore può usare
-    [SerializeField]
+    //[SerializeField]
     private GameObject[] itemsGameobject = new GameObject[N_ITEMS];
     //riferimento al contenitore degli sprite degli oggetti
     [SerializeField]
     private Transform spritesContainer = default;
     //array di riferimenti agli sprite degli oggetti
-    [SerializeField]
-    private GameObject[] itemsSprites = new GameObject[N_ITEMS];
-
-    //riferimento all'immagine di cui bisogna cambiare lo sprite per comunicare al giocatore l'oggetto ottenuto
     //[SerializeField]
-    //private  Image yourSprite = default;
-
+    private GameObject[] itemsSprites = new GameObject[N_ITEMS];
     //riferimento all'Animator della UI degli oggetti
     [SerializeField]
     private Animator itemUIAnim = default;
     //indica l'oggetto ottenuto dal giocatore
     private int obtainedItemIndex;
-    //indica quanto tempo deve passare dall'inizio dell'animazione di scelta alla sua fine
+    
     [SerializeField]
-    private float chooseTimer = 4;
+    private float chooseTimer = 4, //indica quanto tempo deve passare dall'inizio dell'animazione di scelta alla sua fine
+        boxReactivationTimer = 1; //indica dopo quanto tempo una cassa oggetti viene riattivata
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        //ottiene i riferimenti agli oggetti che il giocatore può usare quando li ottiene
-        for (int i = 0; i < N_ITEMS; i++) { itemsGameobject[i] = itemsContainer.GetChild(i).gameObject; }
+        //ottiene i riferimenti agli oggetti che il giocatore può usare quando li ottiene e li disattiva
+        for (int i = 0; i < N_ITEMS; i++) { itemsGameobject[i] = itemsContainer.GetChild(i).gameObject; itemsGameobject[i].SetActive(false); }
         //ottiene i riferimenti alle immagini nella UI degli oggetti che il giocatore può usare
         for (int j = 0; j < N_ITEMS; j++) { itemsSprites[j] = spritesContainer.GetChild(j).gameObject; }
 
@@ -58,42 +55,17 @@ public class ItemScript : MonoBehaviour
 
     }
 
-    /*private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "ItemBox")
-        {
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
-            other.transform.GetChild(1).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false; //question mark
-
-            other.transform.GetChild(2).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false; //box
-            other.transform.GetChild(2).GetChild(2).GetComponent<SkinnedMeshRenderer>().enabled = false; //box
-
-            other.gameObject.GetComponent<Animator>().SetBool("Enlarge", false); //reset to start process
-                                                                                 //StartCoroutine(getItem());
-                                                                                 // ItemUIAnim.SetBool("ItemIn", true);
-                                                                                 //ItemUiScroll.SetBool("Scroll", true);
-            Debug.Log("Triggerato");
-            //re-enable
-           // yield return new WaitForSeconds(1);
-            other.transform.GetChild(1).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true; //question mark
-            for (int i = 1; i < 3; i++)
-            {
-                other.transform.GetChild(2).GetChild(i).GetComponent<SkinnedMeshRenderer>().enabled = true; //box
-            }
-           // other.gameObject.GetComponent<Animator>().SetBool("Enlarge", true);  //show the item box spawning with animation, even though it was already there
-            other.gameObject.GetComponent<BoxCollider>().enabled = true;
-        }
-
-    }*/
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log("Trigger");
-
         //se si collide con una cassa oggetto, la cassa viene disabilitata per un po' e il giocatore ottiene un oggetto casuale
-        if (other.CompareTag("ItemBox")) { StartCoroutine(UsedUpCD(other)); }
+        if (other.CompareTag("ItemBox")) { StartCoroutine(UsedUpCD(other.gameObject)); }
 
     }
 
+    /// <summary>
+    /// Si occupa delle tempistiche dallo scontro con la cassa oggetti all'ottenimento dell'oggetto casuale
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator getItem()
     {
         //se non si ha già un oggetto...
@@ -102,16 +74,11 @@ public class ItemScript : MonoBehaviour
             //...prende casualmente un indice che indicherà l'oggetto ottenuto dal giocatore...
             obtainedItemIndex = Random.Range(0, N_ITEMS);
             //...fa partire l'animazione di scelta della UI di oggetto ottenuto...
-            itemUIAnim.enabled = true;
             itemUIAnim.SetBool("ChoosingItem", true);
             //...aspetta un po'...
             yield return new WaitForSeconds(chooseTimer);
             //...ferma l'animazione di scelta oggetti della UI...
             itemUIAnim.SetBool("HasItem", true);
-
-            //itemUIAnim.enabled = false;
-            //yield return new WaitForSeconds(0.2f);
-
             //...mostra lo sprite dell'oggetto ottenuto...
             ShowObtainedItemSprite();
             //...e comunica che il giocatore ha un oggetto e non può ottenerne altri fino a quando non lo usa
@@ -120,7 +87,9 @@ public class ItemScript : MonoBehaviour
         }
 
     }
-
+    /// <summary>
+    /// Si occupa di richiamare la funzione dell'oggetto ottenuto quando viene premuto il tasto di uso
+    /// </summary>
     private void useItem()
     {
         //se il giocatore preme il tasto di uso oggetti...
@@ -131,28 +100,32 @@ public class ItemScript : MonoBehaviour
             //...riporta l'Animator allo stato iniziale...
             itemUIAnim.SetBool("HasItem", false);
             itemUIAnim.SetBool("ChoosingItem", false);
-            //itemUIAnim.enabled = false;
+            //...porta l'oggetto usato alla posizione di spawn per l'uso...
+            itemsGameobject[obtainedItemIndex].transform.position = itemsUseSpawn.position;
+            //...e attiva l'oggetto usato...
+            itemsGameobject[obtainedItemIndex].SetActive(true);
+            //...richiama l'interfaccia da oggetto dell'oggetto ottenuto per attivarlo
 
-            // ItemUIAnim.SetBool("ItemIn", false);
-            // ItemUiScroll.SetBool("Scroll", false);
-            //itemGameobjects[index].SetActive(false);
-
-            //...attiva l'oggetto ottenuto...
-            //itemsGameobject[obtainedItemIndex].SetActive(true);
-
-            //...porta l'oggetto usato alla posizione del giocatore
-            itemsGameobject[obtainedItemIndex].transform.position = transform.position;
             Debug.Log("Oggetto usato: " + obtainedItemIndex);
         }
 
     }
-
-    private IEnumerator UsedUpCD(Collider other)
+    /// <summary>
+    /// Si occupa della tempistica di riattivazione della cassa oggetti
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    private IEnumerator UsedUpCD(GameObject itemBox)
     {
         //ottiene come riferimento il collider della cassa oggetti ottenuta
-        Collider itemBoxColl = other.GetComponent<BoxCollider>();
+        //Collider itemBoxColl = other.GetComponent<BoxCollider>();
+
         //disattiva il collider della cassa oggetti
-        itemBoxColl.enabled = false;
+        //itemBoxColl.enabled = false;
+
+        //disattiva la cassa oggetti
+        itemBox.SetActive(false);
+
 
         //other.transform.GetChild(1).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false; //question mark
         //other.transform.GetChild(2).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = false; //box
@@ -168,9 +141,12 @@ public class ItemScript : MonoBehaviour
         //re-enable
 
         //aspetta un po' di tempo
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(boxReactivationTimer);
+        //infine, riattiva la cassa oggetti
+        itemBox.SetActive(true);
+
         //infine, riattiva il collider della cassa oggetti previamente usata
-        itemBoxColl.enabled = true;
+        //itemBoxColl.enabled = true;
 
         //other.transform.GetChild(1).GetChild(1).GetComponent<SkinnedMeshRenderer>().enabled = true; //question mark
 

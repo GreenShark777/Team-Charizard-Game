@@ -14,23 +14,10 @@ public class Ai_Progliettile : MonoBehaviour
     public bool vedo;
 
     public NavMeshAgent agente;
-
-
+    // Start is called before the first frame update
     void Start()
     {
-        /*
-         * (GABRIELE) disattivato in modo che quando viene caricata la scena il NavMeshAgent possa correttamente avere la sua NavMesh e 
-         * possa ottenere il bersaglio quando viene riattivato
-         */
-        gameObject.SetActive(false);
-
-    }
-
-    private void OnEnable()
-    {
-        
-        //(GABRIELE)QUI DEVE OTTENERE IL BESAGLIO
-
+       
     }
 
     // Update is called once per frame

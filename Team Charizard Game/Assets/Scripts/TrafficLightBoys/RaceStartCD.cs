@@ -44,8 +44,6 @@ public class RaceStartCD : MonoBehaviour
     {
         //fa in modo che il giocatore non possa muoversi fino alla fine del countdown
         kartCtrl.enabled = false;
-        //disattiva il manager delle collisioni del giocatore, in modo che non possa subire danni o usare la sua abilità
-        playerCollisionsManager.SetActive(false);
         //si disabilita, per aspettare che la cinematica di inizio gara finisca
         enabled = false;
         //ottiene i riferimenti agli Animator dei giudici di gara
@@ -57,6 +55,8 @@ public class RaceStartCD : MonoBehaviour
 
     private void Start()
     {
+        //disattiva il manager delle collisioni del giocatore, in modo che non possa subire danni o usare la sua abilità
+        playerCollisionsManager.SetActive(false);
         //fa partire la coroutine per il countdown all'inizio della gara
         StartCoroutine(StartRaceCountdown());
 
