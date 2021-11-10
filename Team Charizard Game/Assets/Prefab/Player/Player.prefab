@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 8745630666181216812}
   - component: {fileID: 466641059}
   - component: {fileID: 2945483625887862588}
+  - component: {fileID: 5907481769299931601}
   - component: {fileID: 4335901290232725776}
   m_Layer: 0
   m_Name: PlayerCollisionManager
@@ -161,6 +162,24 @@ MonoBehaviour:
   charge: 100
   chargeAmount: 10
   recoveryAmount: 5
+--- !u!114 &5907481769299931601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2535115863074978716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4058b6b0ebb77f408cc3ba010d402c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemGameobjects:
+  - {fileID: 0}
+  itemSprites: []
+  yourSprite: {fileID: 0}
+  ItemUIAnim: {fileID: 0}
+  ItemUiScroll: {fileID: 0}
 --- !u!65 &4335901290232725776
 BoxCollider:
   m_ObjectHideFlags: 0

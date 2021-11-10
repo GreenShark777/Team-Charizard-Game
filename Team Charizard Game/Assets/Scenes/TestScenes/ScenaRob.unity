@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -626,28 +626,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1577766744}
   m_PrefabAsset: {fileID: 0}
---- !u!195 &1361609153
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361609149}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 80
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1402540966
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -800,96 +778,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 534210501808711349, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.47172
-      objectReference: {fileID: 0}
-    - target: {fileID: 534210501808711349, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.47172
-      objectReference: {fileID: 0}
-    - target: {fileID: 534210501808711349, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.47172
-      objectReference: {fileID: 0}
-    - target: {fileID: 630286720649135350, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 630286720649135350, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.465419
-      objectReference: {fileID: 0}
-    - target: {fileID: 630286720649135350, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.4654188
-      objectReference: {fileID: 0}
-    - target: {fileID: 630286720649135350, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2.5660763
-      objectReference: {fileID: 0}
-    - target: {fileID: 630286720649135350, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 630286720649135350, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.0000014454126
-      objectReference: {fileID: 0}
-    - target: {fileID: 630286720649135350, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1107985230929164078, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1372490537058826112, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1500666261277803608, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1500666261277803608, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.49999928
-      objectReference: {fileID: 0}
-    - target: {fileID: 1500666261277803608, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.49999928
-      objectReference: {fileID: 0}
-    - target: {fileID: 1500666261277803608, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.5000008
-      objectReference: {fileID: 0}
-    - target: {fileID: 1500666261277803608, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.5000008
-      objectReference: {fileID: 0}
-    - target: {fileID: 1500666261277803608, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90.00001
-      objectReference: {fileID: 0}
     - target: {fileID: 1839623043984405806, guid: 1d6fb020317734e41a1dc617ecfe740c,
         type: 3}
       propertyPath: m_Name
@@ -900,23 +788,7 @@ PrefabInstance:
       propertyPath: bersaglio
       value: 
       objectReference: {fileID: 1342020351}
-    - target: {fileID: 3974319252954457055, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: velocita
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3974319252954457055, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: visione
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 3974319252954457055, guid: 1d6fb020317734e41a1dc617ecfe740c,
-        type: 3}
-      propertyPath: agente
-      value: 
-      objectReference: {fileID: 1361609153}
-    m_RemovedComponents:
-    - {fileID: 0}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d6fb020317734e41a1dc617ecfe740c, type: 3}
 --- !u!1 &1692948410
 GameObject:
@@ -10727,10 +10599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f072a2a009b3eb4a943b5e36c3e3eb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontRightTire: {fileID: 6567946007575973325}
-  frontLeftTire: {fileID: 6567946007086258691}
-  backRightTire: {fileID: 6567946006519261789}
-  backLeftTire: {fileID: 6567946007715598624}
   driftsPSContainer: {fileID: 6567946006464746374}
   weakDriftColor: {r: 0, g: 1, b: 0.48915553, a: 1}
   mediumDriftColor: {r: 0, g: 0.5021448, b: 1, a: 1}
@@ -10742,6 +10610,8 @@ MonoBehaviour:
   boostSpeed: 80
   deceleration: 1
   steerSpeed: 3
+  steerSpeedNoMov: 12
+  acceptNoMov: 0.5
   maxSteerInDrift: 1.5
   minSteerInDrift: 0.5
   maxDriftSteer: 20
@@ -10749,6 +10619,7 @@ MonoBehaviour:
   steerResistSpeed: 30
   maxResist: 4
   minResist: 1.5
+  flyingSteerMaxRotation: 13
   groundDistance: 3
   onAirTimerForBoost: 1.5
   highLandBoostTime: 1.25
@@ -10765,11 +10636,6 @@ MonoBehaviour:
   weakBoostTime: 0.75
   mediumBoostTime: 1.5
   finalBoostTime: 2.5
-  tireSteerSpeed: 5
-  spinSpeed: 0.5
-  minSpeedForSpinning: 30
-  maxRightSteer: 205
-  maxLeftSteer: 155
   jumpForce: 20
   prepareToBegin: 0
   maxBoostCharge: 2.5

@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1500666261277803608
 Transform:
   m_ObjectHideFlags: 0
@@ -25,13 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1107985230929164078}
-  m_LocalRotation: {x: -0, y: -0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.06000042, y: 0.119999886, z: 0.019999504}
+  m_LocalRotation: {x: -0.49999928, y: 0.49999928, z: -0.5000008, w: 0.5000008}
+  m_LocalPosition: {x: -0.06000042, y: 2.15, z: 0.019999504}
   m_LocalScale: {x: 0.10316104, y: 0.10316104, z: 0.26378816}
   m_Children: []
   m_Father: {fileID: 534210501808711349}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90.00001}
+  m_LocalEulerAnglesHint: {x: 0, y: 90.00001, z: -90.00001}
 --- !u!198 &3752428702440495596
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -4771,7 +4771,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &630286720649135350
 Transform:
   m_ObjectHideFlags: 0
@@ -4779,13 +4779,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1372490537058826112}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: -0.15, y: 0.1699996, z: 0.03}
-  m_LocalScale: {x: 4.415917, y: 4.4159164, z: 2.7162743}
+  m_LocalRotation: {x: -1, y: -0, z: -0.0000014454126, w: 0}
+  m_LocalPosition: {x: -0.15, y: 2.2, z: 0.03}
+  m_LocalScale: {x: 2.465419, y: 2.4654188, z: 2.5660763}
   m_Children: []
   m_Father: {fileID: 534210501808711349}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -180, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: -180, y: 0, z: 0}
 --- !u!198 &2918055942557964610
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -9519,6 +9519,7 @@ GameObject:
   - component: {fileID: 534210501808711349}
   - component: {fileID: 6260596264728671534}
   - component: {fileID: 3974319252954457055}
+  - component: {fileID: 1361609153}
   m_Layer: 0
   m_Name: Progliettie_Eletro
   m_TagString: Untagged
@@ -9535,7 +9536,7 @@ Transform:
   m_GameObject: {fileID: 1839623043984405806}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13.750407, y: 2.607336, z: 171.82184}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.47172, y: 0.47172, z: 0.47172}
   m_Children:
   - {fileID: 1500666261277803608}
   - {fileID: 630286720649135350}
@@ -9567,3 +9568,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cd3569fc6759f94dbf143f596342368, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bersaglio: {fileID: 0}
+  distance: 0
+  visione: 1000
+  vedo: 0
+  agente: {fileID: 1361609153}
+--- !u!195 &1361609153
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839623043984405806}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 80
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

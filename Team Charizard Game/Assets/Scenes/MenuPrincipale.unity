@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -4246,6 +4246,51 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1644025762}
     m_Modifications:
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.5019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539275881077, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_PreserveAspect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539708776948, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5080372539735303302, guid: 4b93196fa62f02845ac7254a3f66d8a5,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -4360,6 +4405,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: GameObject-MenuOpzioni
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539755968696, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5080372539788213310, guid: 4b93196fa62f02845ac7254a3f66d8a5,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4b93196fa62f02845ac7254a3f66d8a5, type: 3}
