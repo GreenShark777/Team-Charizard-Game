@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TriggerAnimation : MonoBehaviour
 {
-    [SerializeField]
-    private string tagToCheck;
+    
     [SerializeField]
     private float time;
     [SerializeField]
