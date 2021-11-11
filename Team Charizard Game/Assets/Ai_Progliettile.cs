@@ -11,6 +11,7 @@ public class Ai_Progliettile : MonoBehaviour
     public float distance;
 
     public int visione;
+
     public bool vedo;
 
     public NavMeshAgent agente;
