@@ -32,8 +32,15 @@ public class RollingBomb : MonoBehaviour, IUsableItem
     private void FixedUpdate()
     {
         //fa in modo che la bomba non rallenti mai
-        if (rb.velocity.x < rollVelocity.x || rb.velocity.z < rollVelocity.z) { rb.velocity = new Vector3(rollVelocity.x, rb.velocity.y, rollVelocity.z); Debug.Log("SAS"); }
+        if (rb.velocity.x < rollVelocity.x || rb.velocity.z < rollVelocity.z) { rb.velocity = new Vector3(rollVelocity.x, rb.velocity.y, rollVelocity.z); }
         //Debug.Log("Velocity: " + rb.velocity + " : " + rollVelocity);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //se colpisce un nemico o un ostacolo, la bomba esplode
+        if (other.CompareTag("Enemy") || other.CompareTag("Obstacles")) { Explode(); }
+
     }
 
     private void Explode()
@@ -42,6 +49,8 @@ public class RollingBomb : MonoBehaviour, IUsableItem
         rb.velocity = Vector3.zero;
         //fa partire l'animazione d'esplosione della bomba
         bombAnim.SetTrigger("Explode");
+        //disattiva questo script
+        enabled = false;
 
     }
 

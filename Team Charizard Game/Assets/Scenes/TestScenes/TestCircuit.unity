@@ -5830,6 +5830,11 @@ PrefabInstance:
       propertyPath: redBoy
       value: 
       objectReference: {fileID: 1224833762}
+    - target: {fileID: 9066002150043146101, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59bd184f78a2c444986bb510b05ce8a5, type: 3}
 --- !u!114 &1768761320 stripped
