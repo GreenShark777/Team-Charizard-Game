@@ -2,25 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-public class Ai_Progliettile : MonoBehaviour
+public class Ai_Progliettile : MonoBehaviour, IUsableItem
 {
 
-    //qui assegniamo il nemico o il player come bersaglio del nostro progliettile 
+    //qui assegniamo il nemico bersaglio del nostro progliettile 
     public GameObject bersaglio;
-    //qui assegniamo la velocita del progliettile 
+    //qui assegniamo la distanza di vista del progliettile 
     public float distance;
 
     public int visione;
     public bool vedo;
 
     public NavMeshAgent agente;
-    // Start is called before the first frame update
-    void Start()
+
+    public void UseThisItem()
     {
-       
+        throw new System.NotImplementedException();
     }
 
-    // Update is called once per frame
+    private void OnEnable()
+    {
+        //(GABRIELE)ogni volta che viene attivato, ottiene il riferimento al bersaglio
+
+    }
+
     void Update()
     {
         distance = Vector3.Distance(bersaglio.transform.position, this.transform.position);
@@ -43,4 +48,5 @@ public class Ai_Progliettile : MonoBehaviour
             agente.isStopped = true;
         }
     }
+
 }

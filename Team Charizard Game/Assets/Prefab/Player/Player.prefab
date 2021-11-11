@@ -176,6 +176,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemsContainer: {fileID: 8413179819166228496}
   itemsUseSpawn: {fileID: 5660862458785890019}
+  itemsGameobject:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   spritesContainer: {fileID: 0}
   itemUIAnim: {fileID: 0}
   chooseTimer: 4
@@ -20920,6 +20926,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7670164492873628592}
+  - component: {fileID: 6479139790650768682}
   m_Layer: 0
   m_Name: CuboElettrico
   m_TagString: Untagged
@@ -20942,6 +20949,18 @@ Transform:
   m_Father: {fileID: 8413179819166228496}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6479139790650768682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6727619632679730888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab3acccebcab3b0439623fa8b1b83a93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6878550899731999757
 GameObject:
   m_ObjectHideFlags: 0
@@ -21074,6 +21093,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2209857204236706794}
+  - component: {fileID: 4393624517180263179}
   m_Layer: 0
   m_Name: Suonofono
   m_TagString: Untagged
@@ -21097,6 +21117,18 @@ Transform:
   m_Father: {fileID: 8413179819166228496}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4393624517180263179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8086174088037885594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84aed6a401a420e4683108e65bece2c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8090440170482106204
 GameObject:
   m_ObjectHideFlags: 0
@@ -21106,6 +21138,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2281655223602213882}
+  - component: {fileID: 1802822822619553819}
   m_Layer: 0
   m_Name: Silenziatore
   m_TagString: Untagged
@@ -21127,6 +21160,18 @@ Transform:
   m_Father: {fileID: 8413179819166228496}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1802822822619553819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8090440170482106204}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f29c11d67afce0741b51d29c97201000, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8297183306637682770
 GameObject:
   m_ObjectHideFlags: 0
@@ -25921,6 +25966,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8622448025516670420}
+  - component: {fileID: 1202581196124497880}
+  - component: {fileID: 3369217251037168784}
+  - component: {fileID: 4069632742208431066}
   m_Layer: 0
   m_Name: FagioloBomba
   m_TagString: Untagged
@@ -25943,6 +25991,49 @@ Transform:
   m_Father: {fileID: 8413179819166228496}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1202581196124497880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9066002150043146101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f77f519549cb5d94b93b39650af0fe01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rollSpeed: 30
+  explosionTimer: 1
+--- !u!54 &3369217251037168784
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9066002150043146101}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!135 &4069632742208431066
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9066002150043146101}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.66
+  m_Center: {x: 0, y: -0.23, z: 0.02}
 --- !u!1 &9212926446040214177
 GameObject:
   m_ObjectHideFlags: 0

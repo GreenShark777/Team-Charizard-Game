@@ -52,6 +52,12 @@ public class ItemScript : MonoBehaviour
 
         //DEBUG_______OTTIENE OGGETTO
         else if(Input.GetKeyDown(KeyCode.M)) { StartCoroutine(getItem()); }
+        //DEBUG_______OTTIENE OGGETTO SPECIFICO
+        if (Input.GetKeyDown(KeyCode.F1)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 0; Debug.Log("Debug Fagiolo Bomba"); }
+        if (Input.GetKeyDown(KeyCode.F2)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 1; Debug.Log("Debug Missile"); }
+        if (Input.GetKeyDown(KeyCode.F3)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 2; Debug.Log("Debug Suonofono"); }
+        if (Input.GetKeyDown(KeyCode.F4)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 3; Debug.Log("Debug Silenziatore"); }
+        if (Input.GetKeyDown(KeyCode.F5)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 4; Debug.Log("Debug Cubo Elettrico"); }
 
     }
 
@@ -105,7 +111,7 @@ public class ItemScript : MonoBehaviour
             //...e attiva l'oggetto usato...
             itemsGameobject[obtainedItemIndex].SetActive(true);
             //...richiama l'interfaccia da oggetto dell'oggetto ottenuto per attivarlo
-
+            itemsGameobject[obtainedItemIndex].GetComponent<IUsableItem>().UseThisItem();
             Debug.Log("Oggetto usato: " + obtainedItemIndex);
         }
 
