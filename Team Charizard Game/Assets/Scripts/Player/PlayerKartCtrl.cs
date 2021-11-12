@@ -37,8 +37,6 @@ public class PlayerKartCtrl : MonoBehaviour
     private Transform kart;
     //riferimento al Rigidbody del giocatore
     private Rigidbody kartRb;
-    //riferimento all'Animator del kart
-    private Animator kartAnim;
 
     //riferimento al manager delle cinematiche
     //[SerializeField]
@@ -195,8 +193,6 @@ public class PlayerKartCtrl : MonoBehaviour
         kart = transform.GetChild(0);
         //ottiene il riferimento al Rigidbody del giocatore
         kartRb = GetComponent<Rigidbody>();
-        //ottiene il riferimento all'Animator del kart
-        kartAnim = GetComponent<Animator>();
 
         /*
         //ottiene il riferimento ai figli delle ruote frontali
@@ -370,8 +366,6 @@ public class PlayerKartCtrl : MonoBehaviour
         //se si preme il tasto di drift mentre si è per terra...
         if (Input.GetButtonDown("Drift") && touchingGround)
         {
-            //...fa partire l'animazione di inizio drift...
-            kartAnim.SetTrigger("Hop");
             //controlla se si sta sterzando verso destra...
             if (steerDirection > 0)
             {

@@ -45,8 +45,15 @@ public class BackwardsTracking : MonoBehaviour
 
     private void Update()
     {
-        //se deve avvisare il giocatore, gli sta costantemente davanti
-        if (isWarning) { redBoy.position = Vector3.Lerp(redBoy.position, redBoyFollowPos.position, flyUpSpeed * Time.deltaTime); }
+        //se deve avvisare il giocatore...
+        if (isWarning)
+        {
+            //...il giudice rosso gli sta costantemente davanti...
+            redBoy.position = Vector3.Lerp(redBoy.position, redBoyFollowPos.position, flyUpSpeed * Time.deltaTime);
+            //...e continua ad essere girato verso di lui
+            redBoy.LookAt(player.position);
+        
+        }
         //se non deve più avvisare il giocatore...
         if (stopWarning)
         {
