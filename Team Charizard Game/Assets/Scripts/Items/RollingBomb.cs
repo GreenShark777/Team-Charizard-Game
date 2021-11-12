@@ -1,5 +1,4 @@
 ﻿//Si occupa del comportamento delle bombe rotolanti
-using System.Collections;
 using UnityEngine;
 
 public class RollingBomb : MonoBehaviour, IUsableItem
@@ -12,11 +11,11 @@ public class RollingBomb : MonoBehaviour, IUsableItem
     private Transform previousParent;
     //indica la velocity che la bomba rotolante deve continuare ad avere
     private Vector3 rollVelocity;
-
+    //indica quanto velocemente rotola la bomba
     [SerializeField]
-    private float rollSpeed = default; //indica quanto velocemente rotola la bomba
-
-        //explosionTimer = 1; //indica dopo quanto tempo la bomba torna al suo stato originale dopo l'esplosione
+    private float rollSpeed = default;
+    //indica l'indice da figlio della bomba
+    private int bombSiblingIndex = -1;
 
 
     private void Awake()
@@ -27,6 +26,8 @@ public class RollingBomb : MonoBehaviour, IUsableItem
         bombAnim = GetComponent<Animator>();
         //ottiene il riferimento al padre iniziale della bomba rotolante
         previousParent = transform.parent;
+        //ottiene l'indice da figlio della bomba
+        bombSiblingIndex = transform.GetSiblingIndex();
 
     }
 
@@ -44,6 +45,9 @@ public class RollingBomb : MonoBehaviour, IUsableItem
 
     }
 
+    /// <summary>
+    /// Attiva la bomba, venendo lanciata di fronte al giocatore
+    /// </summary>
     public void UseThisItem()
     {
         //all'attivazione, la bomba non è più figlia del giocatore fino a quando non esplode
@@ -52,9 +56,11 @@ public class RollingBomb : MonoBehaviour, IUsableItem
         rb.velocity = transform.forward * rollSpeed;
         //infine, viene salvata la velocità della bomba, in modo che non rallenti mai
         rollVelocity = rb.velocity;
-        Debug.Log("Usato Fagiolo Bomba. Velocity = " + rollVelocity);
+        //Debug.Log("Usato Fagiolo Bomba. Velocity = " + rollVelocity);
     }
-
+    /// <summary>
+    /// La bomba esplode
+    /// </summary>
     private void Explode()
     {
         //viene rimossa ogni forza che agisce sulla bomba
@@ -70,8 +76,9 @@ public class RollingBomb : MonoBehaviour, IUsableItem
     /// </summary>
     public void ResetBomb()
     {
-        //la bomba torna ad essere figlia del suo parent originale
+        //la bomba torna ad essere figlia del suo parent originale all'indice in cui era prima
         transform.parent = previousParent;
+        transform.SetSiblingIndex(bombSiblingIndex);
         //la bomba viene disattivata
         gameObject.SetActive(false);
 

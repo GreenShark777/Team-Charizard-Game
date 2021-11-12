@@ -25714,7 +25714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flySpeed: 40
   deactivateTimer: 10
-  enemyBlockTimer: 2
+  enemyBlockTimer: 4
 --- !u!65 &5378935961931116332
 BoxCollider:
   m_ObjectHideFlags: 0

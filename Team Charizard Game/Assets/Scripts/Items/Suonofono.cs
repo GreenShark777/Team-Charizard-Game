@@ -26,14 +26,6 @@ public class Suonofono : MonoBehaviour, IUsableItem
         suonofonoColls = GetComponent<Collider>();
 
     }
-    /*
-    private void OnTriggerEnter(Collider other)
-    {
-        //se i collider dell'oggetto colpiscono un nemico, lo spinge
-        if (other.CompareTag("Enemy")) { PushAway(other.transform); }
-
-    }
-    */
 
     private void OnTriggerStay(Collider other)
     {
@@ -42,13 +34,19 @@ public class Suonofono : MonoBehaviour, IUsableItem
 
     }
 
+    /// <summary>
+    /// Attiva questo oggetto
+    /// </summary>
     public void UseThisItem()
     {
         //fa partire la coroutine d'attacco del suonofono
         StartCoroutine(AttackTiming());
 
     }
-
+    /// <summary>
+    /// Si occupa delle tempistiche di avvio e fine attacco
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator AttackTiming()
     {
         //fa partire l'animazione di inizio attacco
