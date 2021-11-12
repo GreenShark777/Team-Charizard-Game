@@ -34,7 +34,6 @@ public class FinishLine : MonoBehaviour
 
     //riferimento al bottone che permette di fare di nuovo lo stesso circuito
     private GameObject retryButton;
-
     //riferimento allo script che si occupa del comportamento del giudice verde quando viene attraversato un checkpoint o la linea di fine
     [SerializeField]
     private LapFinished lapFinished = default;
@@ -137,7 +136,7 @@ public class FinishLine : MonoBehaviour
         }
         else //altrimenti vorrà dire che il giocatore ha provato a finire il percorso senza finire l'intero circuito
         {
-
+            
             triedToCheat = true;
             Debug.Log("Non hai finito il giro -> " + currentCheckpoint + " : " + lastCheckpointID);
         }

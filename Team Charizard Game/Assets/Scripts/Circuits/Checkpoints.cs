@@ -9,11 +9,6 @@ public class Checkpoints : MonoBehaviour
     //riferimento allo script di respawn
     [SerializeField]
     private RespawnPlayer respawner = default;
-
-    //riferimento al sistema di posizionamento
-    //[SerializeField]
-    //private PositioningSystem posSystem = default;
-
     [SerializeField]
     private NewPositioningSystem newPosSystem = default;
     //riferimento alla posizione in cui il giocatore deve guardare quando viene respawnato
@@ -29,6 +24,10 @@ public class Checkpoints : MonoBehaviour
     //array di riferimenti agli script di info dei nemici
     private EnemyCircuitInfos[] enemiesInfo;
     //private List<Transform> positionsToCheck = new List<Transform>();
+    // 0 - nemico 1
+    // 1 - nemico 2
+    // 2 - nemico 3
+    // 3 - giocatore
     private Transform[] kartsPositions;
     //array di posizioni nel podio dei veicoli sia nemici che del giocatore
     // 0 - nemico 1
@@ -39,7 +38,7 @@ public class Checkpoints : MonoBehaviour
     private int[] currentPositions = new int[4];
     //array che indica le posizioni calcolate dei kart
     //[SerializeField]
-    int[] newCurrentPositions = new int[4];
+    private int[] newCurrentPositions = new int[4];
 
     //[SerializeField]
     //private int[] points = new int[4];
@@ -399,5 +398,7 @@ public class Checkpoints : MonoBehaviour
         }
 
     }
+
+
 
 }

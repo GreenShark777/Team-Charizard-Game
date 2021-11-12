@@ -5750,6 +5750,11 @@ PrefabInstance:
       propertyPath: abilitySlider
       value: 
       objectReference: {fileID: 1478441075}
+    - target: {fileID: 4599262942310370801, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: finishLine
+      value: 
+      objectReference: {fileID: 1579118041}
     - target: {fileID: 5907481769299931601, guid: 59bd184f78a2c444986bb510b05ce8a5,
         type: 3}
       propertyPath: spritesContainer
@@ -7925,7 +7930,7 @@ PrefabInstance:
     - target: {fileID: 5383609455081564213, guid: 43b32509bbb16504191e20d078aa4f66,
         type: 3}
       propertyPath: maxLapCount
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5383609455081564216, guid: 43b32509bbb16504191e20d078aa4f66,
         type: 3}

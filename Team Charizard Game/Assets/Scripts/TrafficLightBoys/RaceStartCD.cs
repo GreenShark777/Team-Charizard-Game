@@ -59,6 +59,8 @@ public class RaceStartCD : MonoBehaviour
         playerCollisionsManager.SetActive(false);
         //fa partire la coroutine per il countdown all'inizio della gara
         StartCoroutine(StartRaceCountdown());
+        //viene impostato il checkpoint iniziale come checkpoint di controllo
+        Checkpoints.SetCheckingID(0, true);
 
     }
 
