@@ -13,6 +13,10 @@ public class Suonofono : MonoBehaviour, IUsableItem
     private float onActivationTimer = 0.5f, //indica dopo quanto tempo, all'attivazione, deve iniziare l'animazione di uso
         deactivateTimer = 1; //indica dopo quanto tempo dall'attivazione dell'attacco, deve essere disattivato quest'oggetto
 
+    //indica quanto i nemici colpiti vengono spinti
+    [SerializeField]
+    private float pushStrength = -90;
+
 
     private void Awake()
     {
@@ -22,8 +26,16 @@ public class Suonofono : MonoBehaviour, IUsableItem
         suonofonoColls = GetComponent<Collider>();
 
     }
-
+    /*
     private void OnTriggerEnter(Collider other)
+    {
+        //se i collider dell'oggetto colpiscono un nemico, lo spinge
+        if (other.CompareTag("Enemy")) { PushAway(other.transform); }
+
+    }
+    */
+
+    private void OnTriggerStay(Collider other)
     {
         //se i collider dell'oggetto colpiscono un nemico, lo spinge
         if (other.CompareTag("Enemy")) { PushAway(other.transform); }
@@ -55,10 +67,14 @@ public class Suonofono : MonoBehaviour, IUsableItem
         suonofonoColls.enabled = false;
 
     }
-
+    /// <summary>
+    /// Spinge il nemico colpito
+    /// </summary>
+    /// <param name="enemy"></param>
     private void PushAway(Transform enemy)
     {
-
+        //spinge il nemico dalla parte opposta
+        enemy.GetComponent<Rigidbody>().velocity = (transform.position - enemy.position) * pushStrength * Time.deltaTime;
         Debug.Log("Spinto nemico: " + enemy);
 
     }

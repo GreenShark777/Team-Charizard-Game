@@ -12,10 +12,11 @@ public class RollingBomb : MonoBehaviour, IUsableItem
     private Transform previousParent;
     //indica la velocity che la bomba rotolante deve continuare ad avere
     private Vector3 rollVelocity;
-    
+
     [SerializeField]
-    private float rollSpeed = default, //indica quanto velocemente rotola la bomba
-        explosionTimer = 1; //indica dopo quanto tempo la bomba torna al suo stato originale dopo l'esplosione
+    private float rollSpeed = default; //indica quanto velocemente rotola la bomba
+
+        //explosionTimer = 1; //indica dopo quanto tempo la bomba torna al suo stato originale dopo l'esplosione
 
 
     private void Awake()
@@ -43,17 +44,6 @@ public class RollingBomb : MonoBehaviour, IUsableItem
 
     }
 
-    private void Explode()
-    {
-        //viene rimossa ogni forza che agisce sulla bomba
-        rb.velocity = Vector3.zero;
-        //fa partire l'animazione d'esplosione della bomba
-        bombAnim.SetTrigger("Explode");
-        //disattiva questo script
-        enabled = false;
-
-    }
-
     public void UseThisItem()
     {
         //all'attivazione, la bomba non è più figlia del giocatore fino a quando non esplode
@@ -65,6 +55,19 @@ public class RollingBomb : MonoBehaviour, IUsableItem
         Debug.Log("Usato Fagiolo Bomba. Velocity = " + rollVelocity);
     }
 
+    private void Explode()
+    {
+        //viene rimossa ogni forza che agisce sulla bomba
+        rb.velocity = Vector3.zero;
+        //fa partire l'animazione d'esplosione della bomba
+        bombAnim.SetTrigger("Explode");
+        //disattiva questo script
+        enabled = false;
+
+    }
+    /// <summary>
+    /// Riporta la bomba al suo stato originale(viene richiamato dall'Animator della bomba)
+    /// </summary>
     public void ResetBomb()
     {
         //la bomba torna ad essere figlia del suo parent originale

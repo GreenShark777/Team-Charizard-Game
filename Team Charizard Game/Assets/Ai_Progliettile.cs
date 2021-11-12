@@ -7,6 +7,8 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
 
     //qui assegniamo il nemico bersaglio del nostro progliettile 
     public GameObject bersaglio;
+    //riferimento al parent iniziale dell'oggetto
+    private Transform previousParent;
     //qui assegniamo la distanza di vista del progliettile 
     public float distance;
 
@@ -16,14 +18,11 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
 
     public NavMeshAgent agente;
 
-    public void UseThisItem()
-    {
-        throw new System.NotImplementedException();
-    }
 
-    private void OnEnable()
+    private void Awake()
     {
-        //(GABRIELE)ogni volta che viene attivato, ottiene il riferimento al bersaglio
+        //ottiene il riferimento al parent iniziale dell'oggetto
+        previousParent = transform.parent;
 
     }
 
@@ -48,6 +47,15 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         {
             agente.isStopped = true;
         }
+    }
+
+    public void UseThisItem()
+    {
+        //fa in modo che l'oggetto non sia figlio di nessuno
+        transform.parent = null;
+
+        //OTTIENE IL RIFERIMENTO AL BERSAGLIO
+
     }
 
 }
