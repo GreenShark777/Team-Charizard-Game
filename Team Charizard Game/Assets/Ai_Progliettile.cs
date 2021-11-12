@@ -1,12 +1,11 @@
 ﻿//Si occupa del comportamento del missile a ricerca
 using UnityEngine;
 using UnityEngine.AI;
+
 public class Ai_Progliettile : MonoBehaviour, IUsableItem
 {
-
-    //qui assegniamo il nemico bersaglio del nostro progliettile 
-    //private Transform bersaglio;
-
+    //riferimento all'Animator del missile
+    private Animator missileAnimator;
     //riferimento al bersaglio di default, nel caso non si trovino nemici come obiettivi
     private Transform bersaglioDefault;
     //riferimento al parent iniziale dell'oggetto
@@ -39,9 +38,8 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         foreach (EnemyCircuitInfos enemy in enemiesInfo) { enemies[i] = enemy.transform; i++; }
         //ottiene il riferimento al bersaglio di default
         bersaglioDefault = transform.GetChild(0);
-
-        //il bersaglio di default viene impostato come bersaglio attuale
-        //bersaglio = bersaglioDefault;
+        //ottiene il riferimento all'Animator del missile
+        missileAnimator = GetComponent<Animator>();
 
     }
 
@@ -49,6 +47,13 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
     {
         //se si è ancora con il bersaglio di default, il missile continua a cercare un nemico da colpire
         if (!gotNewTarget) { /*bersaglio = */LockOnTarget(); /*Debug.Log("Cerca nuovo bersaglio");*/ }
+
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //se il missile colpisce un nemico o un ostacolo, esplode
+        if (other.CompareTag("Enemy") || other.CompareTag("Obstacles")) { Explode(); }
 
     }
 
@@ -60,7 +65,7 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         //fa in modo che l'oggetto non sia figlio di nessuno
         transform.parent = null;
         //ottiene il riferimento al bersaglio da colpire
-        /*bersaglio = */LockOnTarget();
+        LockOnTarget();
 
     }
     /// <summary>
@@ -88,20 +93,29 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         agente.SetDestination(target.position);
 
     }
+
+    private void Explode()
+    {
+        //ferma l'agente del missile
+        agente.isStopped = true;
+        //fa partire l'animazione di esplosione del missile
+        missileAnimator.SetTrigger("Explode");
+
+    }
     /// <summary>
-    /// Riporta il missile al suo stato originale
+    /// Riporta il missile al suo stato originale(verrà richiamato dall'Animator)
     /// </summary>
     public void ResetMissile()
     {
         //riporta il missile figlio del suo parent originale all'indice in cui era prima
         transform.parent = previousParent;
         transform.SetSiblingIndex(missileSiblingIndex);
+        //l'agente del missile viene riattivato
+        agente.isStopped = false;
         //viene disattivato il missile
         gameObject.SetActive(false);
         //viene impostato nuovamente come bersaglio il bersaglio di default
         gotNewTarget = false;
-
-        //bersaglio = bersaglioDefault;
 
     }
 
