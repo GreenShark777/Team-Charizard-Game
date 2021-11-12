@@ -10,6 +10,8 @@ public class CuboElettrico : MonoBehaviour, IUsableItem
     private Rigidbody rb;
     //riferimento al padre iniziale del cubo elettrico
     private Transform previousParent;
+    //indica la rotazione iniziale del cubo
+    private Quaternion startRotation;
     //indica la velocity che il cubo elettrico deve continuare ad avere
     private Vector3 flyVelocity;
 
@@ -36,6 +38,8 @@ public class CuboElettrico : MonoBehaviour, IUsableItem
         previousParent = transform.parent;
         //ottiene l'indice da figlio del cubo
         cubeSiblingIndex = transform.GetSiblingIndex();
+        //ottiene la rotazione iniziale del cubo
+        startRotation = transform.localRotation;
 
     }
 
@@ -63,6 +67,8 @@ public class CuboElettrico : MonoBehaviour, IUsableItem
     /// </summary>
     public void UseThisItem()
     {
+        //riporta il cubo alla rotazione iniziale prima del lancio
+        transform.localRotation = startRotation;
         //all'attivazione, il cubo non è più figlio del giocatore fino a quando non viene disattivato
         transform.parent = null;
         //il cubo riceve una spinta verso la direzione in cui è direzionata
