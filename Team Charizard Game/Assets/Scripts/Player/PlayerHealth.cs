@@ -27,7 +27,8 @@ public class PlayerHealth : MonoBehaviour
     private float maxHealth;
 
     private bool reduceDmg = false, //indica se i danni che il giocatore deve ricevere devono essere ridotti o meno
-        shieldActive = false; //indica se lo scudo del giocatore è attivo
+        shieldActive = false, //indica se lo scudo del giocatore è attivo
+        invincible = false; //indica se il giocatore è invincibile o meno(attivando il silenziatore)
 
     /*private Coroutine sliderChangeCoroutine, //riferimento alla Coroutine di cambio valore di slider attivo
         reduceDmgCoroutine; //riferimento alla Coroutine di riduzione del danno*/
@@ -61,25 +62,31 @@ public class PlayerHealth : MonoBehaviour
             //se il valore ricevuto è minore di 0, vuol dire che sta ricevendo danno, quindi...
             if (value < 0)
             {
-                //...se lo scudo non è attivo...
-                if (!shieldActive)
+                //...se non è invincibile il giocatore può ricevere danno, quindi...
+                if (!invincible)
                 {
-                    //...controlla se il danno deve essere ridotto, nel qual caso la vita viene ricalcolata...
-                    if (reduceDmg) { calculatedHealth -= value * reductionRate; /*Debug.Log("Reduced Damage");*/ }
-                    //...e fa partire la coroutine per il timer che indica per quanto tempo i danni ricevuti vengono diminuiti
-                    //if (reduceDmgCoroutine != null) { StopCoroutine(reduceDmgCoroutine); }
-                    /*reduceDmgCoroutine = */
-                    StartCoroutine(ReduceDamage());
+                    //...se lo scudo non è attivo...
+                    if (!shieldActive)
+                    {
+                        //...controlla se il danno deve essere ridotto, nel qual caso la vita viene ricalcolata...
+                        if (reduceDmg) { calculatedHealth -= value * reductionRate; /*Debug.Log("Reduced Damage");*/ }
+                        //...e fa partire la coroutine per il timer che indica per quanto tempo i danni ricevuti vengono diminuiti
+                        //if (reduceDmgCoroutine != null) { StopCoroutine(reduceDmgCoroutine); }
+                        /*reduceDmgCoroutine = */
+                        StartCoroutine(ReduceDamage());
 
-                }
-                else //altrimenti...
-                {
-                    //...lo scudo viene disattivato...
-                    pa.EndOfAbility();
-                    //...e il giocatore non subisce danno
-                    calculatedHealth = health;
+                    }
+                    else //altrimenti...
+                    {
+                        //...lo scudo viene disattivato...
+                        pa.EndOfAbility();
+                        //...e il giocatore non subisce danno
+                        calculatedHealth = health;
 
-                }
+                    }
+
+                } //altrimenti, non subisce danno dato che è invincibile
+                else { calculatedHealth = health; }
 
             }
             else //altrimenti sta ricevendo vita, quindi...
@@ -178,5 +185,10 @@ public class PlayerHealth : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public bool IsShieldActive() { return shieldActive; }
+    /// <summary>
+    /// Permette di rendere il giocatore invincibile o meno
+    /// </summary>
+    /// <param name="isInvincible"></param>
+    public void IsPlayerInvincible(bool isInvincible) { invincible = isInvincible; }
 
 }

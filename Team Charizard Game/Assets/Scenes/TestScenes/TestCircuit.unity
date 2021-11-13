@@ -5750,6 +5750,11 @@ PrefabInstance:
       propertyPath: abilitySlider
       value: 
       objectReference: {fileID: 1478441075}
+    - target: {fileID: 4176728180884586141, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4599262942310370801, guid: 59bd184f78a2c444986bb510b05ce8a5,
         type: 3}
       propertyPath: finishLine
