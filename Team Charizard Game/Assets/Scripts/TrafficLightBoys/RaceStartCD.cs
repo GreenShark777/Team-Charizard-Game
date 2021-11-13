@@ -102,12 +102,16 @@ public class RaceStartCD : MonoBehaviour
         StartCoroutine(ActivateTrafficLightBoy(0));
         //aspetta un certo intervallo
         yield return new WaitForSeconds(timeBetweenActivation);
+        //fa partire il suono di continuo del countdown
+        beepSfx.Play();
         //attiva il giudice di gara giallo
         StartCoroutine(ActivateTrafficLightBoy(1));
         //aspetta un certo intervallo
         yield return new WaitForSeconds(timeBetweenActivation);
         //attiva il giudice di gara verde
         StartCoroutine(ActivateTrafficLightBoy(2));
+        //fa partire il suono di continuo del countdown
+        beepSfx.Play();
         //aspetta finisca l'animazione di attivazione del verde
         yield return new WaitForSeconds(activationTimer);
         //attiva il timer di gara

@@ -26520,6 +26520,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ph: {fileID: 466641059}
+  masterMixer: {fileID: 24100000, guid: fa66518ea467c5b4ca3d80156e9f6079, type: 2}
   actionTimer: 3
 --- !u!1 &8297183306637682770
 GameObject:
