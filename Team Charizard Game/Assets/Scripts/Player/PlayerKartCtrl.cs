@@ -6,7 +6,7 @@ public class PlayerKartCtrl : MonoBehaviour
 {
     //RIFERIMENTI
     [Header("References")]
-    
+
     /*
     //riferimenti alle ruote del kart
     [SerializeField]
@@ -24,6 +24,10 @@ public class PlayerKartCtrl : MonoBehaviour
     //riferimenti al contenitore dei particellari di drift
     [SerializeField]
     private Transform driftsPSContainer = default;
+    //riferimento al secondo groundCheck
+    [SerializeField]
+    private Transform secondGroundCheck = default;
+
     //colori che i particellari di drift devono avere in base allo stadio del drift
     [SerializeField]
     private Color weakDriftColor = default, //inizio drift
@@ -332,7 +336,8 @@ public class PlayerKartCtrl : MonoBehaviour
         //crea un RayCast
         RaycastHit hit;
         //fa partire il raycast dal centro del kart e lo fa andare verso sotto, se entro la distanza impostata c'è del terreno...
-        if (Physics.Raycast(transform.position, -transform.up, out hit, groundDistance, groundLayer))
+        if (Physics.Raycast(transform.position, -transform.up, out hit, groundDistance, groundLayer) ||
+            Physics.Raycast(transform.position, -secondGroundCheck.up, out hit, groundDistance, groundLayer))
         {
             //...ruota il kart in base alla pendenza dell'oggetto su cui si è...
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * 
@@ -650,6 +655,7 @@ public class PlayerKartCtrl : MonoBehaviour
         //mostra fin dove arriva il RayCast per il controllo che si sta toccando a terra
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(transform.position, new Vector3(transform.position.x, transform.position.y - groundDistance, transform.position.z));
+        Gizmos.DrawLine(secondGroundCheck.position, new Vector3(secondGroundCheck.position.x, secondGroundCheck.position.y - groundDistance, secondGroundCheck.position.z));
 
     }
 

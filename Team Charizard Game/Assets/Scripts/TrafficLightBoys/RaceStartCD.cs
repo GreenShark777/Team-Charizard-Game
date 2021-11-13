@@ -186,8 +186,6 @@ public class RaceStartCD : MonoBehaviour
             default: { Debug.LogError("Valore errato, non esiste un altro giudice di gara!"); break; }
 
         }
-        //fa partire il suono di continuo del countdown
-        beepSfx.Play();
 
     }
 
