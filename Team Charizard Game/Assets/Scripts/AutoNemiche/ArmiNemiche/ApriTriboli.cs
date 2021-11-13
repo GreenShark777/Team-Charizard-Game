@@ -15,21 +15,17 @@ public class ApriTriboli : MonoBehaviour
     [SerializeField]
     private Transform spawnPoint;
     // Update is called once per frame
-    void Update()
+    
+
+    private void Start()
     {
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            // fa partire la coroutine
-            StartCoroutine(releaseTriboli());
-
-        }
-
-
+        StartCoroutine(releaseTriboli());
     }
 
 
     IEnumerator releaseTriboli()
     {
+        yield return new WaitForSeconds(10);
         //rende visibile il punto di spawn della trappola
         feedbackPoint.SetActive(true);
         //aspetta del tempo
@@ -38,10 +34,14 @@ public class ApriTriboli : MonoBehaviour
         Instantiate(triboli, spawnPoint.position + offset, Quaternion.identity);
         //rended invisibile il punto di spawn della trappoal
         feedbackPoint.SetActive(false);
+        yield return new WaitForSeconds(10);
+        StartCoroutine(releaseTriboli());
+
 
 
     }
 
 
-    
+
+
 }

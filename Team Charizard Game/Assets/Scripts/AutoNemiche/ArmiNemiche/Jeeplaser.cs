@@ -15,11 +15,13 @@ public class Jeeplaser : MonoBehaviour
     private Transform firePoint;
 
     public LineRenderer lr;
+    bool activateLaser = false;
     
     
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(countdown());
         //recupera il lineRenderer automaticamente
         //lr = GetComponent<LineRenderer>();
         
@@ -29,7 +31,7 @@ public class Jeeplaser : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         //if (transform.localRotation.y > maxRotation)
         //{
         //    rotationSpeed = -Mathf.Abs(rotationSpeed);
@@ -42,30 +44,44 @@ public class Jeeplaser : MonoBehaviour
         //    Debug.Log("rotazioneNegativo");
 
         //}
-
-        //imposta il primo punto del line renderer
-        lr.SetPosition(0, firePoint.position);
-        //crea una variabile raycast hit
-        RaycastHit hit;
-        //crea un vettore che indica la direzione verso cui far andare il raycast
-        Vector3 dir = (target.position - firePoint.position).normalized;
-        //crea il raycast e se colpisce qualcosa
-        if(Physics.Raycast ( firePoint.position,dir,out hit, 150f))
+        if (activateLaser == true)
         {
-            //imposta il secondo punto del line renderer al punto di hit del raycast
-            
-            lr.SetPosition(1, hit.point);
-            //ses colpisce il player
-            if (hit.collider.CompareTag("Player"))
+            lr.enabled = true;
+            //imposta il primo punto del line renderer
+            lr.SetPosition(0, firePoint.position);
+            //crea una variabile raycast hit
+            RaycastHit hit;
+            //crea un vettore che indica la direzione verso cui far andare il raycast
+            Vector3 dir = (target.position - firePoint.position).normalized;
+            //crea il raycast e se colpisce qualcosa
+            if (Physics.Raycast(firePoint.position, dir, out hit, 150f))
             {
-                //richiama la funzione per togliere vita al player
-                hit.collider.GetComponent<PlayerHealth>().ChangeHealth(-0.2f);
+                //imposta il secondo punto del line renderer al punto di hit del raycast
+
+                lr.SetPosition(1, hit.point);
+                //ses colpisce il player
+                if (hit.collider.CompareTag("Player"))
+                {
+                    //richiama la funzione per togliere vita al player
+                    hit.collider.GetComponent<PlayerHealth>().ChangeHealth(-0.2f);
+
+
+                }
+
+                if (hit.collider.CompareTag("Enemy"))
+                {
+
+                    hit.collider.GetComponent<enemyCarHealth>().slowDown(0.2f);
+
+                }
+
 
 
             }
-
-
-
+        }
+        else
+        {
+            lr.enabled = false;
         }
 
     }
@@ -107,4 +123,15 @@ public class Jeeplaser : MonoBehaviour
     //    yield break;
 
     //}
+
+    IEnumerator countdown()
+    {
+        yield return new WaitForSeconds(10);
+        activateLaser = true;
+        yield return new WaitForSeconds(4);
+        activateLaser = false;
+        StartCoroutine(countdown());
+
+
+    }
 }

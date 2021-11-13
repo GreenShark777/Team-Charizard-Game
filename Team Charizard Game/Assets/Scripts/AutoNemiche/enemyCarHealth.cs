@@ -110,7 +110,7 @@ public class enemyCarHealth : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            StartCoroutine(slowDown());
+            StartCoroutine(slowDown(3));
 
             StartCoroutine(showLifeBar());
             //diminuisce la vita di 1
@@ -167,8 +167,9 @@ public class enemyCarHealth : MonoBehaviour
 
     }
 
-    public IEnumerator slowDown()
+    public IEnumerator slowDown(float dmg)
     {
+        healthRef -= dmg;
         //imposta la velocità a 0
         agent.speed = 0;
         yield return new WaitForSeconds(1f);

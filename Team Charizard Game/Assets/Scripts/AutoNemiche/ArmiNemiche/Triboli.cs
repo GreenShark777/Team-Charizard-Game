@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Triboli : MonoBehaviour
 {
+
     private void Start()
     {
         //fa partire la coroutine allo spawn di questo GO
@@ -18,6 +19,13 @@ public class Triboli : MonoBehaviour
             //richiama la funzione di danno del player
             Debug.Log("colpitoPLayer");
             other.GetComponent<PlayerHealth>().ChangeHealth(-5f);
+
+        }
+
+        if (other.CompareTag("Enemy"))
+        {
+
+            other.GetComponent<enemyCarHealth>().slowDown(3);
 
         }
 

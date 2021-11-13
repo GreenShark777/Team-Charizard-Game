@@ -10,15 +10,20 @@ public class throwGranade : MonoBehaviour
     private Transform bombpoint;
 
     // Update is called once per frame
-    void Update()
+    private void Start()
     {
+        StartCoroutine(spawnBomb());
+    }
 
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            //spawna la granata nel punto di spawn dedsignato con la rotazione del gameobject a cui è assegnato lo script
-            Instantiate(grenade, bombpoint.position, transform.rotation);
+    IEnumerator spawnBomb()
+    {
+        yield return new WaitForSeconds(10);
+        //spawna la granata nel punto di spawn dedsignato con la rotazione del gameobject a cui è assegnato lo script
+        Instantiate(grenade, bombpoint.position, transform.rotation);
+        yield return new WaitForSeconds(5);
+        StartCoroutine(spawnBomb());
 
-        }
+
 
     }
 }
