@@ -25,6 +25,8 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
     //indica l'indice da figlio del missile
     private int missileSiblingIndex = -1;
 
+    private Quaternion startRotation;
+
 
     private void Awake()
     {
@@ -32,6 +34,8 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         previousParent = transform.parent;
         //ottiene l'indice da figlio del missile
         missileSiblingIndex = transform.GetSiblingIndex();
+
+        startRotation = transform.localRotation;
         //ottiene il riferimento ai nemici in gara
         var enemiesInfo = finishLine.GetEnemiesInfos();
         int i = 0;
@@ -110,6 +114,8 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         //riporta il missile figlio del suo parent originale all'indice in cui era prima
         transform.parent = previousParent;
         transform.SetSiblingIndex(missileSiblingIndex);
+
+        transform.localRotation = startRotation;
         //l'agente del missile viene riattivato
         agente.isStopped = false;
         //viene disattivato il missile
