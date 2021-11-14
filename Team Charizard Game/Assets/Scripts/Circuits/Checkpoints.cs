@@ -23,22 +23,26 @@ public class Checkpoints : MonoBehaviour
     private Transform player = default;
     //array di riferimenti agli script di info dei nemici
     private EnemyCircuitInfos[] enemiesInfo;
+
     //private List<Transform> positionsToCheck = new List<Transform>();
-    // 0 - nemico 1
-    // 1 - nemico 2
-    // 2 - nemico 3
+
+    // 0 - jeep
+    // 1 - macchina volante
+    // 2 - moto
     // 3 - giocatore
     private Transform[] kartsPositions;
     //array di posizioni nel podio dei veicoli sia nemici che del giocatore
-    // 0 - nemico 1
-    // 1 - nemico 2
-    // 2 - nemico 3
+    // 0 - jeep
+    // 1 - macchina volante
+    // 2 - moto
     // 3 - giocatore
-    //[SerializeField]
+    [SerializeField]
     private int[] currentPositions = new int[4];
     //array che indica le posizioni calcolate dei kart
     //[SerializeField]
     private int[] newCurrentPositions = new int[4];
+    //array statico che indica le posizioni dei kart
+    private static int[] staticPositions = new int[4];
 
     //[SerializeField]
     //private int[] points = new int[4];
@@ -79,8 +83,6 @@ public class Checkpoints : MonoBehaviour
         directionToFace = transform.GetChild(0);
         //aggiunge la propria posizione all'array di posizioni di respawn del giocatore
         respawner.AddRespawnPosition(transform.position, checkpointID, directionToFace);
-
-
 
         drawGizmos = true;
     }
@@ -357,7 +359,7 @@ public class Checkpoints : MonoBehaviour
                 currentPositions[i] = newCurrentPositions[i];
                 //se l'indice è arrivato alla fine dell'array, decrementa l'indice, altrimenti lo incrementa
                 if (i == 3) { i--; } else { i++; }
-                //aggiorn ala posizione corrente del kart ad indice i(aggiornato) a quella ricevuta come parametro
+                //aggiorna la posizione corrente del kart ad indice i(aggiornato) a quella ricevuta come parametro
                 currentPositions[i] = newCurrentPositions[i];
                 //infine, comunica che delle posizioni sono cambiate
                 positionsChanged = true;
@@ -365,8 +367,8 @@ public class Checkpoints : MonoBehaviour
             }
 
         }
-        //se delle posizioni sono cambiate, cambia anche la UI di posizioni
-        if (positionsChanged) { newPosSystem.SetPositions(currentPositions); }
+        //se delle posizioni sono cambiate, cambia anche la UI di posizioni e l'array statico di posizioni
+        if (positionsChanged) { newPosSystem.SetPositions(currentPositions); staticPositions = (int[])currentPositions.Clone(); }
 
         //posSystem.NewChangePositions(currentPositions, positionsToChange);
 
@@ -383,6 +385,8 @@ public class Checkpoints : MonoBehaviour
     /// <param name="checkID"></param>
     /// <param name="reset"></param>
     public static void SetCheckingID(int checkID, bool reset = false) { checkingID = (checkID > checkingID || reset) ? checkID : checkingID; }
+
+    public static int[] GetVehiclesPositions() { return staticPositions; }
 
     private void OnDrawGizmos()
     {
