@@ -15866,7 +15866,7 @@ MonoBehaviour:
   maxResist: 4
   minResist: 1.5
   flyingSteerMaxRotation: 13
-  groundDistance: 1.7
+  groundDistance: 3
   onAirTimerForBoost: 1.5
   highLandBoostTime: 1.25
   groundLayer:
