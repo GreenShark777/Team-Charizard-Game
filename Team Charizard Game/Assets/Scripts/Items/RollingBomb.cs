@@ -1,68 +1,97 @@
 ﻿//Si occupa del comportamento delle bombe rotolanti
-using System.Collections;
 using UnityEngine;
 
 public class RollingBomb : MonoBehaviour, IUsableItem
 {
+    //riferimento all'Animator della bomba
+    private Animator bombAnim;
     //riferimento al Rigidbody di questa bomba rotolante
     private Rigidbody rb;
-
-    //riferimento al giocatore, da cui otterrà la direzione di lancio
-    //private Transform player;
-
     //riferimento al padre iniziale della bomba rotolante
     private Transform previousParent;
     //indica la velocity che la bomba rotolante deve continuare ad avere
     private Vector3 rollVelocity;
-    
+    //indica la rotazione iniziale della bomba
+    private Quaternion startRotation;
+    //indica quanto velocemente rotola la bomba
     [SerializeField]
-    private float rollSpeed = default, //indica quanto velocemente rotola la bomba
-        explosionTimer = 1; //indica dopo quanto tempo la bomba torna al suo stato originale dopo l'esplosione
+    private float rollSpeed = default;
+    //indica l'indice da figlio della bomba
+    private int bombSiblingIndex = -1;
 
 
     private void Awake()
     {
         //ottiene il riferimento al Rigidbody di questa bomba rotolante
         rb = GetComponent<Rigidbody>();
+        //ottiene il riferimento all'Animator della bomba
+        bombAnim = GetComponent<Animator>();
         //ottiene il riferimento al padre iniziale della bomba rotolante
         previousParent = transform.parent;
+        //ottiene l'indice da figlio della bomba
+        bombSiblingIndex = transform.GetSiblingIndex();
+        //ottiene la rotazione iniziale della bomba
+        startRotation = transform.localRotation;
 
     }
 
     private void FixedUpdate()
     {
+        //fa in modo che la bomba non rallenti mai
+        if (rb.velocity.x < rollVelocity.x || rb.velocity.z < rollVelocity.z) { rb.velocity = new Vector3(rollVelocity.x, rb.velocity.y, rollVelocity.z); }
+        //Debug.Log("Velocity: " + rb.velocity + " : " + rollVelocity);
+    }
 
-        if (rb.velocity.x < rollVelocity.x || rb.velocity.z < rollVelocity.z) { rb.velocity = new Vector3(rollVelocity.x, rb.velocity.x, rollVelocity.x); }
+    private void OnTriggerEnter(Collider other)
+    {
+        //se colpisce un nemico o un ostacolo, la bomba esplode
+        if (other.CompareTag("Enemy") || other.CompareTag("Obstacles")) { Explode(); }
 
     }
 
-    private IEnumerator Explode()
+    /// <summary>
+    /// Attiva la bomba, venendo lanciata di fronte al giocatore
+    /// </summary>
+    public void UseThisItem()
+    {
+        //riporta la bomba alla rotazione iniziale
+        transform.localRotation = startRotation;
+        //all'attivazione, la bomba non è più figlia del giocatore fino a quando non esplode
+        transform.parent = null;
+        //viene rimossa ogni forza che agisce sulla bomba
+        rb.velocity = Vector3.zero;
+        //la bomba riceve una spinta verso la direzione in cui è direzionata
+        rb.velocity = transform.forward * rollSpeed;
+        //infine, viene salvata la velocità della bomba, in modo che non rallenti mai
+        rollVelocity = rb.velocity;
+        //riattiva questo script
+        enabled = true;
+        Debug.Log("Usato Fagiolo Bomba. Velocity = " + rollVelocity);
+    }
+    /// <summary>
+    /// La bomba esplode
+    /// </summary>
+    private void Explode()
     {
         //viene rimossa ogni forza che agisce sulla bomba
         rb.velocity = Vector3.zero;
+        //fa partire l'animazione d'esplosione della bomba
+        bombAnim.SetTrigger("Explode");
+        //disattiva questo script
+        enabled = false;
 
-        //il modello della bomba scompare
-
-        //parte il particellare di esplosione
-
-        yield return new WaitForSeconds(1);
-        //la bomba torna ad essere figlia del suo parent originale
+    }
+    /// <summary>
+    /// Riporta la bomba al suo stato originale(viene richiamato dall'Animator della bomba)
+    /// </summary>
+    public void ResetBomb()
+    {
+        //la bomba torna ad essere figlia del suo parent originale all'indice in cui era prima
         transform.parent = previousParent;
+        transform.SetSiblingIndex(bombSiblingIndex);
         //la bomba viene disattivata
         gameObject.SetActive(false);
 
-    }
-
-    public void UseThisItem()
-    {
-        //all'attivazione, la bomba non è più figlia del giocatore fino a quando non esplode
-        transform.parent = null;
-        //infine, la bomba riceve una spinta verso la direzione in cui è direzionata
-        rb.AddForce(transform.forward * rollSpeed, ForceMode.VelocityChange);
-
-        rollVelocity = rb.velocity;
-
-        Debug.Log("Usato Fagiolo Bomba");
     }
 
 }

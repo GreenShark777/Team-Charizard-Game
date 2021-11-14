@@ -8,6 +8,7 @@ TagManager:
   - turnRight
   - Enemy
   - ItemBox
+  - Obstacles
   layers:
   - Default
   - TransparentFX

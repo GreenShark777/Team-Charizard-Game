@@ -53,11 +53,11 @@ public class ItemScript : MonoBehaviour
         //DEBUG_______OTTIENE OGGETTO
         else if(Input.GetKeyDown(KeyCode.M)) { StartCoroutine(getItem()); }
         //DEBUG_______OTTIENE OGGETTO SPECIFICO
-        if (Input.GetKeyDown(KeyCode.F1)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 0; Debug.Log("Debug Fagiolo Bomba"); }
-        if (Input.GetKeyDown(KeyCode.F2)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 1; Debug.Log("Debug Missile"); }
-        if (Input.GetKeyDown(KeyCode.F3)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 2; Debug.Log("Debug Suonofono"); }
-        if (Input.GetKeyDown(KeyCode.F4)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 3; Debug.Log("Debug Silenziatore"); }
-        if (Input.GetKeyDown(KeyCode.F5)) { hasItem = true; StartCoroutine(getItem()); obtainedItemIndex = 4; Debug.Log("Debug Cubo Elettrico"); }
+        if (Input.GetKeyDown(KeyCode.F1)) { StartCoroutine(getItem()); obtainedItemIndex = 0; Debug.Log("Debug Fagiolo Bomba"); }
+        if (Input.GetKeyDown(KeyCode.F2)) { StartCoroutine(getItem()); obtainedItemIndex = 1; Debug.Log("Debug Missile"); }
+        if (Input.GetKeyDown(KeyCode.F3)) { StartCoroutine(getItem()); obtainedItemIndex = 2; Debug.Log("Debug Suonofono"); }
+        if (Input.GetKeyDown(KeyCode.F4)) { StartCoroutine(getItem()); obtainedItemIndex = 3; Debug.Log("Debug Silenziatore"); }
+        if (Input.GetKeyDown(KeyCode.F5)) { StartCoroutine(getItem()); obtainedItemIndex = 4; Debug.Log("Debug Cubo Elettrico"); }
 
     }
 
@@ -79,6 +79,8 @@ public class ItemScript : MonoBehaviour
         {
             //...prende casualmente un indice che indicherà l'oggetto ottenuto dal giocatore...
             obtainedItemIndex = Random.Range(0, N_ITEMS);
+            //...porta l'oggetto usato alla posizione di spawn per l'uso...
+            itemsGameobject[obtainedItemIndex].transform.position = itemsUseSpawn.position;
             //...fa partire l'animazione di scelta della UI di oggetto ottenuto...
             itemUIAnim.SetBool("ChoosingItem", true);
             //...aspetta un po'...

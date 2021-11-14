@@ -24,16 +24,19 @@ public class FinishLine : MonoBehaviour
     //riferimento allo script che tiene conto del tempo dall'inizio della gara corsa
     [SerializeField]
     private RaceTimer raceTimer = default;
+
+    [SerializeField]
+    private RaceResults rr = default;
     
     [SerializeField]
-    private GameObject endRaceScreenUI = default, //riferimento alla schermata di fine gara
+    private GameObject //endRaceScreenUI = default, //riferimento alla schermata di fine gara
         duringRaceUI = default; //riferimento alla schermata di gara in corso
 
-    private Text finishedTimeText, //riferimento al testo che indica il tempo che ha impiegato il giocatore a finire la gara
-        endResultText; //riferimento al testo che indica il risultato della gara
+    //private Text finishedTimeText, //riferimento al testo che indica il tempo che ha impiegato il giocatore a finire la gara
+    //    endResultText; //riferimento al testo che indica il risultato della gara
 
     //riferimento al bottone che permette di fare di nuovo lo stesso circuito
-    private GameObject retryButton;
+    //private GameObject retryButton;
 
     //riferimento allo script che si occupa del comportamento del giudice verde quando viene attraversato un checkpoint o la linea di fine
     [SerializeField]
@@ -59,10 +62,14 @@ public class FinishLine : MonoBehaviour
         RaceFinished = false;
         //cambia il testo che tiene conto dei giri che il giocatore ha finito
         lapText.text = "LAP: " + currentLap + " / " + maxLapCount;
+        
+        /*
         //ottiene il riferimento ai testi da cambiare a fine la gara
         finishedTimeText = endRaceScreenUI.transform.GetChild(0).GetComponent<Text>();
         endResultText = endRaceScreenUI.transform.GetChild(1).GetComponent<Text>();
         retryButton = endRaceScreenUI.transform.GetChild(2).gameObject;
+        */
+
         //cicla ogni nemico nella lista e ne imposta l'ID
         for (int enemy = 0; enemy < enemiesInfo.Length; enemy++) { enemiesInfo[enemy].SetEnemyID(enemy); }
 
@@ -102,6 +109,10 @@ public class FinishLine : MonoBehaviour
             {
                 //...comunica che la gara è finita...
                 RaceFinished = true;
+
+                rr.UpdateEndResults(playerLost, raceTimer.GetRaceTimeText());
+
+                /*
                 //...se il giocatore ha finito la gara prima di tutti i nemici...
                 if (!playerLost)
                 {
@@ -116,17 +127,22 @@ public class FinishLine : MonoBehaviour
                     retryButton.SetActive(true);
                     Debug.Log("Sconfitta!");
                 }
+                */
+
                 //...ferma il timer della corsa...
                 raceTimer.enabled = false;
                 //disattiva tutta la UI di gara...
                 duringRaceUI.SetActive(false);
+
                 //...aggiorna il testo del tempo nella schermata di fine gara al tempo che ha impiegato il giocatore a finire il percorso...
-                finishedTimeText.text = raceTimer.GetRaceTimeText();
+                //finishedTimeText.text = raceTimer.GetRaceTimeText();
+
                 //...attiva il cursore in modo che il giocatore possa cliccare i bottoni...
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+
                 //...e attiva la schermata di fine gara
-                endRaceScreenUI.SetActive(true);
+                //endRaceScreenUI.SetActive(true);
 
             }
             //se lo script del giudice non è abilitato, lo riabilita
@@ -137,7 +153,7 @@ public class FinishLine : MonoBehaviour
         }
         else //altrimenti vorrà dire che il giocatore ha provato a finire il percorso senza finire l'intero circuito
         {
-
+            
             triedToCheat = true;
             Debug.Log("Non hai finito il giro -> " + currentCheckpoint + " : " + lastCheckpointID);
         }

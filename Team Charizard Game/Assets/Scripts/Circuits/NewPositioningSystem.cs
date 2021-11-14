@@ -7,9 +7,15 @@ public class NewPositioningSystem : MonoBehaviour
     //riferimento al testo che indica la posizione del giocatore
     [SerializeField]
     private Text playerPosText = default;
+
     //array di riferimenti agli animator delle immagini per il posizionamento
-    private Animator[] posImagesAnims = new Animator[4];
+    //private Animator[] posImagesAnims = new Animator[4];
+
     //array di riferimenti al RectTransform delle immagini per il posizionamento
+    // 0 - jeep
+    // 1 - macchina volante
+    // 2 - moto
+    // 3 - giocatore
     private RectTransform[] posImagesRect = new RectTransform[4];
     //array di posizioni in cui devono andare le immagini
     [SerializeField]
@@ -31,8 +37,10 @@ public class NewPositioningSystem : MonoBehaviour
             //se il riferimento esiste...
             if (anim)
             {
+
                 //...lo aggiunge all'array di animator...
-                posImagesAnims[index] = anim;
+                //posImagesAnims[index] = anim;
+
                 //...e aggiunge all'array di rect quello del figlio ciclato...
                 posImagesRect[index] = child.GetComponent<RectTransform>();
                 //...infine, incrementa l'indice per il prossimo figlio
@@ -73,7 +81,7 @@ public class NewPositioningSystem : MonoBehaviour
     private void OnDrawGizmos()
     {
 
-        if (posImagesAnims.Length > 0)
+        if (posImagesPositions.Length > 0)
         {
 
             Gizmos.DrawWireSphere(new Vector3(posImagesPositions[0].position.x, posImagesPositions[0].position.y, 0), 3);

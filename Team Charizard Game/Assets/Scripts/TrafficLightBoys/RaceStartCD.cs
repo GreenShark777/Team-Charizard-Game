@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class RaceStartCD : MonoBehaviour
 {
+
+    [SerializeField]
+    private AudioSource circuitBgMusic = default, //riferimento alla musica di background del circuito
+        beepSfx = default, //riferimento al suono per il countdown
+        cdEndBeepSfx = default; //riferimento al suono per la fine del countdown
+
     //riferimento allo script che tiene conto del tempo dall'inizio della gara corsa
     [SerializeField]
     private RaceTimer raceTimer = default;
@@ -59,6 +65,8 @@ public class RaceStartCD : MonoBehaviour
         playerCollisionsManager.SetActive(false);
         //fa partire la coroutine per il countdown all'inizio della gara
         StartCoroutine(StartRaceCountdown());
+        //viene impostato il checkpoint iniziale come checkpoint di controllo
+        Checkpoints.SetCheckingID(0, true);
 
     }
 
@@ -84,6 +92,8 @@ public class RaceStartCD : MonoBehaviour
         //Debug.LogError("Start Countdown");
         //aspetta tot secondi
         yield return new WaitForSeconds(startCD);
+        //fa partire il suono di continuo del countdown
+        beepSfx.Play();
         //permette al giocatore di caricare il boost iniziale per la gara
         kartCtrl.enabled = true;
         //aspetta un altro po'
@@ -104,6 +114,10 @@ public class RaceStartCD : MonoBehaviour
         raceTimer.enabled = true;
         //comunica che la gara è iniziata
         raceBegun = true;
+        //fa partire il suono che indica la fine del countdown
+        cdEndBeepSfx.Play();
+        //fa partire la musica di background del circuito
+        circuitBgMusic.Play();
         //riattiva il manager delle collisioni del giocatore, in modo che possa subire danni e usare la sua abilità
         playerCollisionsManager.SetActive(true);
         //infine, comunica al giocatore che la gara è iniziata e potrà guidare
@@ -172,6 +186,8 @@ public class RaceStartCD : MonoBehaviour
             default: { Debug.LogError("Valore errato, non esiste un altro giudice di gara!"); break; }
 
         }
+        //fa partire il suono di continuo del countdown
+        beepSfx.Play();
 
     }
 

@@ -207,7 +207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nCollectedText: {fileID: 0}
   animSpeed: 0.4
-  maxCollectables: 10
+  maxCollectables: 99
 --- !u!95 &2236070129435058594
 Animator:
   serializedVersion: 3
