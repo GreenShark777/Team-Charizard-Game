@@ -10,6 +10,8 @@ public class RaceTimer : MonoBehaviour
     private int seconds, //SECONDI
         minutes; //MINUTI
     private float milliseconds; //MILLISECONDI
+    //stringa del tempo speso per finire la corsa
+    private string timeSpent;
 
 
     void Start()
@@ -31,30 +33,34 @@ public class RaceTimer : MonoBehaviour
         string secondsInText = (seconds < 10) ? "0" + seconds : "" + seconds;
         //converte i millisecondi in testo, e aggiunge uno zero dietro nel caso i millisecondi non siano 10 o più
         string millisecondsInText = ((int)milliseconds < 10) ? "0" + (int)milliseconds : "" + (int)milliseconds;
-        //aggiorna il testo in base ai minuti, secondi e millisecondi dall'inizio della gara
-        timeSpentText.text = minutes + ":" + secondsInText + "." + millisecondsInText.Substring(0, millisecondsInText.Length - 1);
+        //aggiorna la stringa in base ai minuti, secondi e millisecondi dall'inizio della gara
+        timeSpent = minutes + ":" + secondsInText + "." + millisecondsInText.Substring(0, millisecondsInText.Length - 1);
         //se si arriva al massimo numero consentito di minuti, secondi e millisecondi...
         if (minutes == 99 && seconds == 59 && milliseconds >= 99)
         {
-            //...il testo diventa rosso...
-            timeSpentText.color = Color.red;
+            //...il testo, se esiste, diventa rosso...
+            if(timeSpentText) timeSpentText.color = Color.red;
             //...e il timer smette di andare avanti
             enabled = false;
 
         }
-
-
+        //se esiste, aggiorna il testo del tempo impiegato
+        if(timeSpentText) timeSpentText.text = timeSpent;
 
 
         //DEBUG---------------------------------------------------------------------------------------------------------------------------------
-        if (Input.GetKeyDown(KeyCode.K)) { minutes++; }
-        if (Input.GetKeyDown(KeyCode.L)) { seconds++; }
+        //if (Input.GetKeyDown(KeyCode.K)) { minutes++; }
+        //if (Input.GetKeyDown(KeyCode.L)) { seconds++; }
 
     }
     /// <summary>
     /// Ritorna il testo del tempo che si è impiegato nella gara
     /// </summary>
     /// <returns></returns>
-    public string GetRaceTimeText() { return timeSpentText.text; }
+    public string GetRaceTimeText() { return timeSpent; }
+
+    public int GetMinutes() { return minutes; }
+    public int GetSeconds() { return seconds; }
+    public int GetMilliseconds() { return (int)milliseconds; }
 
 }

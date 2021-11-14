@@ -773,6 +773,7 @@ GameObject:
   - component: {fileID: 152539657}
   - component: {fileID: 152539661}
   - component: {fileID: 152539662}
+  - component: {fileID: 152539663}
   m_Layer: 0
   m_Name: PH_Jeep
   m_TagString: Enemy
@@ -882,6 +883,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &152539663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152539656}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29d3b31f271cd0e4aad860182187ac1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &209990763
 GameObject:
   m_ObjectHideFlags: 0
@@ -5192,6 +5205,7 @@ GameObject:
   - component: {fileID: 1424966673}
   - component: {fileID: 1424966677}
   - component: {fileID: 1424966678}
+  - component: {fileID: 1424966679}
   m_Layer: 0
   m_Name: PH_Moto
   m_TagString: Enemy
@@ -5301,6 +5315,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1424966679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424966672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29d3b31f271cd0e4aad860182187ac1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1436202875
 GameObject:
   m_ObjectHideFlags: 0
@@ -6606,6 +6632,7 @@ GameObject:
   - component: {fileID: 1829537064}
   - component: {fileID: 1829537068}
   - component: {fileID: 1829537069}
+  - component: {fileID: 1829537070}
   m_Layer: 0
   m_Name: PH_MacchinaVolante
   m_TagString: Enemy
@@ -6715,6 +6742,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &1829537070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1829537063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29d3b31f271cd0e4aad860182187ac1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &1852651638 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 419851255864432769, guid: 274d87b7bcce98943ac346cfdba677e1,
@@ -8100,6 +8139,14 @@ PrefabInstance:
       propertyPath: pp
       value: 
       objectReference: {fileID: 322625834}
+    - target: {fileID: 1319750029, guid: 274d87b7bcce98943ac346cfdba677e1, type: 3}
+      propertyPath: minOffsetTime
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1319750029, guid: 274d87b7bcce98943ac346cfdba677e1, type: 3}
+      propertyPath: maxOffsetTime
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1859068338, guid: 274d87b7bcce98943ac346cfdba677e1, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0

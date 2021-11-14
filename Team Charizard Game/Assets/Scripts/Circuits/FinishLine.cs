@@ -24,7 +24,7 @@ public class FinishLine : MonoBehaviour
     //riferimento allo script che tiene conto del tempo dall'inizio della gara corsa
     [SerializeField]
     private RaceTimer raceTimer = default;
-
+    //riferimento allo script che si occupa di mostrare i risultati di fine gara
     [SerializeField]
     private RaceResults rr = default;
     
@@ -42,8 +42,13 @@ public class FinishLine : MonoBehaviour
     [SerializeField]
     private LapFinished lapFinished = default;
     //array di riferimenti agli script di info dei nemici
+    // 0 - jeep
+    // 1 - macchina volante
+    // 2 - moto
     [SerializeField]
     private EnemyCircuitInfos[] enemiesInfo = new EnemyCircuitInfos[3];
+    //array statico di riferimenti agli script di info dei nemici
+    private static EnemyCircuitInfos[] staticEnemiesInfo = new EnemyCircuitInfos[3];
 
     private bool playerLost = false, //indica se un nemico ha finito la gara prima del giocatore, nel qualcaso il giocatore ha perso
         enemyAhead = false; //indica che un nemico è più avanti del giocatore nel numero di giri
@@ -72,6 +77,8 @@ public class FinishLine : MonoBehaviour
 
         //cicla ogni nemico nella lista e ne imposta l'ID
         for (int enemy = 0; enemy < enemiesInfo.Length; enemy++) { enemiesInfo[enemy].SetEnemyID(enemy); }
+        //copia staticamente l'array di info dei nemici
+        staticEnemiesInfo = enemiesInfo;
 
     }
 
@@ -126,23 +133,20 @@ public class FinishLine : MonoBehaviour
                     Debug.Log("Sconfitta!");
                 }
                 */
+                //...aggiorna il testo del tempo nella schermata di fine gara al tempo che ha impiegato il giocatore a finire il percorso...
+                //finishedTimeText.text = raceTimer.GetRaceTimeText();
+                //...e attiva la schermata di fine gara
+                //endRaceScreenUI.SetActive(true);
 
-                //...ferma il timer della corsa...
+                //...ferma il timer della corsa del giocatore...
                 raceTimer.enabled = false;
                 //disattiva tutta la UI di gara...
                 duringRaceUI.SetActive(false);
-
-                //...aggiorna il testo del tempo nella schermata di fine gara al tempo che ha impiegato il giocatore a finire il percorso...
-                //finishedTimeText.text = raceTimer.GetRaceTimeText();
-
                 //...attiva il cursore in modo che il giocatore possa cliccare i bottoni...
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 //...e comunica i risultati allo script dei risultati di fine gara
                 rr.UpdateEndResults(playerLost, raceTimer.GetRaceTimeText());
-
-                //...e attiva la schermata di fine gara
-                //endRaceScreenUI.SetActive(true);
 
             }
             //se lo script del giudice non è abilitato, lo riabilita
@@ -159,13 +163,16 @@ public class FinishLine : MonoBehaviour
         }
 
     }
-
+    /// <summary>
+    /// Si occupa di ciò che accade quando un nemico supera la linea di fine
+    /// </summary>
+    /// <param name="enemy"></param>
     private void EnemyFinishedLap(EnemyCircuitInfos enemy)
     {
         //comunica al nemico di aver finito un giro
         enemy.CompletedLap();
-        //se il nemico ha finito l'ultimo giro, comunica che il giocatore ha perso
-        if (enemy.GetEnemyLap() >= maxLapCount) { playerLost = true; }
+        //se il nemico ha finito l'ultimo giro, comunica che il giocatore ha perso e gli comunica di aver finito la gara
+        if (enemy.GetEnemyLap() >= maxLapCount) { playerLost = true; enemy.FinishedRacing(); }
         //altrimenti, se il giro del nemico è maggiore del giro in cui si trova il giocatore, comunica che un nemico ha finito un giro prima di lui
         else if (enemy.GetEnemyLap() > currentLap) { enemyAhead = true; }
         //imposta il checkpoint iniziale per controllare le posizioni dei kart, se il nemico è avanti
@@ -254,5 +261,10 @@ public class FinishLine : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public EnemyCircuitInfos[] GetEnemiesInfos() { return enemiesInfo; }
+    /// <summary>
+    /// Ritorna l'array statico di info dei nemici
+    /// </summary>
+    /// <returns></returns>
+    public static EnemyCircuitInfos[] StaticGetEnemiesInfos() { return staticEnemiesInfo; }
 
 }

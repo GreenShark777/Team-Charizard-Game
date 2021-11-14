@@ -110,8 +110,11 @@ public class RaceStartCD : MonoBehaviour
         StartCoroutine(ActivateTrafficLightBoy(2));
         //aspetta finisca l'animazione di attivazione del verde
         yield return new WaitForSeconds(activationTimer);
-        //attiva il timer di gara
+        //attiva il timer di gara del giocatore
         raceTimer.enabled = true;
+        //attiva il timer dei nemici
+        var enemiesInfos = FinishLine.StaticGetEnemiesInfos();
+        foreach (EnemyCircuitInfos enemy in enemiesInfos) { enemy.ActivateRaceTimer(true); }
         //comunica che la gara è iniziata
         raceBegun = true;
         //fa partire il suono che indica la fine del countdown
