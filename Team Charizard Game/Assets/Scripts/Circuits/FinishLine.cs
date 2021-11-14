@@ -110,8 +110,6 @@ public class FinishLine : MonoBehaviour
                 //...comunica che la gara è finita...
                 RaceFinished = true;
 
-                rr.UpdateEndResults(playerLost, raceTimer.GetRaceTimeText());
-
                 /*
                 //...se il giocatore ha finito la gara prima di tutti i nemici...
                 if (!playerLost)
@@ -140,6 +138,8 @@ public class FinishLine : MonoBehaviour
                 //...attiva il cursore in modo che il giocatore possa cliccare i bottoni...
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                //...e comunica i risultati allo script dei risultati di fine gara
+                rr.UpdateEndResults(playerLost, raceTimer.GetRaceTimeText());
 
                 //...e attiva la schermata di fine gara
                 //endRaceScreenUI.SetActive(true);

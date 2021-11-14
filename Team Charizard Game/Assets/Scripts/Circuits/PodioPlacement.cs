@@ -59,6 +59,8 @@ public class PodioPlacement : MonoBehaviour
             PositionVehicle(vehicleToMove, positions[pos] - 1);
 
         }
+        //attiva il podio
+        gameObject.SetActive(true);
         Debug.Log("Posizionati veicoli nel podio");
     }
     /// <summary>
