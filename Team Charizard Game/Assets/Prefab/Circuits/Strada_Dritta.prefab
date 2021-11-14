@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6216081506271622636}
   - component: {fileID: 3266762212151670951}
   - component: {fileID: 7715308555466146253}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: muro_dx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 2358101000699201330}
   - component: {fileID: 1123364159947572403}
   - component: {fileID: 8193943125262267169}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: frecce_dx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   - component: {fileID: 2413667606871784802}
   - component: {fileID: 1250665891593381255}
   - component: {fileID: 7715308553881615061}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: muro2_dx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 5635007148539182407}
   - component: {fileID: 5571559834720940073}
   - component: {fileID: 7715308554099233860}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: muro2_sx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -466,7 +466,7 @@ GameObject:
   - component: {fileID: 670169348022769759}
   - component: {fileID: 8127175030600033970}
   - component: {fileID: 2314694048925626825}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: frecce_sx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -543,7 +543,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7825269600843605220}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Strada_Dritta
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 3849889583953009973}
   - component: {fileID: 5507976486740575921}
   - component: {fileID: 7715308554936781215}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: muro_sx
   m_TagString: Untagged
   m_Icon: {fileID: 0}
