@@ -8,6 +8,9 @@ public class ItemScript : MonoBehaviour
     private const int N_ITEMS = 5;
     //indica se il giocatore ha un oggetto
     private bool hasItem = false;
+    //indica se il player è nel tutorial
+    [SerializeField]
+    private bool isInTutorial = false;
     
     [SerializeField]
     private Transform itemsContainer = default, //riferimento al contenitore degli oggetti
@@ -65,7 +68,7 @@ public class ItemScript : MonoBehaviour
     {
         //se si collide con una cassa oggetto, la cassa viene disabilitata per un po' e il giocatore ottiene un oggetto casuale
         if (other.CompareTag("ItemBox")) { StartCoroutine(UsedUpCD(other.gameObject)); }
-
+        
     }
 
     /// <summary>
@@ -125,6 +128,7 @@ public class ItemScript : MonoBehaviour
     /// <returns></returns>
     private IEnumerator UsedUpCD(GameObject itemBox)
     {
+        
         //ottiene come riferimento il collider della cassa oggetti ottenuta
         //Collider itemBoxColl = other.GetComponent<BoxCollider>();
 
@@ -142,6 +146,7 @@ public class ItemScript : MonoBehaviour
 
         //fa partire la coroutine per far ottenere un oggetto al giocatore
         StartCoroutine(getItem());
+        if (isInTutorial) {obtainedItemIndex = 0;}
 
         // ItemUIAnim.SetBool("ItemIn", true);
         //ItemUiScroll.SetBool("Scroll", true);

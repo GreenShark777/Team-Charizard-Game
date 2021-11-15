@@ -40,7 +40,7 @@ public class setdestination : MonoBehaviour
         
 
 
-        if( Vector3.Distance(transform.position,wp[wpIndex].position) < 4) //se la distanza è minore di 4
+        if( Vector3.Distance(transform.position,wp[wpIndex].position) < 50) //se la distanza è minore di 4
         {
             
             wpIndex++; //prossimo waypoint
