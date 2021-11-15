@@ -58,7 +58,7 @@ public class RaceResults : MonoBehaviour
         //ottiene le info dei nemici
         var enemiesInfos = FinishLine.StaticGetEnemiesInfos();
         //ferma il timer della corsa dei nemici
-        foreach (EnemyCircuitInfos enemy in enemiesInfos) { enemy.ActivateRaceTimer(false); }
+        foreach (EnemyCircuitInfos enemy in enemiesInfos) { if(enemy) enemy.ActivateRaceTimer(false); }
         //cambia i testi delle posizioni del podio in base ai tempi delle macchine
         ChangePosTexts();
         //fa partire la transizione
@@ -89,7 +89,7 @@ public class RaceResults : MonoBehaviour
             //crea un riferimento locale per il testo da cambiare
             Text textToChange = null;
             //crea una stringa locale che indicherà cosa deve essere scritto nel testo da cambiare
-            string newTime;
+            string newTime = "";
             //ottiene la posizione del veicolo
             int vehiclePos = positions[i] - 1;
             //in base alla posizione di questo veicolo nel podio, viene cambiato un testo diverso
@@ -111,12 +111,17 @@ public class RaceResults : MonoBehaviour
             if (i >= enemiesInfos.Length) { newTime = playerFinishedTime; }
             else
             {
+                //se esiste il riferimento al nemico...
+                if (enemiesInfos[i])
+                {
                 /*
-                 * se il nemico è in una posizione nel podio più bassa del giocatore e non ha ancora finito di gareggiare,
+                 * ...se il nemico è in una posizione nel podio più bassa del giocatore e non ha ancora finito di gareggiare,
                  * randomizza il suo tempo di gara altrimenti rimarrà invariato
                 */
-                newTime = (vehiclePos > playerPos && !enemiesInfos[i].HasEnemyFinishedRacing()) ? 
-                          GetUpdatedEnemyEndRaceTime(enemiesInfos[i], vehiclePos) : enemiesInfos[i].GetEndRaceTime();
+                    newTime = (vehiclePos > playerPos && !enemiesInfos[i].HasEnemyFinishedRacing()) ?
+                              GetUpdatedEnemyEndRaceTime(enemiesInfos[i], vehiclePos) : enemiesInfos[i].GetEndRaceTime();
+
+                }
             
             }
             //infine, cambia il testo da cambiare con la nuova stringa del tempo che il veicolo ciclato ha impiegato

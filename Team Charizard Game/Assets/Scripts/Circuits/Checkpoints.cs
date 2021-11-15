@@ -94,8 +94,8 @@ public class Checkpoints : MonoBehaviour
 
     private void Update()
     {
-        //se questo checkpoint ha l'ID del checkpoint che deve controllare le posizioni, controlla le posizioni
-        if (checkpointID == checkingID/* && Input.GetKeyDown(KeyCode.C)*/) { CheckPositions(); }
+        //se questo checkpoint ha l'ID del checkpoint che deve controllare le posizioni e la gara non è ancora finita, controlla le posizioni
+        if (checkpointID == checkingID && !FinishLine.RaceFinished/* && Input.GetKeyDown(KeyCode.C)*/) { CheckPositions(); }
 
     }
 
@@ -205,12 +205,12 @@ public class Checkpoints : MonoBehaviour
                             //...se la distanza dal checkpoint del kartX è minore di quella del kartY, il kartX riceverà un punto
                             if (distanceX < distanceY)
                             {
-                                Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartX]);
+                                //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartX]);
                             }
                             else //altrimenti, il kartY riceverà un punto
                             {
                                 kartXWon = false;
-                                Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartY]);
+                                //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartY]);
                             }
 
                         } //altrimenti sono su 2 checkpoint diversi, quindi...
@@ -219,12 +219,12 @@ public class Checkpoints : MonoBehaviour
                             //...se l'ID del checkpoint attraversato dal kartX è maggiore di quello del kartY, il kartX riceverà un punto
                             if (checkpointX > checkpointY)
                             {
-                                Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
+                                //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
                             }
                             else //altrimenti, il kartY riceverà un punto
                             {
                                 kartXWon = false;
-                                Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
+                                //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
                             }
 
                         }
@@ -235,12 +235,12 @@ public class Checkpoints : MonoBehaviour
                         //...se il giro a cui il kartX è arrivato è maggiore di quello del kartY, il kartX riceverà un punto
                         if (lapX > lapY)
                         {
-                            Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
+                            //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
                         }
                         else //altrimenti, il kartY riceverà un punto
                         {
                             kartXWon = false;
-                            Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
+                            //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
                         }
 
                     }

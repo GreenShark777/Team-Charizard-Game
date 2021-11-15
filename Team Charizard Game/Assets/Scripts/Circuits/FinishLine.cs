@@ -171,8 +171,15 @@ public class FinishLine : MonoBehaviour
     {
         //comunica al nemico di aver finito un giro
         enemy.CompletedLap();
-        //se il nemico ha finito l'ultimo giro, comunica che il giocatore ha perso e gli comunica di aver finito la gara
-        if (enemy.GetEnemyLap() >= maxLapCount) { playerLost = true; enemy.FinishedRacing(); }
+        //se il nemico ha finito l'ultimo giro...
+        if (enemy.GetEnemyLap() > maxLapCount)
+        {
+            //...comunica che il giocatore ha perso(se non ha già vinto)...
+            if(!RaceFinished) { playerLost = true; Debug.LogError("PLAYER LOST"); }
+            //...e gli comunica di aver finito la gara
+            enemy.FinishedRacing();
+        
+        }
         //altrimenti, se il giro del nemico è maggiore del giro in cui si trova il giocatore, comunica che un nemico ha finito un giro prima di lui
         else if (enemy.GetEnemyLap() > currentLap) { enemyAhead = true; }
         //imposta il checkpoint iniziale per controllare le posizioni dei kart, se il nemico è avanti

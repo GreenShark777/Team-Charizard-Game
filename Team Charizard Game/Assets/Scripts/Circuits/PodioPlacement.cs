@@ -9,7 +9,7 @@ public class PodioPlacement : MonoBehaviour
     //riferimenti ai kart dei corridori
     [SerializeField]
     private Transform playerKart = default, 
-        jeep = default, 
+        jeepOrBoss = default, 
         bike = default, 
         flyingKart = default;
 
@@ -43,8 +43,8 @@ public class PodioPlacement : MonoBehaviour
             //l'indice indica il veicolo di cui si sta controllando la posizione
             switch (pos)
             {
-                //JEEP
-                case 0: { vehicleToMove = jeep; break; }
+                //JEEP OR BOSS
+                case 0: { vehicleToMove = jeepOrBoss; break; }
                 //MACCHINA VOLANTE
                 case 1: { vehicleToMove = flyingKart; break; }
                 //MOTO
@@ -84,12 +84,12 @@ public class PodioPlacement : MonoBehaviour
             //QUARTO POSTO
             case 3: { podioPlace = fourthPlace; break; }
             //IN CASO DI ERRORE, LO SCRIVE NELLA CONSOLE
-            default: { Debug.LogError("NON E' STATA TROVATA LA POSIZIONE DEL VEICOLO: " + jeep + " -> " + pos); break; }
+            default: { Debug.LogError("NON E' STATA TROVATA LA POSIZIONE DEL VEICOLO: " + vehicle + " -> " + pos); break; }
 
         }
         //il veicolo viene posizionato nel podio scelto
         vehicle.position = podioPlace.position + new Vector3(0, heightOffset, 0);
-        Debug.Log("Posizione " + vehicle.name + " = " + pos + " quindi è nel podio: " + podioPlace);
+        //Debug.Log("Posizione " + vehicle.name + " = " + pos + " quindi è nel podio: " + podioPlace);
     }
 
     private void OnDrawGizmos()
