@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 80
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 5561349426305759274, guid: 65224f7a397f70b4886b74d2009a0a37, type: 3}
@@ -120,7 +120,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2796437349111965344}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01865387, y: 0.02402771, z: 4}
+  m_LocalPosition: {x: -2.61, y: 0.02, z: 4}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 7825269600843605220}
@@ -229,7 +229,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 80
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 5561349426305759274, guid: 65224f7a397f70b4886b74d2009a0a37, type: 3}
@@ -417,7 +417,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 80
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 5561349426305759274, guid: 65224f7a397f70b4886b74d2009a0a37, type: 3}
@@ -481,7 +481,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7085370574562881296}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.01865387, y: 0.02402771, z: 4}
+  m_LocalPosition: {x: 0.71, y: 0.02, z: 4}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children: []
   m_Father: {fileID: 7825269600843605220}
@@ -559,7 +559,7 @@ Transform:
   m_GameObject: {fileID: 7481360314647346782}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2358101000699201330}
   - {fileID: 670169348022769759}
@@ -628,7 +628,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 80
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 5561349426305759274, guid: 65224f7a397f70b4886b74d2009a0a37, type: 3}
