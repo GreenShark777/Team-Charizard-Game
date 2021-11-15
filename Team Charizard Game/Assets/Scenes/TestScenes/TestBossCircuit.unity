@@ -227,6 +227,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 32131160}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &36385461 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2076044203249875242, guid: fbdcce081719ef1459f220ec03f73af4,
+    type: 3}
+  m_PrefabInstance: {fileID: 2590198487746318060}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad8124f7f2cfad944bdc9da3a6ac39f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &47725688 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5873566979117935980, guid: 14ddda8b044d7694491caba9c8a1f22b,
@@ -5364,7 +5376,7 @@ PrefabInstance:
     - target: {fileID: 6567946006491302728, guid: 59bd184f78a2c444986bb510b05ce8a5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.4
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6567946006491302728, guid: 59bd184f78a2c444986bb510b05ce8a5,
         type: 3}
@@ -6769,20 +6781,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Boss
       objectReference: {fileID: 0}
+    - target: {fileID: 6887553489673056582, guid: fbdcce081719ef1459f220ec03f73af4,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbdcce081719ef1459f220ec03f73af4, type: 3}
---- !u!114 &2590198487746318061 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3186907465838332612, guid: fbdcce081719ef1459f220ec03f73af4,
-    type: 3}
-  m_PrefabInstance: {fileID: 2590198487746318060}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad8124f7f2cfad944bdc9da3a6ac39f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3602485513227576833
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7185,7 +7190,7 @@ PrefabInstance:
         type: 3}
       propertyPath: enemiesInfo.Array.data[0]
       value: 
-      objectReference: {fileID: 2590198487746318061}
+      objectReference: {fileID: 36385461}
     - target: {fileID: 5383609455081564213, guid: 43b32509bbb16504191e20d078aa4f66,
         type: 3}
       propertyPath: enemiesInfo.Array.data[1]

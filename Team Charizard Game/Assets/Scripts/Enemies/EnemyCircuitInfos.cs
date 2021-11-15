@@ -10,7 +10,7 @@ public class EnemyCircuitInfos : MonoBehaviour
     //indica a quale checkpoint è arrivato
     private int crossedCheckpoint = -1;
     //indica a che giro è arrivato questo nemico
-    private int lap = 1;
+    private int lap = 0;
     //indica se il nemico ha finito la gara o meno
     private bool finishedRace = false;
 
