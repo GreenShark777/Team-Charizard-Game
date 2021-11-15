@@ -11113,11 +11113,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7739109266693819518}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e4075e77c12c9124e9c9cf31088632bd, type: 3}
+  m_Script: {fileID: 11500000, guid: 9c1db7ff173c74940826809ed75abc24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grenade: {fileID: 1967879227359345892, guid: 6181cc25b615f854392bf8f2f091c082, type: 3}
-  bombpoint: {fileID: 653418330}
+  grenade: {fileID: 0}
+  bombpoint: {fileID: 0}
 --- !u!1 &7739109266923592339
 GameObject:
   m_ObjectHideFlags: 0

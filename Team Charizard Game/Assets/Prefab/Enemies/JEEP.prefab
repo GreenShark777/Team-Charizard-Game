@@ -41,7 +41,7 @@ Animator:
   m_GameObject: {fileID: 365247078}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7819baf0245f46e4fa35ee87d8586966, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -91,14 +91,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1455087598}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ecd3339067fad945a59179f42523537, type: 3}
+  m_Script: {fileID: 11500000, guid: 615b055609b6f31468288feec9bcd453, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 365247079}
-  rotationSpeed: 50
-  maxRotation: 2
-  firePoint: {fileID: 1876883023}
-  lr: {fileID: 1876883024}
+  target: {fileID: 0}
+  rotationSpeed: 0
+  maxRotation: 0
+  firePoint: {fileID: 0}
+  lr: {fileID: 0}
 --- !u!1 &1876883022
 GameObject:
   m_ObjectHideFlags: 0
@@ -148,7 +148,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 269fa82d17a91ab4aac62ded3cee2021, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

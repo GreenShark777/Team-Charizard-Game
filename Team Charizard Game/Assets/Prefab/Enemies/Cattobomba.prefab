@@ -90,7 +90,7 @@ Animator:
   m_GameObject: {fileID: 2071815098}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 15576b87565176f43b46399e06028cd5, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -235,13 +235,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1967879227359345892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a430d823a01a65a48973b6991074c517, type: 3}
+  m_Script: {fileID: 11500000, guid: d39a024fc38f4444f979678f26caf8d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 200
+  speed: 0
   explosionSpeed: 0
-  explosionCollider: {fileID: 1697336348967388632}
-  explosion: {fileID: 5647552066376067196}
+  explosionCollider: {fileID: 0}
+  explosion: {fileID: 0}
 --- !u!1001 &4222499704757212246
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -329,12 +329,6 @@ PrefabInstance:
 --- !u!4 &5647552066376067197 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8428899787090213931, guid: bdef1ece326076543b11013b59840778,
-    type: 3}
-  m_PrefabInstance: {fileID: 4222499704757212246}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &5647552066376067196 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8428899787090213930, guid: bdef1ece326076543b11013b59840778,
     type: 3}
   m_PrefabInstance: {fileID: 4222499704757212246}
   m_PrefabAsset: {fileID: 0}

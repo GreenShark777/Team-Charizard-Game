@@ -26,13 +26,13 @@ public class Checkpoints : MonoBehaviour
 
     //private List<Transform> positionsToCheck = new List<Transform>();
 
-    // 0 - jeep
+    // 0 - jeep / boss
     // 1 - macchina volante
     // 2 - moto
     // 3 - giocatore
     private Transform[] kartsPositions;
     //array di posizioni nel podio dei veicoli sia nemici che del giocatore
-    // 0 - jeep
+    // 0 - jeep / boss
     // 1 - macchina volante
     // 2 - moto
     // 3 - giocatore
@@ -67,12 +67,17 @@ public class Checkpoints : MonoBehaviour
         //cicla ogni nemico nell'array di info dei nemici
         foreach (EnemyCircuitInfos enemy in enemiesInfo)
         {
-            //aggiunge il nemico all'array di riferimenti alla posizione dei kart
-            kartsPositions[i] = enemy.transform;
-            //imposta la posizione iniziale del nemico
-            currentPositions[i] = i + 1;
-            //incrementa l'indice per il prossimo ciclo
-            i++;
+            //se esiste il riferimento al nemico, lo aggiunge alla lista
+            if (enemy)
+            {
+                //aggiunge il nemico all'array di riferimenti alla posizione dei kart
+                kartsPositions[i] = enemy.transform;
+                //imposta la posizione iniziale del nemico
+                currentPositions[i] = i + 1;
+                //incrementa l'indice per il prossimo ciclo
+                i++;
+
+            }
 
         }
         //aggiunge il giocatore all'array di riferimenti ai kart
@@ -106,7 +111,7 @@ public class Checkpoints : MonoBehaviour
         
         }
         //se si collide con un nemico, effettua alcuni controlli per la posizione
-        else if (other.CompareTag("Enemy")) { EnemyCrossed(other.GetComponent<EnemyCircuitInfos>()); }
+        else if (other.CompareTag("Enemy")) { EnemyCrossed(other.GetComponent<EnemyCircuitInfos>()); Debug.Log("Nemico al checkpoint: " + checkpointID); }
 
     }
 
@@ -170,162 +175,170 @@ public class Checkpoints : MonoBehaviour
             //crea un ciclo annidato per comparare tutti i kart
             for (int kartY = kartX + 1; kartY < kartsPositions.Length; kartY++)
             {
-                //Debug.LogError("Controllo kart -> " + kartsPositions[kartX] + " : " + kartsPositions[kartY]);
-
-                //crea un bool che indicherà quale dei 2 kart "vince" il controllo(chiè il più vicino alla fine della gara tra i 2)
-                bool kartXWon = true;
-                //ottiene i riferimenti al giro a cui entrambi i kart sono arrivati
-                int lapX = (kartX != 3) ? enemiesInfo[kartX].GetEnemyLap() : finishLine.GetCurrentLap();
-                int lapY = (kartY != 3) ? enemiesInfo[kartY].GetEnemyLap() : finishLine.GetCurrentLap();
-                //se i 2 kart sono nello stesso giro...
-                if (lapX == lapY)
+                //crea una variabile che indica se si possono controllare i kart
+                bool canCheck = true;
+                //controlla se esistono i riferimenti per poter controllare i kart
+                if (kartX < enemiesInfo.Length) { canCheck = enemiesInfo[kartX]; }
+                if (kartY < enemiesInfo.Length) { canCheck = enemiesInfo[kartY]; }
+                //se si può controllare, controlla le posizioni dei 2 kart
+                if (canCheck)
                 {
-                    //...ottiene i riferimenti al checkpoint a cui entrambi i kart sono arrivati...
-                    int checkpointX = (kartX != 3) ? enemiesInfo[kartX].GetCrossedCheckpoint() : finishLine.GetCurrentCheckpoint();
-                    int checkpointY = (kartY != 3) ? enemiesInfo[kartY].GetCrossedCheckpoint() : finishLine.GetCurrentCheckpoint();
-                    //...se i 2 kart hanno oltrepassato, più recentemente, lo stesso checkpoint...
-                    if (checkpointX == checkpointY)
+                    //Debug.LogError("Controllo kart -> " + kartsPositions[kartX] + " : " + kartsPositions[kartY]);
+                    //crea un bool che indicherà quale dei 2 kart "vince" il controllo(chiè il più vicino alla fine della gara tra i 2)
+                    bool kartXWon = true;
+                    //ottiene i riferimenti al giro a cui entrambi i kart sono arrivati
+                    int lapX = (kartX != 3) ? enemiesInfo[kartX].GetEnemyLap() : finishLine.GetCurrentLap();
+                    int lapY = (kartY != 3) ? enemiesInfo[kartY].GetEnemyLap() : finishLine.GetCurrentLap();
+                    //se i 2 kart sono nello stesso giro...
+                    if (lapX == lapY)
                     {
-                        //...calcola la distanza tra i 2 kart...
-                        float distanceX = Vector3.Distance(transform.position, kartsPositions[kartX].position);
-                        float distanceY = Vector3.Distance(transform.position, kartsPositions[kartY].position);
-                        //...se la distanza dal checkpoint del kartX è minore di quella del kartY, il kartX riceverà un punto
-                        if (distanceX < distanceY)
+                        //...ottiene i riferimenti al checkpoint a cui entrambi i kart sono arrivati...
+                        int checkpointX = (kartX != 3) ? enemiesInfo[kartX].GetCrossedCheckpoint() : finishLine.GetCurrentCheckpoint();
+                        int checkpointY = (kartY != 3) ? enemiesInfo[kartY].GetCrossedCheckpoint() : finishLine.GetCurrentCheckpoint();
+                        //...se i 2 kart hanno oltrepassato, più recentemente, lo stesso checkpoint...
+                        if (checkpointX == checkpointY)
                         {
-                            //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartX]);
-                        }
-                        else //altrimenti, il kartY riceverà un punto
+                            //...calcola la distanza tra i 2 kart...
+                            float distanceX = Vector3.Distance(transform.position, kartsPositions[kartX].position);
+                            float distanceY = Vector3.Distance(transform.position, kartsPositions[kartY].position);
+                            //...se la distanza dal checkpoint del kartX è minore di quella del kartY, il kartX riceverà un punto
+                            if (distanceX < distanceY)
+                            {
+                                //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartX]);
+                            }
+                            else //altrimenti, il kartY riceverà un punto
+                            {
+                                kartXWon = false;
+                                //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartY]);
+                            }
+
+                        } //altrimenti sono su 2 checkpoint diversi, quindi...
+                        else
                         {
-                            kartXWon = false;
-                            //Debug.Log("CALCOLO DISTANZA, IL PIU' VICINO E' " + kartsPositions[kartY]);
+                            //...se l'ID del checkpoint attraversato dal kartX è maggiore di quello del kartY, il kartX riceverà un punto
+                            if (checkpointX > checkpointY)
+                            {
+                                //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
+                            }
+                            else //altrimenti, il kartY riceverà un punto
+                            {
+                                kartXWon = false;
+                                //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
+                            }
+
                         }
 
-                    } //altrimenti sono su 2 checkpoint diversi, quindi...
+                    } //altrimenti sono su giri diversi, quindi...
                     else
                     {
-                        //...se l'ID del checkpoint attraversato dal kartX è maggiore di quello del kartY, il kartX riceverà un punto
-                        if (checkpointX > checkpointY)
+                        //...se il giro a cui il kartX è arrivato è maggiore di quello del kartY, il kartX riceverà un punto
+                        if (lapX > lapY)
                         {
-                            //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
+                            //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
                         }
                         else //altrimenti, il kartY riceverà un punto
                         {
                             kartXWon = false;
-                            //Debug.Log("SONO SU CHECKPOINT DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
+                            //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
                         }
 
                     }
-
-                } //altrimenti sono su giri diversi, quindi...
-                else
-                {
-                    //...se il giro a cui il kartX è arrivato è maggiore di quello del kartY, il kartX riceverà un punto
-                    if (lapX > lapY)
+                    //se è stato il kartX a "vincere" il controllo...
+                    if (kartXWon)
                     {
-                        //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartX]);
+                        //...riceverà un punto il kartX
+                        kartPoints[kartX]++;
+                        //Debug.Log("INCREMENTA PUNTEGGIO DI " + kartsPositions[kartX] + " A " + kartPoints[kartX]);
                     }
-                    else //altrimenti, il kartY riceverà un punto
+                    else //altrimenti, riceverà un punto il kartY
                     {
-                        kartXWon = false;
-                        //Debug.Log("SONO SU GIRI DIVERSI, IL MAGGIORE E' QUELLO DI " + kartsPositions[kartY]);
+                        kartPoints[kartY]++;
+                        //Debug.Log("INCREMENTA PUNTEGGIO DI " + kartsPositions[kartY] + " A " + kartPoints[kartY]);
                     }
 
-                }
-                //se è stato il kartX a "vincere" il controllo...
-                if (kartXWon)
-                {
-                    //...riceverà un punto il kartX
-                    kartPoints[kartX]++;
-                    //Debug.Log("INCREMENTA PUNTEGGIO DI " + kartsPositions[kartX] + " A " + kartPoints[kartX]);
-                }
-                else //altrimenti, riceverà un punto il kartY
-                {
-                    kartPoints[kartY]++;
-                    //Debug.Log("INCREMENTA PUNTEGGIO DI " + kartsPositions[kartY] + " A " + kartPoints[kartY]);
                 }
 
             }
-
-        }
-        //dopo i vari controlli, cicla ogni elemento nella lista di nuove posizioni dei kart
-        for (int x = 0; x < 4; x++)
-        {
-            //le posizioni dei kart saranno definite dai punti che hanno ottenuto nel controllo(maggiore il punteggio, più alta la posizione)
-            newCurrentPositions[x] = Mathf.Abs(kartPoints[x] - 4);
-
-            /*
-            for (int y = 3; y > 0; y--)
+            //dopo i vari controlli, cicla ogni elemento nella lista di nuove posizioni dei kart
+            for (int x = 0; x < 4; x++)
             {
+                //le posizioni dei kart saranno definite dai punti che hanno ottenuto nel controllo(maggiore il punteggio, più alta la posizione)
+                newCurrentPositions[x] = Mathf.Abs(kartPoints[x] - 4);
+
+                /*
+                for (int y = 3; y > 0; y--)
+                {
+
+                    if (kartPoints[x] > kartPoints[y])
+                    {
+
+                        int temp = newCurrentPositions[x];
+                        newCurrentPositions[x] = newCurrentPositions[y];
+                        newCurrentPositions[y] = temp;
+
+                        //newCurrentPositions[x] = currentPositions[y];
+
+                    }
+                    else
+                    {
+
+                        int temp = newCurrentPositions[y];
+                        newCurrentPositions[y] = newCurrentPositions[x];
+                        newCurrentPositions[x] = temp;
+
+                        //newCurrentPositions[y] = currentPositions[x];
+
+                    }
+
+                }*/
+                /*
+                int y = x + 1;
 
                 if (kartPoints[x] > kartPoints[y])
                 {
-                    
                     int temp = newCurrentPositions[x];
                     newCurrentPositions[x] = newCurrentPositions[y];
                     newCurrentPositions[y] = temp;
-
-                    //newCurrentPositions[x] = currentPositions[y];
-
                 }
                 else
                 {
-                    
                     int temp = newCurrentPositions[y];
                     newCurrentPositions[y] = newCurrentPositions[x];
                     newCurrentPositions[x] = temp;
+                }
+                */
+                /*
+                switch (kartPoints[x])
+                {
 
-                    //newCurrentPositions[y] = currentPositions[x];
+                    case 0: { newCurrentPositions[x] = 4; break; }
+                    case 1: { newCurrentPositions[x] = 3; break; }
+                    case 2: { newCurrentPositions[x] = 2; break; }
+                    case 3: { newCurrentPositions[x] = 1; break; }
 
                 }
+                */
 
-            }*/
+            }
+            //infine, controlla se ci sono stati dei cambiamenti dall'ultimo controllo
+            CheckForChanges(newCurrentPositions);
+
+            //points = kartPoints;
+
             /*
-            int y = x + 1;
+            //cicla ogni nemico nella lista
+            foreach (EnemyCircuitInfos enemy in enemiesInfo)
+            {
+                //se il nemico è tra questo checkpoint e quello immediatamente precedente e si trova nel giro più recente, viene aggiunto alla lista di posizioni da controllare
+                if (enemy.GetCrossedCheckpoint() == checkpointID - 1 && enemy.GetEnemyLap() == finishLine.GetCurrentLap())
+                { /*positionsToCheck.Add(enemy.transform); }
 
-            if (kartPoints[x] > kartPoints[y])
-            {
-                int temp = newCurrentPositions[x];
-                newCurrentPositions[x] = newCurrentPositions[y];
-                newCurrentPositions[y] = temp;
             }
-            else
-            {
-                int temp = newCurrentPositions[y];
-                newCurrentPositions[y] = newCurrentPositions[x];
-                newCurrentPositions[x] = temp;
-            }
+            //se il giocatore è tra questo checkpoint e quello immediatamente precedente e si trova nel giro più recente, viene aggiunto alla lista di posizioni da controllare
+            if (finishLine.GetCurrentCheckpoint() == checkpointID - 1 && finishLine.GetCurrentLap(true) == finishLine.GetCurrentLap())
+            { /*positionsToCheck.Add(player); }
             */
-            /*
-            switch (kartPoints[x])
-            {
-
-                case 0: { newCurrentPositions[x] = 4; break; }
-                case 1: { newCurrentPositions[x] = 3; break; }
-                case 2: { newCurrentPositions[x] = 2; break; }
-                case 3: { newCurrentPositions[x] = 1; break; }
-
-            }
-            */
-
         }
-        //infine, controlla se ci sono stati dei cambiamenti dall'ultimo controllo
-        CheckForChanges(newCurrentPositions);
-
-        //points = kartPoints;
-
-        /*
-        //cicla ogni nemico nella lista
-        foreach (EnemyCircuitInfos enemy in enemiesInfo)
-        {
-            //se il nemico è tra questo checkpoint e quello immediatamente precedente e si trova nel giro più recente, viene aggiunto alla lista di posizioni da controllare
-            if (enemy.GetCrossedCheckpoint() == checkpointID - 1 && enemy.GetEnemyLap() == finishLine.GetCurrentLap())
-            { /*positionsToCheck.Add(enemy.transform); }
-
-        }
-        //se il giocatore è tra questo checkpoint e quello immediatamente precedente e si trova nel giro più recente, viene aggiunto alla lista di posizioni da controllare
-        if (finishLine.GetCurrentCheckpoint() == checkpointID - 1 && finishLine.GetCurrentLap(true) == finishLine.GetCurrentLap())
-        { /*positionsToCheck.Add(player); }
-        */
 
     }
     /// <summary>
@@ -394,10 +407,10 @@ public class Checkpoints : MonoBehaviour
         if (drawGizmos && checkingID == checkpointID)
         {
 
-            Gizmos.DrawLine(transform.position, kartsPositions[0].position);
-            Gizmos.DrawLine(transform.position, kartsPositions[1].position);
-            Gizmos.DrawLine(transform.position, kartsPositions[2].position);
-            Gizmos.DrawLine(transform.position, kartsPositions[3].position);
+            if (kartsPositions[0]) Gizmos.DrawLine(transform.position, kartsPositions[0].position);
+            if (kartsPositions[1]) Gizmos.DrawLine(transform.position, kartsPositions[1].position);
+            if (kartsPositions[2]) Gizmos.DrawLine(transform.position, kartsPositions[2].position);
+            if (kartsPositions[3]) Gizmos.DrawLine(transform.position, kartsPositions[3].position);
 
         }
 

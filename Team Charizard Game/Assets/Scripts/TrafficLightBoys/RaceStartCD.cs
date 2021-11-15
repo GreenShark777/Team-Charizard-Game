@@ -114,7 +114,7 @@ public class RaceStartCD : MonoBehaviour
         raceTimer.enabled = true;
         //attiva il timer dei nemici
         var enemiesInfos = FinishLine.StaticGetEnemiesInfos();
-        foreach (EnemyCircuitInfos enemy in enemiesInfos) { enemy.ActivateRaceTimer(true); }
+        foreach (EnemyCircuitInfos enemy in enemiesInfos) { if(enemy) enemy.ActivateRaceTimer(true); }
         //comunica che la gara è iniziata
         raceBegun = true;
         //fa partire il suono che indica la fine del countdown

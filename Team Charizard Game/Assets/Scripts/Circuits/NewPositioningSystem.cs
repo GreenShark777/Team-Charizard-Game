@@ -12,7 +12,7 @@ public class NewPositioningSystem : MonoBehaviour
     //private Animator[] posImagesAnims = new Animator[4];
 
     //array di riferimenti al RectTransform delle immagini per il posizionamento
-    // 0 - jeep
+    // 0 - jeep / boss
     // 1 - macchina volante
     // 2 - moto
     // 3 - giocatore
@@ -33,9 +33,9 @@ public class NewPositioningSystem : MonoBehaviour
         foreach (Transform child in transform)
         {
             //cerca di ottenere il riferimento all'Animator del figlio ciclato
-            Animator anim = child.GetComponent<Animator>();
+            //Animator anim = child.GetComponent<Animator>();
             //se il riferimento esiste...
-            if (anim)
+            if (/*anim*/index < posImagesRect.Length)
             {
 
                 //...lo aggiunge all'array di animator...

@@ -42,7 +42,7 @@ public class FinishLine : MonoBehaviour
     [SerializeField]
     private LapFinished lapFinished = default;
     //array di riferimenti agli script di info dei nemici
-    // 0 - jeep
+    // 0 - jeep / boss
     // 1 - macchina volante
     // 2 - moto
     [SerializeField]
@@ -75,8 +75,8 @@ public class FinishLine : MonoBehaviour
         retryButton = endRaceScreenUI.transform.GetChild(2).gameObject;
         */
 
-        //cicla ogni nemico nella lista e ne imposta l'ID
-        for (int enemy = 0; enemy < enemiesInfo.Length; enemy++) { enemiesInfo[enemy].SetEnemyID(enemy); }
+        //cicla ogni nemico nella lista e ne imposta l'ID(se esiste)
+        for (int enemy = 0; enemy < enemiesInfo.Length; enemy++) { if(enemiesInfo[enemy]) enemiesInfo[enemy].SetEnemyID(enemy); }
         //copia staticamente l'array di info dei nemici
         staticEnemiesInfo = enemiesInfo;
 
