@@ -26,6 +26,7 @@ public class Checkpoints : MonoBehaviour
 
     //private List<Transform> positionsToCheck = new List<Transform>();
 
+    //array di riferimenti ai kart nemici
     // 0 - jeep / boss
     // 1 - macchina volante
     // 2 - moto

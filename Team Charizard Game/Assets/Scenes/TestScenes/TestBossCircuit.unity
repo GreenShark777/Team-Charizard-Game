@@ -5368,6 +5368,11 @@ PrefabInstance:
       propertyPath: itemUIAnim
       value: 
       objectReference: {fileID: 1852651638}
+    - target: {fileID: 5907481769299931601, guid: 59bd184f78a2c444986bb510b05ce8a5,
+        type: 3}
+      propertyPath: isAgainstBoss
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6567946006491302728, guid: 59bd184f78a2c444986bb510b05ce8a5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6811,11 +6816,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Boss
-      objectReference: {fileID: 0}
-    - target: {fileID: 6887553489673056582, guid: fbdcce081719ef1459f220ec03f73af4,
-        type: 3}
-      propertyPath: m_TagString
-      value: Enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbdcce081719ef1459f220ec03f73af4, type: 3}
