@@ -5,14 +5,18 @@ using UnityEngine;
 public class Jeeplaser : MonoBehaviour
 {
     [SerializeField]
-    private Transform target;
+    private Transform target = default;
    
     [SerializeField]
-    private float rotationSpeed;
+    private float rotationSpeed = default;
     [SerializeField]
-    private float maxRotation;
+    private float maxRotation = default;
     [SerializeField]
-    private Transform firePoint;
+    private Transform firePoint = default;
+    [SerializeField]
+    private float baseDamage = default;
+    [SerializeField]
+    private float damageMultiplier = default;
 
     public LineRenderer lr;
     bool activateLaser = false;
@@ -62,17 +66,18 @@ public class Jeeplaser : MonoBehaviour
                 //ses colpisce il player
                 if (hit.collider.CompareTag("Player"))
                 {
+                    Debug.Log("PLAYER COLPITO DA LASER");
                     //richiama la funzione per togliere vita al player
-                    hit.collider.GetComponent<PlayerHealth>().ChangeHealth(-0.2f);
+                    hit.collider.GetComponent<PlayerHealth>().ChangeHealth(-baseDamage);
 
 
                 }
 
                 if (hit.collider.CompareTag("Enemy"))
                 {
-
-                    hit.collider.GetComponent<enemyCarHealth>().slowDown(0.2f);
-
+                    Debug.Log("LASER COLPISCE NEMICO");
+                    StartCoroutine(hit.collider.GetComponent<enemyCarHealth>().slowDown(baseDamage * damageMultiplier));
+                    StartCoroutine(hit.collider.GetComponent<enemyCarHealth>().showLifeBar());
                 }
 
 

@@ -45,7 +45,7 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 4
+    m_Value: 2.52
     min: 0
     max: 4
   directLightingStrength:
@@ -576,11 +576,11 @@ MonoBehaviour:
     min: 0
   upperHemisphereLuxValue:
     m_OverrideState: 0
-    m_Value: 0.93182933
+    m_Value: 0.66786003
     min: 0
   upperHemisphereLuxColor:
     m_OverrideState: 0
-    m_Value: {x: 0.5, y: 0.432555, z: 0.424376}
+    m_Value: {x: 0.41670638, y: 0.253751, z: 0.5}
   desiredLuxValue:
     m_OverrideState: 0
     m_Value: 20000
@@ -596,7 +596,7 @@ MonoBehaviour:
     m_Value: 0
   hdriSky:
     m_OverrideState: 1
-    m_Value: {fileID: 8900000, guid: 656a59a5ff93c46498416d97e5c16b66, type: 3}
+    m_Value: {fileID: 8900000, guid: 9efa8257bafc65c4495e25cfc5d9d1fa, type: 3}
   enableBackplate:
     m_OverrideState: 0
     m_Value: 0
