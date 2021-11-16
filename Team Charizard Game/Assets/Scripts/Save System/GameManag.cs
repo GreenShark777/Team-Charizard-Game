@@ -41,17 +41,22 @@ public class GameManag : MonoBehaviour
         if(loadData) OnGameLoad(SaveSystem.LoadGame());
         //dopo il caricamento dei dati controlla se gli array sono vuoti, nel qual caso li inizializza
         InizializeEmptyArrays();
-
-    }
-
-    private void Start()
-    {
         //viene svuotata la lista di script che devono salvare i dati
         dataToSave.Clear();
         //viene creato un'array recipiente con tutti gli script che devono salvare dati(anche quelli inattivi)
         var recipient = FindObjectsOfType<MonoBehaviour>().OfType<IUpdateData>();
         //inizializza la lista di script che devono salvare i dati, aggiungendo tutti gli elementi nella lista recipiente
         foreach (IUpdateData elem in recipient) { dataToSave.Add(elem); }
+    }
+
+    private void Start()
+    {
+        ////viene svuotata la lista di script che devono salvare i dati
+        //dataToSave.Clear();
+        ////viene creato un'array recipiente con tutti gli script che devono salvare dati(anche quelli inattivi)
+        //var recipient = FindObjectsOfType<MonoBehaviour>().OfType<IUpdateData>();
+        ////inizializza la lista di script che devono salvare i dati, aggiungendo tutti gli elementi nella lista recipiente
+        //foreach (IUpdateData elem in recipient) { dataToSave.Add(elem); }
 
         //DEBUG PER SAPERE GLI OGGETTI NELLA LISTA DI CHI DEVE AGGIORNARE DATI PRIMA DEL SALVATAGGIO
         //for (int i = 0; i < dataToSave.Count; i++ ) { Debug.LogError("Aggiunto: " + dataToSave[i]); }
