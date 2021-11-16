@@ -28,7 +28,7 @@ public class enemyCarHealth : MonoBehaviour
 
             health = value;
 
-            if (healthRef <= 70 && healthRef > 50)
+            if (healthRef <= 70 /*&& healthRef > 50*/)
             {
                 part1.transform.parent = null;
                 part1.isKinematic = false;
@@ -39,7 +39,7 @@ public class enemyCarHealth : MonoBehaviour
             }
             
 
-            if (healthRef < 50 && healthRef > 20)
+            if (healthRef < 50 /*&& healthRef > 20*/)
             {
                 //attiva un gameObject (in questo caso sparks2)
                 sparks2.SetActive(true);
@@ -86,6 +86,7 @@ public class enemyCarHealth : MonoBehaviour
    
 
     private Vector3 rightKartPosition;
+    [SerializeField]
     bool isKillable;
     float actualSpeed;
     
@@ -97,8 +98,10 @@ public class enemyCarHealth : MonoBehaviour
         actualSpeed = agent.speed;
         //imposta starthealt = al valore di health in modo da avere sempre un riferimento alla salute massima
         startHealth = health;
-        //prende automaticamente il riferimento all animator
         
+        lifeBar.value = startHealth;
+
+
         healthRef = health; //imposto la variabile uguale a quella assegnata nell inspector
     }
 
@@ -203,10 +206,11 @@ public class enemyCarHealth : MonoBehaviour
         isExecuted = false;
         //riposiziona il kart alla giusta posizione
         kart.localPosition = rightKartPosition;
-
+        //rimette la velocità a quella attuale
         agent.speed = actualSpeed;
-
+        //rimette la vita a quella originale
         healthRef = startHealth;
+        //riempe nuovamente la barra della vita dei nemici
         lifeBar.value = startHealth;
         
 

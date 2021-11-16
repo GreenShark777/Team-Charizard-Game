@@ -185,7 +185,7 @@ public class Checkpoints : MonoBehaviour
                 //se si può controllare, controlla le posizioni dei 2 kart
                 if (canCheck)
                 {
-                    Debug.LogError("Controllo kart -> " + kartsPositions[kartX] + " : " + kartsPositions[kartY]);
+                    //Debug.LogError("Controllo kart -> " + kartsPositions[kartX] + " : " + kartsPositions[kartY]);
                     //crea un bool che indicherà quale dei 2 kart "vince" il controllo(chiè il più vicino alla fine della gara tra i 2)
                     bool kartXWon = true;
                     //ottiene i riferimenti al giro a cui entrambi i kart sono arrivati

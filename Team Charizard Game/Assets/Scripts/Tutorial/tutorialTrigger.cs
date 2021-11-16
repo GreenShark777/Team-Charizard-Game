@@ -10,6 +10,8 @@ public class tutorialTrigger : MonoBehaviour
     private float time;
     [SerializeField]
     private bool isImageVisible = false;
+    [SerializeField]
+    private KeyCode comando;
     void Start()
     {
         
@@ -20,7 +22,11 @@ public class tutorialTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(comando))
+        {
+            removeImage();
+
+        }
 
 
     }
@@ -28,28 +34,42 @@ public class tutorialTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && isImageVisible == false)
         {
             //isImageVisible = true;
-
-            StartCoroutine(showImage());
+            showImage();
         }
 
 
     }
 
-    IEnumerator showImage()
-    {
+    //IEnumerator showImage()
+    //{
        
-            image.SetActive(true);
-            Time.timeScale = 0.2f;
+    //        image.SetActive(true);
+    //        Time.timeScale = 0.2f;
     
-            yield return new WaitForSeconds(time);
-            image.SetActive(false);
-            Time.timeScale = 1;
+    //        yield return new WaitForSeconds(time);
+    //        image.SetActive(false);
+    //        Time.timeScale = 1;
 
 
         
+
+    //}
+
+    void showImage()
+    {
+        isImageVisible = true;
+        image.SetActive(true);
+        Time.timeScale = 0;
+    }
+
+    void removeImage()
+    {
+        isImageVisible = false;
+        image.SetActive(false);
+        Time.timeScale = 1;
 
     }
 
