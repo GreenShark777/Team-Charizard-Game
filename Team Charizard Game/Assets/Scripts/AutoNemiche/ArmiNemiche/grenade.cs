@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class grenade : MonoBehaviour
+public class grenade : MonoBehaviour, IGiveDamage
 {
     [SerializeField]
     private float speed;
@@ -12,6 +12,8 @@ public class grenade : MonoBehaviour
     private Collider explosionCollider;
     [SerializeField]
     private ParticleSystem explosion;
+    [SerializeField]
+    private float dmg;
 
     // Start is called before the first frame update
     void Start()
@@ -41,8 +43,8 @@ public class grenade : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-
-            other.GetComponent<enemyCarHealth>().slowDown(3);
+            Debug.Log("CattoBOMBAAA");
+            //other.GetComponent<enemyCarHealth>().slowDown(3);
             StartCoroutine(explode());
         }
 
@@ -58,10 +60,14 @@ public class grenade : MonoBehaviour
 
     IEnumerator countDown()
     {
-        yield return new WaitForSeconds(6);
+        yield return new WaitForSeconds(5);
         StartCoroutine(explode());
 
 
     }
 
+    public float GiveDamage()
+    {
+        return dmg;
+    }
 }

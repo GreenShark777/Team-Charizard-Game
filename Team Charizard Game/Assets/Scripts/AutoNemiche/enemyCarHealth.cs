@@ -19,7 +19,7 @@ public class enemyCarHealth : MonoBehaviour
 
         set
         {
-            if(healthRef >3)
+            if(healthRef > 70)
             {
                 sparks.SetActive(false);
                 sparks2.SetActive(false);
@@ -28,7 +28,7 @@ public class enemyCarHealth : MonoBehaviour
 
             health = value;
 
-            if (healthRef >= 2 && healthRef < 3)
+            if (healthRef <= 70 && healthRef > 50)
             {
                 part1.transform.parent = null;
                 part1.isKinematic = false;
@@ -39,29 +39,22 @@ public class enemyCarHealth : MonoBehaviour
             }
             
 
-            if (healthRef < 2 && healthRef >= 1)
+            if (healthRef < 50 && healthRef > 20)
             {
                 //attiva un gameObject (in questo caso sparks2)
                 sparks2.SetActive(true);
 
             }
 
-            if (healthRef <= 1)
+            if (healthRef <= 20)
             {
                 isKillable = true;
-                
-                
-                lifeBar.sprite = explosion;
-
-                lifeBar.fillAmount += 5;
-
-
             }
 
-            if(healthRef < -3f)
+            if(healthRef < 5f)
             {
 
-                Debug.Log("explode");
+                StartCoroutine(Esecuzione());
 
             }
 
@@ -75,7 +68,7 @@ public class enemyCarHealth : MonoBehaviour
     [SerializeField]
     private GameObject sparks2;
     [SerializeField]
-    private Image lifeBar;
+    private Slider lifeBar;
     [SerializeField]
     private Rigidbody part1;
     [SerializeField]
@@ -88,11 +81,14 @@ public class enemyCarHealth : MonoBehaviour
     private Animator carAnimator;
     [SerializeField]
     private Transform kart;
+    [SerializeField]
+    private Animator anim;
+   
 
     private Vector3 rightKartPosition;
     bool isKillable;
     float actualSpeed;
-    Animator anim;
+    
     bool isExecuted;
     private void Start()
     {
@@ -102,30 +98,30 @@ public class enemyCarHealth : MonoBehaviour
         //imposta starthealt = al valore di health in modo da avere sempre un riferimento alla salute massima
         startHealth = health;
         //prende automaticamente il riferimento all animator
-        anim = lifeBar.GetComponent<Animator>();
+        
         healthRef = health; //imposto la variabile uguale a quella assegnata nell inspector
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            StartCoroutine(slowDown(3));
+        //if (Input.GetKeyDown(KeyCode.G))
+        //{
+        //    StartCoroutine(slowDown(3));
 
-            StartCoroutine(showLifeBar());
-            //diminuisce la vita di 1
-            healthRef -= 1;
-            //diminuisce il fill amount di 03 per cambiare lo slider
+        //    StartCoroutine(showLifeBar());           //DEBUG
+        //    //diminuisce la vita di 1
+        //    healthRef -= 1;
+        //    //diminuisce il fill amount di 03 per cambiare lo slider
             
-        }
+        //}
 
-        if (Input.GetKeyDown(KeyCode.G) && isKillable == false)
-        {
-            //diminuisce il fill amount di 03 per cambiare lo slider
-            lifeBar.fillAmount -= 0.3f;
-        }
+        //if (Input.GetKeyDown(KeyCode.G) && isKillable == false)
+        //{
+        //    //diminuisce il fill amount di 03 per cambiare lo slider     // DEBUG
+        //    //lifeBar.fillAmount -= 0.3f;
+        //}
 
-        if (healthRef < 1 && isKillable)
+        if (healthRef < 20 && isKillable)
         {
             if (Vector3.Distance(transform.position, player.transform.position) < 20)
             {
@@ -139,12 +135,12 @@ public class enemyCarHealth : MonoBehaviour
                 }
 
             }
-            else
-            {
-                //parte animazione fadeIN
-                anim.SetBool("fade", false);
+            //else
+            //{
+            //    //parte animazione fadeIN
+            //    anim.SetBool("fade", false);
 
-            }
+            //}
 
 
         }
@@ -154,8 +150,9 @@ public class enemyCarHealth : MonoBehaviour
     }
 
 
-    IEnumerator showLifeBar()
+    public IEnumerator showLifeBar()
     {
+        Debug.Log("SHOWLIFEBAR");
         //fa partire l animazione di fadeIN
         anim.SetBool("fade", true);
         //aspetta 2 secondi
@@ -169,6 +166,7 @@ public class enemyCarHealth : MonoBehaviour
 
     public IEnumerator slowDown(float dmg)
     {
+        lifeBar.value -= dmg;
         healthRef -= dmg;
         //imposta la velocità a 0
         agent.speed = 0;
@@ -183,6 +181,8 @@ public class enemyCarHealth : MonoBehaviour
 
     IEnumerator Esecuzione()
     {
+        
+        agent.speed = 0;
         //rende la variabile true per evitare che possa essere richiamata più volte
         isExecuted = true;
         //attiva l animator
@@ -204,10 +204,28 @@ public class enemyCarHealth : MonoBehaviour
         //riposiziona il kart alla giusta posizione
         kart.localPosition = rightKartPosition;
 
+        agent.speed = actualSpeed;
+
+        healthRef = startHealth;
+        lifeBar.value = startHealth;
+        
+
         Debug.Log("fineEsecuzione");
 
 
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        IGiveDamage ig = other.GetComponent<IGiveDamage>();
+        if (ig != null)
+        {
+            
+            StartCoroutine(slowDown(ig.GiveDamage()));
+            StartCoroutine(showLifeBar());
+        }
+
+
+    }
 
 }

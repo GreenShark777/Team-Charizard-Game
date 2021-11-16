@@ -10,6 +10,14 @@ public class EnemyCircuitInfos : MonoBehaviour
     //indica a che giro è arrivato questo nemico
     private int lap = 1;
 
+    private setdestination sd;
+
+    private void Start()
+    {
+        
+        sd = GetComponent<setdestination>();
+        //sd.enabled = false;
+    }
 
     public void SetEnemyID(int newID) { enemyID = newID; }
 
@@ -21,5 +29,7 @@ public class EnemyCircuitInfos : MonoBehaviour
     public int GetCrossedCheckpoint() { return crossedCheckpoint; }
 
     public int GetEnemyLap() { return lap; }
+
+    public void startEnemyRace() { sd.enabled = true; }
 
 }

@@ -850,7 +850,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6239460678984953566}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -10855,7 +10855,7 @@ MonoBehaviour:
   health: 4
   sparks: {fileID: 8297585360545799334}
   sparks2: {fileID: 7217540913447390723}
-  lifeBar: {fileID: 2264029650009626895}
+  lifeBar: {fileID: 0}
   part1: {fileID: 5135981513717037084}
   explosion: {fileID: 21300000, guid: 0b30beafbac924b469012a27f38187b7, type: 3}
   player: {fileID: 0}

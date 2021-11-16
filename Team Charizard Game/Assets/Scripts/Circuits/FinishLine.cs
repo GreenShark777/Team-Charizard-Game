@@ -62,15 +62,18 @@ public class FinishLine : MonoBehaviour
         RaceFinished = false;
         //cambia il testo che tiene conto dei giri che il giocatore ha finito
         lapText.text = "LAP: " + currentLap + " / " + maxLapCount;
-        
+
         /*
         //ottiene il riferimento ai testi da cambiare a fine la gara
         finishedTimeText = endRaceScreenUI.transform.GetChild(0).GetComponent<Text>();
         endResultText = endRaceScreenUI.transform.GetChild(1).GetComponent<Text>();
         retryButton = endRaceScreenUI.transform.GetChild(2).gameObject;
         */
-
+        
         //cicla ogni nemico nella lista e ne imposta l'ID
+        Debug.Log("Nemici " + enemiesInfo.Length + " : " + enemiesInfo[0] +"---"+ 
+            enemiesInfo[1] + "---" 
+            + enemiesInfo[2]);
         for (int enemy = 0; enemy < enemiesInfo.Length; enemy++) { enemiesInfo[enemy].SetEnemyID(enemy); }
 
     }

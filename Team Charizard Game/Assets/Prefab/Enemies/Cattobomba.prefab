@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 1697336348967388639}
   m_Layer: 0
   m_Name: Cattobomba
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -238,10 +238,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a430d823a01a65a48973b6991074c517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 200
+  speed: 600
   explosionSpeed: 0
   explosionCollider: {fileID: 1697336348967388632}
   explosion: {fileID: 5647552066376067196}
+  dmg: 10
 --- !u!1001 &4222499704757212246
 PrefabInstance:
   m_ObjectHideFlags: 0

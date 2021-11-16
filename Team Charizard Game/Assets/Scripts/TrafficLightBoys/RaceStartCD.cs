@@ -112,6 +112,7 @@ public class RaceStartCD : MonoBehaviour
         yield return new WaitForSeconds(activationTimer);
         //attiva il timer di gara
         raceTimer.enabled = true;
+       
         //comunica che la gara è iniziata
         raceBegun = true;
         //fa partire il suono che indica la fine del countdown
