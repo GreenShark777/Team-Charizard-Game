@@ -1287,6 +1287,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 936455694277083882, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 2238349135173275981, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_IsActive
@@ -1307,6 +1312,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Strada_Curva
       objectReference: {fileID: 0}
+    - target: {fileID: 8545998855462523393, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 8684647068721283533, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1391,6 +1401,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 936455694277083882, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 2238349135173275981, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_IsActive
@@ -1411,6 +1426,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Strada_Curva
       objectReference: {fileID: 0}
+    - target: {fileID: 8545998855462523393, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 8684647068721283533, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2236,6 +2256,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 936455694277083882, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 2238349135173275981, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_IsActive
@@ -2256,6 +2281,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Strada_Curva
       objectReference: {fileID: 0}
+    - target: {fileID: 8545998855462523393, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 8684647068721283533, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3349,6 +3379,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 936455694277083882, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 2238349135173275981, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_IsActive
@@ -3369,6 +3404,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Strada_Curva
       objectReference: {fileID: 0}
+    - target: {fileID: 8545998855462523393, guid: 36977a5acde4b604f957906d9000a48f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6f5fcfd2de6876a4d92d8c5c08c29de1, type: 2}
     - target: {fileID: 8684647068721283533, guid: 36977a5acde4b604f957906d9000a48f,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,18 +1,27 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
-public class FunzioniOpzioni : MonoBehaviour,IUpdateData
+public class FunzioniOpzioni : MonoBehaviour, IUpdateData
 {
     public Dropdown graficaDropdown, risoluzioneDropdown;
     Resolution[] resolutions;
     public Toggle toggleFullSchermo;
 
     [SerializeField]
-    private GameManag g=default;
+    private GameManag g = default;
+
+    //[SerializeField]
+    //private Slider sliderVol_Musica = null, sliderVol_SFX = null, sliderVol_GLobal = null;
+    //[SerializeField]
+    //private AudioMixer master= default;
     private void Start()
     {
-
+        // qui stiammo dicendo di prendere i valori salvati
+      //  if(sliderVol_Musica) sliderVol_Musica.value = g.savedMusicVolume;
+      //if(sliderVol_GLobal) sliderVol_GLobal.value = g.savedMasterVolume;
+      // if(sliderVol_SFX) sliderVol_SFX.value= g.savedSfxVolume;
+        //
         resolutions = Screen.resolutions;
         risoluzioneDropdown.ClearOptions();
 
@@ -38,7 +47,21 @@ public class FunzioniOpzioni : MonoBehaviour,IUpdateData
         gameObject.SetActive(false);
     }
 
+    //public void CambiaVolumeMusic(float newvolume)
+    //{
+    //    master.SetFloat("musicVolume",newvolume);
+    
+    //}
+    //public void CambiaVolumeSFX(float newvolume)
+    //{
+    //    master.SetFloat("sfxVolume", newvolume);
 
+    //}
+    //public void CambiaVolumeGlobal(float newvolume)
+    //{
+    //    master.SetFloat("globalVolume", newvolume);
+
+    //}
     public void SettaRisoluzione(int resoluzioneIndex)
     {
         Resolution resolution = resolutions[resoluzioneIndex];
@@ -62,5 +85,8 @@ public class FunzioniOpzioni : MonoBehaviour,IUpdateData
         g.risoluzione = risoluzioneDropdown.value;
         Debug.Log("Valiu"+graficaDropdown.value);
         g.fullSchermo = toggleFullSchermo.isOn;
+        //if(sliderVol_SFX)  g.savedSfxVolume = sliderVol_SFX.value;
+        //if(sliderVol_Musica)  g.savedMusicVolume = sliderVol_Musica.value;
+        //if(sliderVol_GLobal) g.savedMasterVolume = sliderVol_GLobal.value;
     }
 }
