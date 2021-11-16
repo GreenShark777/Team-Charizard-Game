@@ -154,14 +154,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 867571736456396440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ca4b2447600231469f97ea068fcc34e, type: 3}
+  m_Script: {fileID: 11500000, guid: 74c0313ba04b36d4e8356bd3c596b8da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  feedbackPoint: {fileID: 5947641211259192035}
-  triboli: {fileID: 7197773493666331855, guid: 80ff5c32262d2ee42ada3751eafd4b73, type: 3}
-  time: 2
-  offset: {x: 0.5, y: 0.8, z: -3}
-  spawnPoint: {fileID: 5276370048504426901}
+  feedbackPoint: {fileID: 0}
+  triboli: {fileID: 0}
+  time: 0
+  offset: {x: 0, y: 0, z: 0}
+  spawnPoint: {fileID: 0}
 --- !u!1 &867571737209108055
 GameObject:
   m_ObjectHideFlags: 0
@@ -10193,12 +10193,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6e37e9d8bffb74469576f4ef5fcb91a, type: 3}
---- !u!1 &5947641211259192035 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8057125635752270955, guid: e6e37e9d8bffb74469576f4ef5fcb91a,
-    type: 3}
-  m_PrefabInstance: {fileID: 4421106812030361224}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5276370048504426901 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8386691663870619421, guid: e6e37e9d8bffb74469576f4ef5fcb91a,

@@ -50,22 +50,27 @@ public class SliderChange : MonoBehaviour
     /// <returns></returns>
     public IEnumerator ChangeSliderValueSlowly(bool increment, float newTargetValue, MethodToRecall method = null)
     {
-        //aggiorna il valore obiettivo
-        targetValue = newTargetValue;
-        //cambia il valore dello slider della vita per pareggiare la vita attuale del giocatore
-        slider.value += (sliderValueChangeRate * (increment ? Time.deltaTime : -Time.deltaTime));
-        //aspetta la fine del frame
-        yield return new WaitForEndOfFrame();
-        //Debug.Log("Dist: " + (Mathf.Abs(slider.value - targetValue)) + " -> To Increment? " + increment + " || val: " + slider.value + " target: " + targetValue);
-        //se la differenza tra il valore nello slider e la vita del giocatore è ancora troppo grande, continua a cambiare il valore dello slider
-        if (Mathf.Abs(slider.value - targetValue) >= acceptableDist) { StartCoroutine(ChangeSliderValueSlowly(targetValue > slider.value, targetValue, method)); yield break; }
-        //altrimenti, si è arrivati al valore obiettivo, quindi...
-        else
+        //se si possono chiamare altre coroutine, fa tutti i vari controlli e calcoli
+        if (gameObject.activeInHierarchy)
         {
-            //...se il riferimento al metodo da richiamare non è nullo, richiama quella funzione...
-            if (method != null) { method(); }
-            //...e se la velocità di cambio del valore non è uguale a quella iniziale, la riporta al valore iniziale
-            if (sliderValueChangeRate != startSliderChangeRate) { sliderValueChangeRate = startSliderChangeRate; }
+            //aggiorna il valore obiettivo
+            targetValue = newTargetValue;
+            //cambia il valore dello slider della vita per pareggiare la vita attuale del giocatore
+            slider.value += (sliderValueChangeRate * (increment ? Time.deltaTime : -Time.deltaTime));
+            //aspetta la fine del frame
+            yield return new WaitForEndOfFrame();
+            //Debug.Log("Dist: " + (Mathf.Abs(slider.value - targetValue)) + " -> To Increment? " + increment + " || val: " + slider.value + " target: " + targetValue);
+            //se la differenza tra il valore nello slider e la vita del giocatore è ancora troppo grande, continua a cambiare il valore dello slider
+            if (Mathf.Abs(slider.value - targetValue) >= acceptableDist) { StartCoroutine(ChangeSliderValueSlowly(targetValue > slider.value, targetValue, method)); yield break; }
+            //altrimenti, si è arrivati al valore obiettivo, quindi...
+            else
+            {
+                //...se il riferimento al metodo da richiamare non è nullo, richiama quella funzione...
+                if (method != null) { method(); }
+                //...e se la velocità di cambio del valore non è uguale a quella iniziale, la riporta al valore iniziale
+                if (sliderValueChangeRate != startSliderChangeRate) { sliderValueChangeRate = startSliderChangeRate; }
+
+            }
 
         }
 

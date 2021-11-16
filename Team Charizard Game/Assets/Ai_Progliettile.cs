@@ -39,7 +39,7 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         //ottiene il riferimento ai nemici in gara
         var enemiesInfo = finishLine.GetEnemiesInfos();
         int i = 0;
-        foreach (EnemyCircuitInfos enemy in enemiesInfo) { enemies[i] = enemy.transform; i++; }
+        foreach (EnemyCircuitInfos enemy in enemiesInfo) { if(enemy) enemies[i] = enemy.transform; i++; }
         //ottiene il riferimento al bersaglio di default
         bersaglioDefault = transform.GetChild(0);
         //ottiene il riferimento all'Animator del missile
@@ -85,10 +85,15 @@ public class Ai_Progliettile : MonoBehaviour, IUsableItem
         //cicla ogni nemico nell'array
         for (int enemy = 0; enemy < enemies.Length; enemy++)
         {
-            //calcola la distanza tra il missile e il nemico
-            float distToEnemy = Vector3.Distance(transform.position, enemies[enemy].position);
-            //se la distanza tra i 2 è poca e l'ultimo nemico controllato(se ne è stato controllato qualcuno) era più lontano, viene indicato questo nemico come quello più vicino
-            if (distToEnemy < distance && (distToEnemy < minDist || minDist == 0)) { closestEnemy = enemy; minDist = distToEnemy; gotNewTarget = true; }
+
+            if (enemies[enemy])
+            {
+                //calcola la distanza tra il missile e il nemico
+                float distToEnemy = Vector3.Distance(transform.position, enemies[enemy].position);
+                //se la distanza tra i 2 è poca e l'ultimo nemico controllato(se ne è stato controllato qualcuno) era più lontano, viene indicato questo nemico come quello più vicino
+                if (distToEnemy < distance && (distToEnemy < minDist || minDist == 0)) { closestEnemy = enemy; minDist = distToEnemy; gotNewTarget = true; }
+
+            }
 
         }
         //se nel ciclo è stato trovato un nuovo bersaglio, imposta quello come bersaglio(altrimenti verrà impostato quello di default)

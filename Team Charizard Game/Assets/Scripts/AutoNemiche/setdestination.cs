@@ -9,6 +9,10 @@ public class setdestination : MonoBehaviour
     public List<Transform> wp;
     NavMeshAgent agent;
     int wpIndex;
+
+    //indica la distanza accettabile da un waypoint
+    [SerializeField]
+    private float acceptableDist = 4;
     
     public Vector3 dir;
 
@@ -40,7 +44,7 @@ public class setdestination : MonoBehaviour
         
 
 
-        if( Vector3.Distance(transform.position,wp[wpIndex].position) < 20) //se la distanza è minore di 4
+        if(Vector3.Distance(transform.position,wp[wpIndex].position) < acceptableDist) //se la distanza è minore di quella accettabile
         {
             
             wpIndex++; //prossimo waypoint
@@ -62,7 +66,7 @@ public class setdestination : MonoBehaviour
         //fa partire il raycast dal centro del kart e lo fa andare verso sotto, se entro la distanza impostata c'è del terreno...        
         if (Physics.Raycast(transform.position, -transform.up, out hit, 1.7f,ground/*, groundLayer*/))         {
             //...ruota il kart in base alla pendenza dell'oggetto su cui si è...             
-            Debug.Log("ORA MI PIEGO");
+            //Debug.Log("ORA MI PIEGO");
          transform.GetChild(0).rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) *                 
           transform.rotation, 100f * Time.deltaTime); } 
 

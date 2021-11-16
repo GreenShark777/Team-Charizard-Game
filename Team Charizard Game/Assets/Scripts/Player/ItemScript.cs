@@ -35,6 +35,10 @@ public class ItemScript : MonoBehaviour
     private float chooseTimer = 4, //indica quanto tempo deve passare dall'inizio dell'animazione di scelta alla sua fine
         boxReactivationTimer = 1; //indica dopo quanto tempo una cassa oggetti viene riattivata
 
+    //indica se il giocatore sta affrontando il boss o meno
+    [SerializeField]
+    private bool isAgainstBoss = false;
+
 
     // Start is called before the first frame update
     private void Awake()
@@ -90,6 +94,8 @@ public class ItemScript : MonoBehaviour
             yield return new WaitForSeconds(chooseTimer);
             //...ferma l'animazione di scelta oggetti della UI...
             itemUIAnim.SetBool("HasItem", true);
+            //...se il giocatore è contro il boss e ha ottenuto il suonofono(inutile control il boss), ottiene invece il missile...
+            if (isAgainstBoss && obtainedItemIndex == 2) { obtainedItemIndex--; }
             //...mostra lo sprite dell'oggetto ottenuto...
             ShowObtainedItemSprite();
             //...e comunica che il giocatore ha un oggetto e non può ottenerne altri fino a quando non lo usa
