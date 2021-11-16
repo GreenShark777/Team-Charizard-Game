@@ -50,7 +50,7 @@ public class EnemyCircuitInfos : MonoBehaviour
     /// Ferma il timer della corsa di questo nemico
     /// </summary>
     /// <param name="toActivate"></param>
-    public void ActivateRaceTimer(bool toActivate) { rt.enabled = toActivate; }
+    public void ActivateRaceTimer(bool toActivate) { if (!rt) { Debug.Log(name); }; rt.enabled = toActivate; }
     /// <summary>
     /// Ferma il nemico e gli comunica che ha finito la gara
     /// </summary>

@@ -83,6 +83,8 @@ public class enemyCarHealth : MonoBehaviour
     private Transform kart;
     [SerializeField]
     private Animator anim;
+    [SerializeField]
+    private GameObject esecuzioneImage;
    
 
     private Vector3 rightKartPosition;
@@ -128,6 +130,7 @@ public class enemyCarHealth : MonoBehaviour
         {
             if (Vector3.Distance(transform.position, player.transform.position) < 20)
             {
+                esecuzioneImage.SetActive(true);
                 //parte animazione fadeOUT
                 anim.SetBool("fade", true);
                 if (Input.GetKeyDown(KeyCode.K) && isExecuted == false)
@@ -138,12 +141,11 @@ public class enemyCarHealth : MonoBehaviour
                 }
 
             }
-            //else
-            //{
-            //    //parte animazione fadeIN
-            //    anim.SetBool("fade", false);
+            else
+            {
+                esecuzioneImage.SetActive(false);
 
-            //}
+            }
 
 
         }
